@@ -1,0 +1,52 @@
+/** 基础样式 **/
+@import 'variable';
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+}
+.el-main {
+    padding: 0;
+}
+html {
+    height: 100%;
+    font-family: PingFangSC-Regular,'宋体',Verdana,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    color: #666666;
+}
+
+body {
+    font-size: 14px;
+    /*避免dialog弹出框弹出时页面出现抖动*/
+    padding-right: 0 !important;
+    overflow: hidden !important;
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+input,
+button {
+    font-size: 14px;
+}
+li {
+	list-style: none;
+}
+
+
+.fast {
+    animation-duration: 0s !important;
+}
+
+select {
+    overflow: auto;
+}
