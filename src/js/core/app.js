@@ -18,9 +18,6 @@ export default {
 		$root.$router.replace({
 			path: '/'
 		})
-		console.log('123')
-		
-
 	},
 	go ({
 		path,
