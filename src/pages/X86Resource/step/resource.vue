@@ -80,6 +80,7 @@
 		    	:hiddenField='activeName === "x86Add" ? x86AddHiddenFormField : activeName === "x86Update" ? x86UpdateHiddenFormField : x86RecycleHiddenFormField'
 		    	:span='12'
 		    	:isOffset='false'
+		    	:isShowTooltips='true'
 		    	:isGutter='true'
 		    	labelWidth='93px'
 		    	@emitFromChild='emitFromChild'
