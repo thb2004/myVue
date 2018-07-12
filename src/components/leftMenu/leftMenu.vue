@@ -94,7 +94,7 @@
 			...mapMutations(['setTitle','setMainMenuIndex','setChildMenuIndex', 'setPagesToName']),
 			changePage (pageName) {
 				if (pageName === 'platformGuide') {			//平台自助服务流程指引，打开外部链接
-					window.open('http://wiki.midea.com/pages/viewpage.action?pageId=5422533')
+					window.open('http://wiki.midea.com/pages/viewpage.action?pageId=5432499')
 				} else {
 					app.go(pageName);
 				}

@@ -22,14 +22,14 @@
 						  	EBS（RHEL6.3）: EBS RHEL6.3 专用<br>
 						  	Oracle（RHEL6.9）：专门针对oracle的linux机器标准化,无apps用户<br>
 						  </div>
-						  <el-button style='position:absolute;left:102%' class='fa fa-info fa-lg' circle size="mini"></el-button>
+						  <el-button style='position:absolute;left:102%' class='fa fa-info fa-lg' circle></el-button>
 						</el-tooltip>
 
 						<el-tooltip placement="right" v-else-if='key==="lifeSpan"&&isShowTooltips'>
 						  <div slot="content">
 						  	申请的时候如果环境类型选的是(传统)测试环境 或 (开源)测试环境 或 (开源)开发环境  就对使用期限不能超过366天<br>
 						  </div>
-						  <el-button style='position:absolute;left:102%' class='fa fa-info fa-lg' circle size='small'></el-button>
+						  <el-button style='position:absolute;left:102%' class='fa fa-info fa-lg' circle></el-button>
 						</el-tooltip>
 						
 					    <!--带提示的输入框 -->
