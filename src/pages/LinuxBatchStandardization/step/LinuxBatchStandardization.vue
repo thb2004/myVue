@@ -371,6 +371,7 @@
 			submitForm (formName) {
 				this.$refs[formName].validate((valid) => {
 					let formObj = this[this.activeName + 'Form'];
+					formObj.cli_content && (formObj.cli_content = formObj.cli_content.replace(/\"/g,''))
 					let url = '';
 					let params = Object.assign(formObj, {mipuser: this.$store.state.username})
 					let arr = ['zabbixclient','zabbixclientdb','tomcat','jdk','nginx','backupclient','zookeeper','ipython','splunk','cli']

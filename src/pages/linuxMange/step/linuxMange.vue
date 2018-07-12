@@ -573,7 +573,7 @@
 								url = '/auto/cliself'
 								params.cli = formObj.cli;
 								params.splunk = formObj.splunk;
-								params.cli_content = formObj.cli_content;
+								params.cli_content = formObj.cli_content.replace(/\"/g,'');
 								break;
 							case 'four':
 								url = '/auto/bulkfile';
