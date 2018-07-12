@@ -60,7 +60,7 @@
 		        <a href="http://si.midea.com/static/contact_us" target="_blank">{{$t('message.contact')}}</a>
 		        <a class="last" href="http://si.midea.com/static/complaints_center" target="_blank">{{$t('message.complaints')}}</a>
 		    </div>
-		    <p class="copyright text-center">Copyright @ 1968-2017 <span>{{$t('message.copyright')}}</span></p>
+		    <p class="copyright text-center">Copyright © 1968-2018 <span>{{$t('message.copyright')}}</span></p>
 		</div>
     </div>
 </template>

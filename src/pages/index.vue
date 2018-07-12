@@ -20,7 +20,7 @@
 		      	<!-- 右侧中心主体内容-->
 		      	<v-router-view noTransition />
 		      	<div v-if='!/developing/.test($route.name)'>
-		      		<p class='footer'>美的平台服务协议和法律声明 ·Copyright © 1968-2017 Midea Group.All right reserved <span>中文</span></p>
+		      		<p class='footer'>美的平台服务协议和法律声明 Copyright © 1968-2018 Midea Group.All right reserved <span>中文</span></p>
 		      	</div>
 	      	</el-scrollbar>
 	      </el-main>
