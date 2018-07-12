@@ -82,7 +82,7 @@
 		    	:isOffset='false'
 		    	:isShowTooltips='true'
 		    	:isGutter='true'
-		    	labelWidth='93px'
+		    	labelWidth='95px'
 		    	@emitFromChild='emitFromChild'
 		    >
 	    	</v-form>
