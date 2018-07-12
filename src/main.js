@@ -23,7 +23,7 @@ import qs from 'qs'
 import offline from 'offline'
 import ScrollBar from 'vue2-scrollbar'
 Vue.component('vue-scrollbar', ScrollBar)
-
+console.log('thb2345')
 Vue.use(Vuex)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
