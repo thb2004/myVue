@@ -296,7 +296,7 @@
 					dept: '',						//部门
 					productModule: '',				//所属模块
 					date: [],						//日期
-					creater: '',					//创建人
+					creater: '',//创建人
 					requestType: '',				//请求类型
 					status: '',						//状态
 				},
@@ -335,7 +335,7 @@
 			/*查询数据*/
 			onSubmit () {
 				this.queryBtnDisabled = true;
-				this.changeTableData()
+				this.changeTableData('submit')
 			},
 			closeDialog () {
 				//清空数据
@@ -407,8 +407,8 @@
 				app.post('/Gaea_api/getTaskdata', {
 					dataIds: id
 				}, res => {
-					let obj = {}
 					for (let i of res.data.data) {
+						let obj = {}
 						for (let k of i) {
 							obj[k.name] = k.fillValue
 						}
@@ -434,19 +434,19 @@
 			},
 			sizeChange (pageSize) {
 				this.workMangePageSize = pageSize
-				this.changeTableData()
+				this.changeTableData('submit')
 			},
 			currentChange (currentPage) {
 				this.workMangeCurrentPage = currentPage
-				this.changeTableData()
+				this.changeTableData('submit')
 			},
 			/*获取工单列表数据*/
-			changeTableData () {
+			changeTableData (type) {
 				let formObj = this.form
 				app.post('/Gaea_api/getTicketlist', {
 					groupId: formObj.dept,
 					moduleId: formObj.productModule,
-					createPerson: formObj.creater,
+					createPerson: type ? formObj.creater : this.$store.state.username,
 					typeCode: formObj.requestType,
 					status: formObj.status,
 					startDate: formObj.date[0] || '',
@@ -461,11 +461,13 @@
 					}
 					this.workMangeTotal = response.data.total;
 				}, err => {
-					this.$alert('查询失败', {
-						title: '提示',
-						type: 'info'
-					})
-					this.queryBtnDisabled = false;
+					if (type) {
+						this.$alert('查询失败', {
+							title: '提示',
+							type: 'info'
+						})
+						this.queryBtnDisabled = false;
+					}
 				})
 			},
 			/*获取类型下拉框数据*/
@@ -484,6 +486,9 @@
 			getCreaterData () {
 				app.post('/Gaea_api/getUser', {}, response => {
 					for (let i of response.data.data) {
+						if (i.uid === this.$store.state.username) {
+							this.form.creater = i.uid
+						}
 						this.createrList.push({
 							label: i.cn_name,
 							value: i.uid

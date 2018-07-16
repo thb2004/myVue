@@ -11,7 +11,7 @@
 				active-text-color="#ffd04b"
 				class='my-menu hidden-small'
 				>
-				<el-menu-item v-for='(item,index) in menuList' :index="'' + index" :key="index" v-if='index != 3 || item.level=="0"'>
+				<el-menu-item v-for='(item,index) in $store.state.pages.menuList' :index="'' + index" :key="index" v-if='item.isShow'>
 					{{item.text}}
 				</el-menu-item>
 			</el-menu>
@@ -44,8 +44,7 @@
 					    <img src="../../assets/images/user.png">{{$store.state.cnname}}<i class="el-icon-arrow-down el-icon--right"></i>
 					  </span>
 					  <el-dropdown-menu slot="dropdown" class='logout'>
-					  	<el-dropdown-item command='login' v-if='!$store.state.isLogin'>登录</el-dropdown-item>
-					    <el-dropdown-item command='logout' class='logout-sys' v-else>退出系统</el-dropdown-item>
+					    <el-dropdown-item command='logout' class='logout-sys'>退出系统</el-dropdown-item>
 					  </el-dropdown-menu>
 					</el-dropdown>
 				</div>
@@ -56,7 +55,7 @@
 						<i class="fa fa-navicon"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item v-for='(item,index) in menuList' :key="index" :command='index' v-if='index != 3 || item.level=="0"'>
+					    <el-dropdown-item v-for='(item,index) in $store.state.pages.menuList' :key="index" :command='index' v-if='item.isShow'>
 					    	{{item.text}}
 					    </el-dropdown-item>
 					</el-dropdown-menu>
@@ -176,22 +175,10 @@
 		data () {
 			return {
 				messageNum: 0,
-				menuList: [{
-					text: '云资源平台'
-				},{
-					text: '云系统平台'
-				},{
-					text: '云数据库平台'
-				}, {
-					text: '云管理平台',
-					level: window.localStorage.getItem('userLevel')
-				},{
-					text: '云容器平台'
-				}]
 			}
 		},
 		methods: {
-			...mapMutations(["setNavbarIndex",'resetLeftMenuIndex','setTitle', 'setLoginStatus', 'setCount', 'setUsername','setUserLevel', 'setLeftMenuList', 'setCnname']),
+			...mapMutations(["setNavbarIndex",'resetLeftMenuIndex','setTitle', 'setUsername','setUserLevel', 'setLeftMenuList', 'setCnname','setMenuList', 'setCount']),
 			changePage(index) {
 				let pageName = ''
 				switch (index) {
@@ -225,14 +212,11 @@
 							redirect: this.$router.currentRoute.fullPath
 						}*/
 					})
-					window.localStorage.setItem('login', '');
-					window.localStorage.setItem('userLevel', '');
-					window.localStorage.setItem('cnname', '');
-					this.setLoginStatus(false)
 					this.setCount(0)
 					this.setUsername('')
 					this.setUserLevel('')
 					this.setLeftMenuList('')
+					this.setMenuList('')
 					this.setCnname('')
 				}, err => {
 					this.$alert('注销失败', {title: '提示'})

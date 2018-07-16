@@ -1,7 +1,3 @@
-/*import VuexPersistence from 'vuex-persist'
-const vuexLocal = new VuexPersistence({
-    storage: window.localStorage
-})*/
 export default {
 	state: {
 		count: 0,
@@ -12,10 +8,9 @@ export default {
 			}
 		},
 		labelPosition: 'left',
-		isLogin: window.localStorage.getItem('login') || '',			//用户是否登录
-		userLevel: window.localStorage.getItem('userLevel') || '',		//用户级别
-		username: window.localStorage.getItem('username') || '',		//用户姓名
-		cnname: window.localStorage.getItem('cnname') || '',		   //用户中文姓名 
+		userLevel:  '',		//用户级别
+		username: '',		//用户姓名
+		cnname: '',		   //用户中文姓名 
 		windowHeight: 0,
 		innerHeight: 0,
 		bannerHeight: '350',
@@ -178,6 +173,22 @@ export default {
 				},
 
 			},
+			menuList: [{
+				text: '云资源平台',
+				isShow: true,
+			},{
+				text: '云系统平台',
+				isShow: true,
+			},{
+				text: '云数据库平台',
+				isShow: true,
+			}, {
+				text: '云管理平台',
+				isShow: true,
+			},{
+				text: '云容器平台',
+				isShow: true,
+			}],
 			leftMenuList: [
 				[{
 						text: '首页',
@@ -243,39 +254,46 @@ export default {
 						name: 'LinuxBatchInitFirstPage',
 						icon: require('../assets/images/init.png'),
 						blueIcon: require('../assets/images/blueInit.png'),
+						isShow: true
 
 					}, {
 						text: 'Linux批量管理',
 						name: 'linuxMangeFirstPage',
 						icon: require('../assets/images/batchMange.png'),
 						blueIcon: require('../assets/images/blueBatchMange.png'),
+						isShow: true
 
 					}, {
 						text: '网络管理',
 						name: 'netMangeAutoView',
 						icon: require('../assets/images/netMange.png'),
 						blueIcon: require('../assets/images/blueNetMange.png'),
+						isShow: true
 
 					}, {
 						text: 'Linux批量标准化',
 						name: 'LinuxBatchStandardizationFirstPage',
 						icon: require('../assets/images/batchStandardization.png'),
 						blueIcon: require('../assets/images/blueBatchStandardization.png'),
+						isShow: true
 					}, {
 						text: '监控自动化',
 						name: 'automationFirstPage',
 						icon: require('../assets/images/automation.png'),
 						blueIcon: require('../assets/images/blueAutomation.png'),
+						isShow: true
 					}, {
 						text: '历史记录',
 						name: 'history',
 						icon: require('../assets/images/history.png'),
 						blueIcon: require('../assets/images/blueHistory.png'),
+						isShow: true
 					}, {
 						text: '其他',
 						name: 'otherFirstPage',
 						icon: require('../assets/images/other.png'),
 						blueIcon: require('../assets/images/blueOther.png'),
+						isShow: true
 					},
 
 				],
@@ -372,6 +390,9 @@ export default {
 		getPages(state) {
 			return state.pages;
 		},
+		getCount (state) {
+			return state.count;
+		},
 		/**
 		 * 获取缓存的页面
 		 * @AuthorHTL
@@ -381,9 +402,8 @@ export default {
 		getKeepAlive(state) {
 			return state.pages.home + ',' + state.pages.keepAlive.join(',')
 		},
-
-		getLogin (state) {
-			return state.isLogin
+		getUserLevel (state) {
+			return state.userLevel
 		},
 
 		getNavbarIndex (state) {
@@ -408,17 +428,23 @@ export default {
 				}
 			}
 		},
+		setMenuList (state, userLevel) {
+			for (let i of state.pages.menuList) {
+				switch (i.text) {
+					case '云系统平台':
+						i.isShow = ['0','1','4'].indexOf(userLevel) != -1
+						break;
+					case '云管理平台':
+						i.isShow = userLevel === '0';
+						break;
+				}
+			}
+		},
 		setCnname (state, name) {
 			state.cnname = name
 		},
-		setCount (state, count) {
-			state.count = count
-		},
 		setUsername (state, username) {
 			state.username = username
-		},
-		setLoginStatus (state, loginStatus) {
-			state.isLogin = loginStatus
 		},
 		/**
 		 *
@@ -609,8 +635,9 @@ export default {
 		 */
 		setTitle(state, title) {
 			state.pages.title = title
-		}
+		},
+		setCount (state, count) {
+			state.count = count
+		},
 	},
-	//plugins: [vuexLocal.plugin]
-
 }

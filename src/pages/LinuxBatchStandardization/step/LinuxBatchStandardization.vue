@@ -38,6 +38,17 @@
 							<el-row>
 								<el-col :md='9'>
 									<el-form-item label="分类" prop='appdb'>
+										<el-tooltip placement="right">
+										  <div slot="content">
+										  	应用  ：针对开源类的应用，数据盘挂载/apps 下<br>
+										  	应用（云主机）：专门针对美的云的系统，会改非标准主机名，数据盘挂载/apps 下<br>
+										  	应用（传统）: 针对传统类应用，比如商业套件。装NFS，不挂盘<br>
+										  	数据库（开源）：针对开源数据库，xfs，python，perl 包，数据盘挂载/apps 下<br>
+										  	EBS（RHEL6.3）: EBS RHEL6.3 专用<br>
+										  	Oracle（RHEL6.9）：专门针对oracle的linux机器标准化,无apps用户<br>
+										  </div>
+										  <el-button style='position:absolute;left:102%' class='fa fa-info fa-lg' circle></el-button>
+										</el-tooltip>
 									    <el-select v-model="twoForm.appdb" placeholder="请选择">
 	                 						<el-option label="应用" value="app"></el-option>
 	                 						<el-option label="数据库(开源)" value="db"></el-option>

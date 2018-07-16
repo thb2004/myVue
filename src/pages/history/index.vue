@@ -4,7 +4,7 @@
 			<div class="main-middle">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="执行结果" name="exeRes">
-						<p class='title m-b20'>执行结果:</p>	
+						<p class='title m-b20'>执行结果:<i class="fa fa-refresh fa-lg refresh" @click='refreshData'></i></p>	
 						<el-form :model='twoForm' label-width='0'>
 							<el-form-item label-width='0'>
 								<el-col :md='18'>
@@ -59,7 +59,7 @@
 	</div>
 </template>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .all-result {
 	.iplist {
 		span {
@@ -67,6 +67,9 @@
 		    width: 150px;
 		    word-break: break-word;
 		}
+	}
+	.refresh {
+		cursor: pointer;
 	}
 }
 </style>
@@ -125,6 +128,17 @@
 			currentChange (currentPage) {
 				app.tools.currentChange(this, currentPage)
 			},
+			/*获取最新数据*/
+			refreshData () {
+				app.post('/auto/newresult', {
+					mipuser: this.$store.state.username
+				}, res => {
+					let code = res.data.code;
+					if (code === '100001') {
+						this.twoForm.exeResult = res.data.data[0].info
+					}
+				})
+			}
 		}
 	}
 </script>

@@ -33,7 +33,7 @@
 				<el-col :md='12' class='notice'>
 					<p class='title'>公告</p>
 					<ul>
-						<li>暂定7.15发布上线</li>
+						<li>雅典娜自动化平台产品发布会将在7月16日14:00在总部C407召开</li>
 					</ul>
 				</el-col>
 	    	</el-row>

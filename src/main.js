@@ -7,7 +7,6 @@ import ElementUI from 'element-ui'
 import i18n from './i18n/i18n'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css'
-import 'vue2-animate/dist/vue2-animate.min.css'
 import './css/animation.min.css'
 import App from './App'
 import router from './router'
@@ -23,17 +22,14 @@ import qs from 'qs'
 import offline from 'offline'
 import ScrollBar from 'vue2-scrollbar'
 Vue.component('vue-scrollbar', ScrollBar)
-console.log('thb2345')
 Vue.use(Vuex)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 const store = new Vuex.Store(stores)
-let count = 0 
 /* eslint-disable no-new */
 router.beforeEach((to, from, next) => {
-	store.commit('setLeftMenuList', window.localStorage.getItem('userLevel'))
 	Message.closeAll()
 	if (offline()) {
 		Message.warning({
@@ -42,34 +38,75 @@ router.beforeEach((to, from, next) => {
           	duration: 1500,
 		})
 	}
-	if (to.meta.requireAuth) { 			// 判断该路由是否需要登录权限
-		if (store.getters.getLogin) {	//已经登录，判断是否会话已过期
-			if (from.name === 'login') {						//从登陆页面过来。不需校验token
-				next();
-			} else {
-				axios.get('/adm/v1/validatetoken?' + new Date().getTime()).then(res => {
-					if (res.data.Code === '505') {	//会话过期
-						MessageBox.alert('会话已过期，请重新登录', {
-							title: '提示',
-							type: 'warning',
-							callback: (action, instance) => {
-								next({
-									path: '/',
+	if (to.meta.requireAuth) { 										// 判断该路由是否需要登录权限
+		if (from.name === 'login' && store.getters.getUserLevel) {	//从登陆页面过来。不需校验token
+			next();
+		} else {
+			axios.post('/adm/v1/getuserinfo?' + new Date().getTime()).then(res => {
+				if (res.data.Code === '505') {	//会话过期
+					next({
+						path: '/',
+					})
+				} else {
+					let data = res.data.Data || {}
+					let userLevel = data.userlevel;		//用户等级
+					let cnname = data.cnname;			//登录中文名
+					let mipAccount = data.username;		//登录mip账号
+					if (!store.getters.getUserLevel) {	//如果userlevel存在代表已经登录
+						if (userLevel === '1') {
+							if (to.name === 'authorityCenter') {
+								next({ //1代表dba权限,需不展示云管理平台
+									name: 'Page404',
 								})
+								return;
 							}
-						})
-					} else {
-						next();
+						} else if (userLevel === '2' || (userLevel === '3')) {			//2/3代表一般用户权限
+							let noAuthorArr = [
+								'workMange', 
+								'MYSQLMange','NosqlMange','dataSetsMange',
+								'MySqlCopyMange','backMange','DMLDDL',
+								'authorityCenter', 
+								'VirtualMachineApply', 'linuxMangeFirstPage','automationFirstPage',
+								'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
+								'netVlanList','LinuxBatchStandardizationFirstPage',
+								'otherFirstPage','history','secondHomeContent'
+							]
+							if (noAuthorArr.indexOf(to.name) != -1) {
+								next({
+									name: 'Page404',
+								})
+								return;
+							}
+						} else if (userLevel === '4') {
+							let noAuthorArr = [
+								'workMange', 
+								'MYSQLMange','NosqlMange','dataSetsMange',
+								'MySqlCopyMange','backMange','DMLDDL',
+								'authorityCenter', 
+								'linuxMangeFirstPage','automationFirstPage',
+								'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
+								'netVlanList','LinuxBatchStandardizationFirstPage',
+								'otherFirstPage','history',
+							]
+							if (noAuthorArr.indexOf(to.name) != -1) {
+								next({
+									name: 'Page404',
+								})
+								return;
+							}
+						}
+						store.commit('setUserLevel', userLevel)
+						store.commit('setUsername', mipAccount)
+						store.commit('setCnname', cnname)
+						store.commit('setMenuList', userLevel)
+						store.commit('setLeftMenuList', userLevel)
 					}
-				}).catch(err => {
 					next();
-				})
-			}
-		} else {					//未登录，跳转到登录页
-			next({
-				path: '/',
+				}
+			}).catch(err => {
+				next();
 			})
-		}	
+		}
 	} else {
 		next();
 	}
@@ -85,21 +122,13 @@ new Vue({
 // http响应拦截器
 axios.interceptors.response.use(response => {
 	let code = response.data.code || response.data.Code
-	if (code === '505') {		//会话过期
-		count === 0 && MessageBox.alert('会话已过期，请重新登录', {
-			title: '提示',
-			type: 'warning',
-			callback: (action, instance) => {
-				count = 0
-				router.replace({
-					path: '/'
-				})
-			}
+	if (code === '505') {													//会话过期
+		store.getters.getCount === 0 && router.replace({
+			path: '/'
 		})
-		count = 1
-	} else {
-		return response
+		store.commit('setCount', 1)
 	}
+	return response
 }, error => {
 	return Promise.reject(error)
 })

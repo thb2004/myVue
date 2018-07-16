@@ -194,21 +194,18 @@
 					}
 					if (valid) {
 						this.btnDisabled = true;
-							app.post(url, params, res => {
+						app.post(url, params, res => {
 							let code = res.data.Code;
-							let userLevel = app.cookie.getCookie('userlevel')
 							this.btnDisabled = false
 							if (code === "2000000") { //验证成功
-								window.localStorage.setItem('login', true);
-								window.localStorage.setItem('userLevel', userLevel)
-								window.localStorage.setItem('username', this.form.mipAccount)
+								let cnname = res.data.Data.cnname
+								let userLevel = res.data.Data.userlevel
 								window.localStorage.setItem('rememberUsername', this.form.rememberUser ? this.form.mipAccount : '')
-								window.localStorage.setItem('cnname', res.data.Data.cnname)
-								this.$store.commit('setUserLevel', userLevel)
-								this.$store.commit('setLoginStatus', true)
 								this.$store.commit('setCount', 0)
+								this.$store.commit('setUserLevel', userLevel)
 								this.$store.commit('setUsername', this.form.mipAccount)
-								this.$store.commit('setCnname', res.data.Data.cnname)
+								this.$store.commit('setCnname', cnname)
+								this.$store.commit('setMenuList', userLevel)
 								this.$store.commit('setLeftMenuList', userLevel)
 								$root.$router.replace({
 									name: 'firstHomeContent'
@@ -220,7 +217,6 @@
 									type: 'info'
 								})
 							}
-
 						}, this.error)
 					} else {
 						return false;

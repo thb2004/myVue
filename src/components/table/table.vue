@@ -61,7 +61,7 @@
             <div v-else-if='key==="status"'>
                <span v-if="scope.row[key]==='pending'" class='pengding'>经理审批中</span>
                <span v-else-if="scope.row[key]==='draft'" class='draft'>草稿</span>
-               <span v-else-if="scope.row[key]==='dispose'" class='dispose'>DBA审批中</span>
+               <span v-else-if="scope.row[key]==='dispose'" class='dispose'>运维审批中</span>
                <span v-else-if="scope.row[key]==='completed'" class='completed'>已完成</span>
                <span v-else>{{scope.row.status}}</span>
             </div>

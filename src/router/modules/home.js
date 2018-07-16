@@ -88,14 +88,7 @@ export default [
 
 			/*云管理平台*/
 			...authorityCenter,
-
 			...developing,
-			{
-				path: '*',
-				name: 'notFound',
-				component: resolve => require(['../../pages/notFound'], resolve),
-			}
-
 		]
 	},
 	{
@@ -110,7 +103,7 @@ export default [
 	},
 	{
 		path: '*',
-		name: 'notFound',
+		name: 'Page404',
 		component: resolve => require(['../../pages/notFound'], resolve),
 	}
 ]

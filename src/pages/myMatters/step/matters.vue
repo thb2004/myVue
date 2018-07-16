@@ -290,7 +290,7 @@
 		            duraTime: '耗时',
 		            remarks: '批注',
 		        },
-				titleName: '代办列表',
+				titleName: '待办列表',
 				operatorTexts: ['工单详情','查看流程'],
 				pickerOptions: {
 					shortcuts: [
@@ -562,7 +562,7 @@
 			changeTab () {
 
 				let activeName = this.activeName
-				this.titleName = activeName === 'myMatters' ? '代办列表' :
+				this.titleName = activeName === 'myMatters' ? '待办列表' :
 								 activeName === 'myApply' ? '申请列表' : '审批列表'
 				if (activeName === 'myApply') {	
 					!this.myApplyFlag && this.getMyApplyData();
@@ -598,9 +598,9 @@
 					this.queryBtnDisabled = false;
 				})
 			},
-			/*代办数据*/
+			/*待办数据*/
 			getMyMattesData () {
-				//请求我的代办todo接口查询数据
+				//请求我的待办todo接口查询数据
 				app.post('/Gaea_api/getTasklist', {
 					userId: this.$store.state.username,
 					taskType: '0'

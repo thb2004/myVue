@@ -11,7 +11,7 @@
 						</el-col>
 						<el-col :md='6'>
 							<el-form-item label="用户级别" prop='userLevel'>
-							    <el-input-number v-model="form.userLevel" :min="0" :max="3" controls-position="right"></el-input-number>
+							    <el-input-number v-model="form.userLevel" :min="0" :max="4" controls-position="right"></el-input-number>
 							</el-form-item>
 						</el-col>
 						<el-col :md='6' class='text-right'>
