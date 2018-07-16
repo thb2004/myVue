@@ -106,7 +106,7 @@
 
 								<div class='btn-group-lg'>
 								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>提 交</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
+								    <el-button @click="resetForm('one')">重 置</el-button>
 								</div>
 							</el-form>
 						</div>
