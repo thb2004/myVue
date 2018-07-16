@@ -346,7 +346,7 @@ export default {
 			'已完成'
 		return i
 	},
-	validateSqls(vm, v_sql_all) {
+	validateSqls(vm, v_sql_all, type) {
 		v_sql_all = v_sql_all.toLowerCase()
 		let regu = /^[\n\t\s\S]*?drop[\s\t\n]+(?!index)[\n\t\s\S]*?$/; //正则表达式  匹配drop后跟的是否index
 		let arr = v_sql_all.split(";"); //返回数组
@@ -364,11 +364,11 @@ export default {
 		let fdStart1 = v_sql_all.indexOf("create");
         let fdStart2 = v_sql_all.indexOf("alter");
 
-		if (fdStart1 == -1 && fdStart2 == -1) {
+		/*if (fdStart1 == -1 && fdStart2 == -1) {
 			msg = '只允许执行create或alter操作！';
 			vm.checkOutMsg = msg
 			return msg
-		}
+		}*/
 
 		if (v_sql_all.startsWith('insert') || v_sql_all.startsWith('update') || v_sql_all.startsWith('delete')) {
 			is_dml = 1;
@@ -395,7 +395,7 @@ export default {
 				vm.checkOutMsg = msg
 				return msg
 			}
-			if (v_sql_all.indexOf("database,grant,revoke,flush,truncate,rename,view,function,procedure") >= 0 || v_sql_all.indexOf("grant") >= 0 || v_sql_all.indexOf("revoke") >= 0 || v_sql_all.indexOf("flush") >= 0 || v_sql_all.indexOf("truncate") >= 0 || v_sql_all.indexOf("rename") >= 0 || v_sql_all.indexOf("view") >= 0 || v_sql_all.indexOf("function") >= 0 || v_sql_all.indexOf("procedure") >= 0) {
+			if (v_sql_all.indexOf("database") >= 0 || v_sql_all.indexOf("grant") >= 0 || v_sql_all.indexOf("revoke") >= 0 || v_sql_all.indexOf("flush") >= 0 || v_sql_all.indexOf("truncate") >= 0 || v_sql_all.indexOf("rename") >= 0 || v_sql_all.indexOf("view") >= 0 || v_sql_all.indexOf("function") >= 0 || v_sql_all.indexOf("procedure") >= 0) {
 				msg = '检查未通过:包含数据库敏感关键字(database,grant,revoke,flush,truncate,rename,view,function,procedure)中的一个或多个，为防止误操作，禁止执行，有误判情况，请联系DBA!!'
 				vm.checkOutMsg = msg
 				return msg
@@ -433,15 +433,16 @@ export default {
 
 			if (v_sql_all.indexOf("create table") >= 0) {
 				v_sql_all_line = v_sql_all.split(',')
-				for (let item_key of v_sql_all_line) {
-					if (item_key.indexOf("primary key") >= 0) {
+				for (let i = 0; i < v_sql_all_line.length; i++) {
+					let value = v_sql_all_line.length[i]
+					if (value.indexOf("primary key") >= 0 ) {
 						let k = 1
 						while (1) {
-							if (item_key.indexOf(")") >= 0 || k >= 10) {
+							if (value.indexOf(")") >= 0 || k >= 10) {
 								break;
 							}
-							let jj = Number(item_i) + Number(k)
-							item_key = item_key + "," + v_sql_all_line[jj]
+							let jj = i + Number(k)
+							item_key = value + "," + v_sql_all_line[jj]
 							k = k + 1
 						}
 						let item_key_str = item_key.substring(item_key.indexOf("(") + 1, item_key.indexOf(")"))
@@ -463,7 +464,6 @@ export default {
 								return msg
 
 							}
-
 						}
 					}
 				}
@@ -479,12 +479,17 @@ export default {
 			}
 
 			// 'key'的数量为一，and index的数量为0，则表示除主键外无索引，检查不通过
-			let v_have_key_n = (v_sql_all.split('key')).length - 1; //取得'key'字符串的数量  
+			let v_have_key_n = (v_sql_all.split('key')).length - 1; //取得'key'字符串的数量 
+
+			if (v_sql_all.indexOf("create table") >= 0 && v_have_key_n == 1 && v_sql_all.indexOf("index") < 0 && type) {
+				vm.checkOutMsg = msg = '检查未通过:除了主键外没有索引，请创建比如id类型字段上的索引，或者在时间范围查询字段例如add_time上创建索引。确实业务不需要创建索引的，请联系DBA手工执行!!'
+				return msg
+			}
 		}
 
 		return msg
 	},
-	validate_dba_rule(v_sql_all) {
+	validate_dba_rule(v_sql_all, type) {
 		let msg = '';
 		if (v_sql_all.indexOf("Set the field list for insert statements") >= 0) {
 			msg = '违反审核规则:' + 'insert into 必须 指定字段!'
@@ -502,7 +507,10 @@ export default {
 			msg = '违反审核规则:' + '列必须要有注释!';
 		} else if (v_sql_all.indexOf("to VARCHAR type") >= 0) {
 			msg = '违反审核规则:' + 'char长度大于16的时候需要改为varchar!';
-		} else if (v_sql_all.indexOf("Set unsigned attribute on auto increment column") >= 0) {
+		} else if (v_sql_all.indexOf("Type blob/text is used") >= 0 && type){
+             msg ='违反审核规则:列的类型不能是BLOB/TEXT!';
+            return false; 
+        } else if (v_sql_all.indexOf("Set unsigned attribute on auto increment column") >= 0) {
 			msg = '违反审核规则:' + '自增列，则必须使用无符号（unsigned）类型!';
 		}
 		return msg
