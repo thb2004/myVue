@@ -770,7 +770,9 @@
 				})
 			},
 
-			resetForm () {},
+			resetForm (name) {
+				app.tools.resetFormData(this[name + "Form"])
+			},
 
 		},
 		created () {

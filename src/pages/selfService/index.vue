@@ -1540,8 +1540,8 @@
 					
 				}
 			},
-			validateSql (sql) {
-				return app.tools.validateSqls(this, sql)
+			validateSql (sql, type) {
+				return app.tools.validateSqls(this, sql, type)
 			},
 			validatorForm () {
 				let msg = ''
@@ -1642,7 +1642,7 @@
 					} else if (/\'/g.test(this.fiveForm.opComment)) {
 						msg = '备注中不能包含单引号，请用双引号代替!!'
 					} else {
-						msg = msg = this.validateSql(formObj.command)
+						msg = msg = this.validateSql(formObj.command, 'shared')
 					}
 				}
 				return msg
@@ -1876,7 +1876,7 @@
 				let data = response.data.data
 				if (code === 'Gaea20013') {
 					let v_sql_all = data.v_inc_errormessage;
-					let msg = app.tools.validate_dba_rule(v_sql_all)
+					let msg = app.tools.validate_dba_rule(v_sql_all, 'shared')
 					// 不符合DBA审计规则，直接退出，按钮不可用
 					if (msg) {
 						this.$alert(msg, {
