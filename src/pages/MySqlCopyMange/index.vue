@@ -523,7 +523,7 @@
 								let code = res.data.code
 								if (code === 'Gaea10033' || code === 'Gaea10032') {		//成功
 									this.$alert('已发送邮件至审批DBA，结果请查看邮件~', {title: '提示',type: 'info'})
-								} else {
+								} else if (code != '505') {
 									this.$alert(res.data.msg, {title: '提示',type: 'info'})
 								}
 								this.btnDisabled = false

@@ -285,7 +285,9 @@
 					}
 				}
 				app.post(url, params, res => {
-					this.$alert(res.data.msg, {title: '提示',type: 'info'})
+					if (res.data.code != '505') {
+						this.$alert(res.data.msg, {title: '提示',type: 'info'})
+					}
 					app.post('/Gaea_database/appDBAQuery', {
 						deptId: this.prevDept,
 						envId: this.prevEnvType,
@@ -508,7 +510,9 @@
 					return
 				}
 				app.post(url, params, res => {
-					this.$alert(res.data.msg, {title: '提示', type: 'info'})
+					if (res.data.code != '505') {
+						this.$alert(res.data.msg, {title: '提示', type: 'info'})
+					}
 					if (res.data.code === 'Gaea20062' || res.data.code === 'Gaea10062') {	//开启或者关闭成功成功
 						this.twoTableData[$index].on_off = row.on_off === '是' ? '否' : '是'
 					}

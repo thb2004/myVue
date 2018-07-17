@@ -784,10 +784,12 @@
 							if (res.data.code === '100001') {
 								this.dialogVisible = false;
 							}
-							this.$alert(res.data.msg, {
-								title: '提示',
-								type: 'warning'
-							})
+							if (res.data.code != '505') {
+								this.$alert(res.data.msg, {
+									title: '提示',
+									type: 'warning'
+								})
+							}
 						}, this.error)
 					} else {
 						return false;

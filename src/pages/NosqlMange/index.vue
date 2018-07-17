@@ -711,7 +711,9 @@
 				let formObj = this[this.activeName + 'Form']
 				formObj.IP1 = formObj.IP2 = formObj.IP3 = formObj.IP = ''
 				this.btnDisabled = false
-				this.$alert(response.data.msg, {title: '提示',type: 'info'})
+				if (response.data.code != '505') {
+					this.$alert(response.data.msg, {title: '提示',type: 'info'})
+				}
 			},
 			querySuccess (response) {
 				let type = this.activeName === 'one' ? 'redis' :

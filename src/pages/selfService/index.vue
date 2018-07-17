@@ -1665,9 +1665,11 @@
 				}
 			},
 			twoSuccess (response) {
-				this.$alert(response.data.msg, {
-					title: '提示',type: 'info'
-				})
+				if (response.data.code != '505') {
+					this.$alert(response.data.msg, {
+						title: '提示',type: 'info'
+					})
+				}
 				for (let i of response.data.data) {
 					this.twoAllTableData.unshift(i)
 				}
@@ -1691,9 +1693,11 @@
 					this.threeSubmitBtnDisabled = false;
 				}
 				this.checkOutMsg = response.data.msg
-				this.$alert(this.checkOutMsg, {
-					title: '提示',type: 'info'
-				})
+				if (response.data.code != '505') {
+					this.$alert(this.checkOutMsg, {
+						title: '提示',type: 'info'
+					})
+				}
 				if (response.data.code != 'Gaea40011') {
 					this.errorMsg = response.data.data.v_inc_errormessage;
 					this.errorLevel = response.data.data.v_inc_errlevel;
@@ -1889,9 +1893,11 @@
 					}
 				}
 				this.fiveCheckOutMsg = response.data.msg
-				this.$alert(this.fiveCheckOutMsg, {
-					title: '提示',type: 'info'
-				})
+				if (code != '505') {
+					this.$alert(this.fiveCheckOutMsg, {
+						title: '提示',type: 'info'
+					})
+				}
 				if (code != 'Gaea40013') {
 					this.fiveErrMsg = data.v_inc_errormessage;
 					this.fiveErrLevel = data.v_inc_errlevel;
@@ -1921,7 +1927,7 @@
 						}
 					}
 					code === 'Gaea20012' && (this.fourSubmitBtnDisabled = false)
-				} else {
+				} else if (code != '505') {
 					//不管提交成功或失败清除上传成功的文件列表
 					this.fileList = []
 					this.$alert(response.data.msg, {title: '提示',type: 'info'})
@@ -1965,7 +1971,7 @@
 					this.sqlListTableData[ths.rowIndex].exe_sql = this.sqlShowText
 					this.sqlListTableData[ths.rowIndex].no_success_result = ''
 					this.sqlListTableData[ths.rowIndex].affected_rows = response.data.v_inc_affected_rows
-				} else{
+				} else {
 					this.checkOutMsg = '检查不通过! 错误原因为:' + response.data.v_inc_errormessage
 					this.$alert(this.checkOutMsg, {title: '提示',type: 'info'})
 				}

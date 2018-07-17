@@ -59,7 +59,9 @@
 							userlevel: this.form.userLevel + ''
 						}, res => {
 							this.btnDisabled = false
-							this.$alert(res.data.Message, {title: '提示',type: 'info'})
+							if (res.data.code != '505') {
+								this.$alert(res.data.Message, {title: '提示',type: 'info'})
+							}
 						}, this.error)
 					} else {
 						return false;

@@ -462,7 +462,9 @@
         this.btnDisabled = true;
         app.post(url, params, res => {
           this.btnDisabled = false
-          this.$alert(res.data.msg, {title: '提示', type: 'info'})
+          if (res.data.code != '505') {
+            this.$alert(res.data.msg, {title: '提示', type: 'info'})
+          }
           if (res.data.code === 'Gaea10056') {
             this.twoTableData[this.index].status = '审核不合格'
             this.twoTableData[this.index].no_success_result = this.reasons
@@ -498,7 +500,9 @@
                   app.post(url, params, res => {
                     /**/
                     let code = res.data.code;
-                    this.$alert(res.data.msg)
+                    if (code != '505') {
+                      this.$alert(res.data.msg)
+                    }
                     if (code === 'Gaea10055') { //删除成功,从table列表删除此条数据
                       this.twoAllTableData = this.twoAllTableData.filter(item => {
                         return item.id != row.id
@@ -596,7 +600,10 @@
           } else {
             this.exeResult = 'failure'
           }
-          this.$alert(res.data.msg, {title: '提示', type: 'info'})
+          if (res.data.code != '505') {
+            this.$alert(res.data.msg, {title: '提示', type: 'info'})
+          }
+          
           this.btnDisabled = false
           for (let i of res.data.data.wait_inyard_list) {
               this.twoTableData[this.index].exe_sql = i.exe_sql;

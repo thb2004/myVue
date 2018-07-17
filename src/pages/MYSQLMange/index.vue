@@ -960,7 +960,9 @@
 				let formObj = this[this.activeName + 'Form']
 				this.btnDisabled = false
 				formObj.IP1 = formObj.IP2 = formObj.IP3 = ''
-				this.$alert(response.data.msg, {title: '提示',type: 'info'})
+				if (response.data.code != '505') {
+					this.$alert(response.data.msg, {title: '提示',type: 'info'})
+				}
 			},
 			twoExeSuccess (response) {
 				//清空table数据
@@ -1002,7 +1004,7 @@
 					//重新计算分页
 					app.tools.changeTable(this, 'threeFirst')
 					this.$alert('kill成功，processlist已重新查询!!', {title: '提示',type: 'info'})
-				} else {
+				} else if (code != '505') {
 					this.$alert(response.data.msg, {title: '提示',type: 'info'})
 				}
 			},

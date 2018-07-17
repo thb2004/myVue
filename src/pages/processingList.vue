@@ -234,7 +234,7 @@
 				}, res => {
 					if (res.data.code === '100001') {		//成功跳转我的代办列表
 						app.go({path:'myMattersFirstPage',params: {ticketNumber: this.pages.params.ticketNumber, taskId: this.pages.params.taskId}})
-					} else {
+					} else if (res.data.code != '505') {
 						this.$alert(res.data.msg, {
 							title: '提示',
 							type: 'info'
@@ -303,10 +303,12 @@
 				app.post('/Gaea_api/saveUpdate', {
 					obj: JSON.stringify(obj)
 				}, res => {
-					this.$alert(res.data.msg, {
-						title: '提示',
-						type: 'info'
-					})
+					if (res.data.code != '505') {
+						this.$alert(res.data.msg, {
+							title: '提示',
+							type: 'info'
+						})
+					}
 					if (res.data.data === 'success') {		//保存成功更新table数据
 						for (let key in formData) {
 							tableData[this.index][key] = formData[key][key]
@@ -381,10 +383,12 @@
 				app.post('/Gaea_api/deleteDate', {
 					dataId: this.dataIds,
 				}, res => {
-					this.$alert(res.data.msg, {
-						title: '提示',
-						type: 'info'
-					})
+					if (res.data.code != '505') {
+						this.$alert(res.data.msg, {
+							title: '提示',
+							type: 'info'
+						})
+					}
 					if (res.data.msg === 'success') {					//删除成功
 						//更新table数据
 						this[this.activeName + 'TableData'].splice(this.index, 1)

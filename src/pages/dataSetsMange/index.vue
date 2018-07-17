@@ -450,10 +450,12 @@
 												}
 											}
 										}
-										this.$alert(res.data.msg, {
-											title: '提示',
-											type: 'info'
-										})
+										if (code != '505') {
+											this.$alert(res.data.msg, {
+												title: '提示',
+												type: 'info'
+											})
+										}
 									})
 								}
 							}

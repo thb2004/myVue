@@ -385,10 +385,12 @@
 				this.btnDisabled = true
 				app.post('/auto/ipchange', params, res => {	
 					this.btnDisabled = false
-					this.$alert(res.data.msg, {
-						title: '提示',
-						type: 'info'
-					})
+					if (res.data.code != '505') {
+						this.$alert(res.data.msg, {
+							title: '提示',
+							type: 'info'
+						})
+					}
 					if (res.data.Code === '100001') {		//成功
 						this.result[this.index].ip_status = this.isShowForm ? '1' : ''
 						this.isShowBtn = false

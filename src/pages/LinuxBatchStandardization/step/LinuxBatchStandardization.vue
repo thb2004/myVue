@@ -409,10 +409,12 @@
 						this.btnDisabled = true
 						app.post(url, params, res => {
 							this.btnDisabled = false
-							this.$alert(res.data.msg, {
-								title: '提示',
-								type: 'info'
-							})
+							if (res.data.code != '505') {
+								this.$alert(res.data.msg, {
+									title: '提示',
+									type: 'info'
+								})
+							}
 						}, this.error)
 						
 					} else {
