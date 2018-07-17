@@ -1694,9 +1694,11 @@
 				this.$alert(this.checkOutMsg, {
 					title: '提示',type: 'info'
 				})
-				this.errorMsg = response.data.data.v_inc_errormessage;
-				this.errorLevel = response.data.data.v_inc_errlevel;
-				this.affectedRows = response.data.data.v_inc_affected_rows;
+				if (response.data.code != 'Gaea40011') {
+					this.errorMsg = response.data.data.v_inc_errormessage;
+					this.errorLevel = response.data.data.v_inc_errlevel;
+					this.affectedRows = response.data.data.v_inc_affected_rows;
+				}
 				if (response.data.code === 'Gaea10011' || response.data.code === 'Gaea20011') {		//检查通过
 					this.submitJobBtn = false;
 					this.threeSubmitBtnDisabled = false;
@@ -1723,13 +1725,14 @@
 				let url = '';
 				let params = {};
 				let opType = '';
-				let successFn = this[this.activeName + 'Success']
-				let sql = this[this.activeName + 'Form'].command || '', 				//sql语句
-					serverId = this[this.activeName + 'Form'].host, 				//主机id
-					dbName = this[this.activeName + 'Form'].dbName,
-					dbaName = this[this.activeName + 'Form'].approver,
-					opComment = this[this.activeName + 'Form'].opComment,
-					appId = this[this.activeName + 'Form'].application	
+				let successFn = this[this.activeName + 'Success'];
+				let formObj = this[this.activeName + 'Form'];
+				let sql = formObj.command || '', 				//sql语句
+					serverId = formObj.host, 				//主机id
+					dbName = formObj.dbName,
+					dbaName = formObj.approver,
+					opComment = formObj.opComment,
+					appId = formObj.application	
 				if (sql.startsWith('insert') || sql.startsWith('update') || sql.startsWith('delete')) {
 					opType = 1
 				} else {

@@ -348,18 +348,17 @@ export default {
 	},
 	validateSqls(vm, v_sql_all, type) {
 		v_sql_all = v_sql_all.toLowerCase()
+		let env = vm[vm.activeName + 'Form'][vm.activeName === 'three' ? 'envType' : 'application']
 		let regu = /^[\n\t\s\S]*?drop[\s\t\n]+(?!index)[\n\t\s\S]*?$/; //正则表达式  匹配drop后跟的是否index
 		let arr = v_sql_all.split(";"); //返回数组
 
 		let arr2 = v_sql_all.split(","); //逗号分隔，每行一个字段定义
 		let v_sql_all_line = []
 
-		let v_env_id = 3; // 暂时只有生产环境
-
 		let is_dml;
 
 		let msg = '';
-		let item_key;
+		let item_key = '';
 
 		let fdStart1 = v_sql_all.indexOf("create");
         let fdStart2 = v_sql_all.indexOf("alter");
@@ -400,10 +399,12 @@ export default {
 				vm.checkOutMsg = msg
 				return msg
 			}
-			if ((v_env_id == 3) && regu.test(v_sql_all)) {
-				msg = '检查未通过:包含 "Drop" 数据库敏感关键字，为防止误操作，线上环境禁止执行，有误判情况，请联系DBA!!'
-				vm.checkOutMsg = msg
-				return msg
+			//prd,uat,ver环境需校验drop
+			if ([3,2,6,33,38].indexOf(env) != -1) {
+				if (regu.test(v_sql_all)) {
+					vm.checkOutMsg = msg = '检查未通过:包含 "Drop" 数据库敏感关键字，为防止误操作，线上环境禁止执行，有误判情况，请联系DBA!!'
+					return msg
+				}
 			}
 
 			if (v_sql_all.indexOf("float") >= 0 || v_sql_all.indexOf("double") >= 0) {
@@ -434,7 +435,7 @@ export default {
 			if (v_sql_all.indexOf("create table") >= 0) {
 				v_sql_all_line = v_sql_all.split(',')
 				for (let i = 0; i < v_sql_all_line.length; i++) {
-					let value = v_sql_all_line.length[i]
+					let value = v_sql_all_line[i]
 					if (value.indexOf("primary key") >= 0 ) {
 						let k = 1
 						while (1) {

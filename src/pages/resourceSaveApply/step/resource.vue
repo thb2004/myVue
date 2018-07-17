@@ -257,7 +257,7 @@
 				let obj = {
 					storageType,
 				}
-				let res = app.validator.isFormCheck(formData)
+				let res = app.validator.isFormCheck(formData, 'resourceSave')
 				if (res) {
 					this.$alert(res, {
 						title: '提示',type: 'info'

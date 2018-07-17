@@ -1,6 +1,6 @@
 
 export default {
-	isFormCheck (obj) {
+	isFormCheck (obj, type) {
 		for (let key in obj) {
 			if (obj[key].required ==='required' && !obj[key][key]) {
 				return obj[key].labelName + '必填'
@@ -12,13 +12,22 @@ export default {
 				}
 			}
 			if (key === 'ipAddress') {
-				let res = this.ipValidate(obj[key][key])
+				let res = type ? this.ipValidateManyIP(obj[key][key]): this.ipValidate(obj[key][key])
 				if (res) {
 					return res
 				}	
 			}
 		}
 		return ''
+	},
+	ipValidateManyIP (ip) {
+		let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])((;\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))*$/;
+		var vald = reg.test(ip);
+		if (vald) {
+			return ''
+		} else {
+			return 'ip地址格式不正确,多个ip之间以;分号连接';
+		}
 	},
 	ipValidate (ip) {
 		let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
