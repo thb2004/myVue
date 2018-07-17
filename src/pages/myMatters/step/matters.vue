@@ -508,8 +508,8 @@
 				app.post('/Gaea_api/getTaskdata', {
 					dataIds: id
 				}, res => {
-					let obj = {}
 					for (let i of res.data.data) {
+						let obj = {}
 						for (let k of i) {
 							obj[k.name] = k.fillValue
 						}
