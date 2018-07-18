@@ -2,47 +2,77 @@
     <div class='box'>
     	<div class="set-mange">
     		<div class='main-middle'>
-    			<div class="compenent-form">
-		    		<el-form :modal='form' :label-width='labelWidth'>
-						<el-row>
-							<el-col :md='9' class='required'>
-								<el-form-item label="部门">
-								    <el-select 
-									    v-model="form.dept" 
-									    @change='selectDept("form")' 
-									    placeholder="请选择" 
-									    clearable 
-									    filterable
-								    >
-		         						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
-								    </el-select>
-								</el-form-item>
-							</el-col>
+    			<el-tabs v-model="activeName">
+    				<el-tab-pane label="部门应用查询" name="one">
+		    			<div class="compenent-form">
+				    		<el-form :modal='oneForm' :label-width='labelWidth'>
+								<el-row>
+									<el-col :md='9' class='required'>
+										<el-form-item label="部门">
+										    <el-select 
+											    v-model="oneForm.dept" 
+											    @change='selectDept("oneForm")' 
+											    placeholder="请选择" 
+											    clearable 
+											    filterable
+										    >
+				         						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
 
-							<el-col :md='{span:9,offset:2}' class='required'>
-								<el-form-item label="环境" clearable filterable>
-								    <el-select v-model="form.envType" placeholder="请选择" @change='getAppList' clearable filterable>
-					                    <el-option v-for='(item,index) in envTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
-								    </el-select>
-								</el-form-item>
-							</el-col>
+									<el-col :md='{span:9,offset:2}' class='required'>
+										<el-form-item label="环境" clearable filterable>
+										    <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
+							                    <el-option v-for='(item,index) in envTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
 
-							<el-col :md='9' class='required'>
-								<el-form-item label="应用">
-								    <el-select v-model="form.application" placeholder="请选择" clearable filterable>
-					                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
-								    </el-select>
-								</el-form-item>
-							</el-col>
-						</el-row>
-						<div class='btn-group-lg'>
-						    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
-						    <el-button @click="resetForm">重 置</el-button>
-						</div>
-		    		</el-form>
-	    		</div>
+									<el-col :md='9' class='required'>
+										<el-form-item label="应用">
+										    <el-select v-model="oneForm.application" placeholder="请选择" clearable filterable>
+							                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<div class='btn-group-lg'>
+								    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
+								    <el-button @click="resetForm">重 置</el-button>
+								</div>
+				    		</el-form>
+			    		</div>
+			    	</el-tab-pane>
+    				<el-tab-pane label="IP查询" name="two">
+		    			<div class="compenent-form">
+				    		<el-form :modal='twoForm' :label-width='labelWidth'>
+								<el-row>
+									<el-col :md='9' class='required'>
+										<el-form-item label="集群类型">
+										    <el-select placeholder="请选择" v-model="twoForm.setsType">
+				         						<el-option label='Mysql' value='mysql'></el-option>
+				         						<el-option label='Redis' value='redis'></el-option>
+				         						<el-option label='Mongodb' value='mongodb'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
+									<el-col :md='9' class='required'>
+										<el-form-item label="IP:">
+										    <el-input v-model="twoForm.ip" placeholder='请输入IP'></el-input>
+										</el-form-item>
+									</el-col>
+								</el-row>
+								<div class='btn-group-lg'>
+								    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
+								    <el-button @click="resetForm">重 置</el-button>
+								</div>
+				    		</el-form>
+			    		</div>
+			    	</el-tab-pane>
+		    	</el-tabs>
 		    	<div class="empty"></div>
-	    		<el-tabs v-model="activeName">
+	    		<el-tabs v-model="childActiveName">
 					<el-tab-pane label="Mysql集群管理" name="one">
 						
 						<div v-for='(item,index) in mysqlClusterList'>
@@ -311,7 +341,6 @@
 .set-mange {
 	.main-middle {
 		padding: 0;
-		padding-top: 20px;
 	}
 	.el-tabs__header,.compenent-form,{
 		padding: 0 20px;
@@ -360,6 +389,7 @@
 	export default {
 		data () {
 			return {
+				activeName: 'one',
 				tableIndex: 0,
 				index: 0,
 				loading: false,
@@ -390,11 +420,18 @@
 				mongodbClusterList: [],
 				redisClusterList: [],
 				queryBtnDisabled: false,
-				activeName: 'one',
-				form: {
+				childActiveName: 'one',
+				oneForm: {
 					dept: '',
 					envType: '',
 					application: '',
+				},
+				twoForm: {
+					setsType: 'mysql',
+					ip: '',
+				},
+				twoFormInitData: {
+					setsType: 'mysql',
 				},
 				deptList: [],
 				envTypeList: [],
@@ -419,7 +456,7 @@
 			tdClick ({row,index,column,tableIndex}) {
 				let status = row.zabbix_status
 				let flag = status === 'Disabled' ? true : false
-				let type = this.activeName === 'one' ? 'mysql' : this.activeName === 'two' ? 'redis' : 'mongodb'
+				let type = this.childActiveName === 'one' ? 'mysql' : this.childActiveName === 'two' ? 'redis' : 'mongodb'
 				let tips = flag ? "Enabled" : "Disabled"
 				let className = flag ? 'status-enabled' :'status-disabled'
 				if (column.label === "zabbix_status") {
@@ -520,9 +557,9 @@
 			//集群下线
 			clusterOffline (cluster_id, cluster_name) {
 				let msg = ''
-				if (this.activeName === 'one') {
+				if (this.childActiveName === 'one') {
 					msg = 'mysql'
-				} else if (this.activeName === 'two') {
+				} else if (this.childActiveName === 'two') {
 					msg = 'redis'
 				} else {
 					msg = 'mongodb'
@@ -689,7 +726,7 @@
 			addDns () {
 				//先获取右边要注销的域名
 				//先遍历挪到右边的数组
-				let type = this.activeName === 'one' ? 'mysql' : this.activeName === 'two' ? 'redis' : 'mongodb'
+				let type = this.childActiveName === 'one' ? 'mysql' : this.childActiveName === 'two' ? 'redis' : 'mongodb'
 				let newArr = []
 				for (let i of this.addDnsValue) {
 					newArr.push(this.addDNS[i].ip)
@@ -758,7 +795,7 @@
 			},
 			//变更域名
 			changeDns () {
-				let type = this.activeName === 'one' ? 'mysql' : this.activeName === 'two' ? 'redis' : 'mongodb'
+				let type = this.childActiveName === 'one' ? 'mysql' : this.childActiveName === 'two' ? 'redis' : 'mongodb'
 				if (!this.refReadWriteDns) {
 					this.$alert('请填写读写域名！', {
 						title: '提示',
@@ -867,7 +904,7 @@
 				this.index = $index
 				/*根据点击的按钮不同切换对话框的标题文字*/
 				this.title = title
-				this.cluster_type = this.activeName === 'one' ? 'mysql' : this.activeName === 'two' ? 'redis' : 'mongodb'
+				this.cluster_type = this.childActiveName === 'one' ? 'mysql' : this.childActiveName === 'two' ? 'redis' : 'mongodb'
 				this.cluster_id = row[this.cluster_type + '_cluster_id'];
 				this.cluster_name = row[this.cluster_type + '_cluster_name']
 				this.op_type = title === '注销读写域名' ? 'delete' : title === '新增只读域名' ? 'add' : 'change'
@@ -894,7 +931,7 @@
 				}
 			},
 			resetForm (form) {
-				app.tools.resetFormData(this.form)
+				app.tools.resetFormData(this[this.activeName + 'Form'], this[this.activeName + 'FormInitData'])
 			},
 
 			/*获取部门下拉框数据*/
@@ -910,19 +947,29 @@
 				})
 			},
 			validatorForm () {
+				let formObj = this[this.activeName + 'Form']
 				let msg = ''
-				if (!this.form.dept) {
-					msg = '请选择部门'
-				} else if (!this.form.envType) {
-					msg = '请选择环境'
-				} else if (!this.form.application) {
-					msg = '请选择应用'
-				}
-				return msg
+				switch (this.activeName) {
+					case 'one':
+						if (!formObj.dept) {
+							msg = '请选择部门'
+						} else if (!formObj.envType) {
+							msg = '请选择环境'
+						} else if (!formObj.application) {
+							msg = '请选择应用'
+						}
+						return msg
+					case 'two':
+						return !formObj.ip ? '请输入Ip' : app.validator.ipValidate(formObj.ip)
+				}		
 			},
 			onSubmit () {
 				//检验form
 				let res = this.validatorForm()
+				let url = ''
+				let params = {}
+				let formObj = this[this.activeName + 'Form']
+				let cluster_type = formObj.setsType === 'mysql' ? 1 : formObj.setsType === 'redis' ? 2 : formObj.setsType === 'mongodb' ? 3: ''
 				if (res) {
 					this.$alert(res, {
 						title: '提示',
@@ -930,86 +977,113 @@
 					})
 					return
 				}
-
-				//table数据清空
-				this.mysqlTableData = [];
-				this.redisTableData = [];
-				this.mangodbTableData = [];
+				switch (this.activeName) {
+					case 'one':
+						url = '/Gaea_database/dbClusterManageQuery';
+						params = {
+							deptId: formObj.dept,
+							envId: formObj.envType,
+							appId: formObj.application
+						}
+						//table数据清空
+						this.mysqlTableData = [];
+						this.redisTableData = [];
+						this.mangodbTableData = [];
+						break;
+					case 'two':
+						url = '/Gaea_database/dbClusterManageQueryIp';
+						params = {
+							cluster_type, 
+							IP: formObj.ip
+						};
+						break;
+				}
 				//按钮禁用
 				this.queryBtnDisabled = true
 				this.loading = true
-				app.post('/Gaea_database/dbClusterManageQuery', {
-					deptId: this.form.dept,
-					envId: this.form.envType,
-					appId: this.form.application
-				}, response => {
-					let code = response.data.code
-					this.queryBtnDisabled = false
-					this.loading = false
-					if (code === 'Gaea10022') {			//接口返回成功,记录选择的环境id
-						for (let key in response.data.data) {
-							for (let i of response.data.data[key]) {
-								let keyName = key.substring(0, key.lastIndexOf('_'))
-								let dnsArr = i[keyName + '_dns'];
-								let obj = {
-									[keyName + '_id']: i[keyName + '_id'],
-									[keyName + '_name']: i[keyName + '_name'],
-								}
-								//将mysql集群table表单详情头部弄出来
+				app.post(url, params, this[this.activeName + 'Query'], this.error)
+			},
+			twoQuery (response) {
+				let formObj = this[this.activeName + 'Form']
+				//根据筛选类型对应的table清空
+				formObj[formObj.setsType + 'TableData'] = []
+				this.childActiveName = formObj.setsType === "mysql" ? 'one' : formObj.setsType === "redis" ? 'two' : formObj.setsType === "mongodb" ? 'three' : ''
+				this.querySuccess(response)
+			},
+			oneQuery (response) {
+				this.querySuccess(response)
+			},
+			querySuccess (response) {
+				let code = response.data.code
+				this.queryBtnDisabled = false
+				this.loading = false
+				if (code === 'Gaea10022' || code === 'Gaea10068') {			//接口返回成功,记录选择的环境id
+					for (let key in response.data.data) {
+						for (let i of response.data.data[key]) {
+							let keyName = key.substring(0, key.lastIndexOf('_'))
+							let dnsArr = i[keyName + '_dns'];
+							let obj = {
+								[keyName + '_id']: i[keyName + '_id'],
+								[keyName + '_name']: i[keyName + '_name'],
+							}
+							//将mysql集群table表单详情头部弄出来
+							i.tableHeadName = {
+								ip: '节点IP',
+								port: '端口',
+								hostname: '主机名',
+								is_master: '主从关系',
+								zabbix_status: 'zabbix_status',
+							}
+							if (key === 'mongodb_cluster_list') {
 								i.tableHeadName = {
 									ip: '节点IP',
 									port: '端口',
 									hostname: '主机名',
-									is_master: '主从关系',
 									zabbix_status: 'zabbix_status',
 								}
-								if (key === 'mongodb_cluster_list') {
-									i.tableHeadName = {
-										ip: '节点IP',
-										port: '端口',
-										hostname: '主机名',
-										zabbix_status: 'zabbix_status',
-									}
-								};
-								i.dnsTableData = []
-								i.dnsTableHeadName = {
-									dns0: '读写域名',
-									dns1: '读域名1',
-									dns2: '读域名2',
-								}
-								//将mysql集群table读写域名头部弄出来
-								for (let j = 0; j < dnsArr.length; j++) {
-									obj['dns' + j] = dnsArr[j]
-									if (keyName === 'mongodb_cluster') {
-										i.dnsTableHeadName['dns' + j] = '域名' + (j + 1)
-									} else {
-										if (dnsArr.length === 1) {
-											i.dnsTableHeadName = {
-												dns0: '域名'
-											}
-										} else if (dnsArr.length === 2) {
-											i.dnsTableHeadName = {
-												dns0: '读写域名',
-												dns1: '读域名'
-											}
-										} else {
-											i.dnsTableHeadName['dns' + j] = j === 0 ? '读写域名' : '读域名' + j
-										}
-									}
-									
-								}
-								dnsArr.length > 0 && i.dnsTableData.push(obj)
+							};
+							i.dnsTableData = []
+							i.dnsTableHeadName = {
+								dns0: '读写域名',
+								dns1: '读域名1',
+								dns2: '读域名2',
 							}
+							//将mysql集群table读写域名头部弄出来
+							for (let j = 0; j < dnsArr.length; j++) {
+								obj['dns' + j] = dnsArr[j]
+								if (keyName === 'mongodb_cluster') {
+									i.dnsTableHeadName['dns' + j] = '域名' + (j + 1)
+								} else {
+									if (dnsArr.length === 1) {
+										i.dnsTableHeadName = {
+											dns0: '域名'
+										}
+									} else if (dnsArr.length === 2) {
+										i.dnsTableHeadName = {
+											dns0: '读写域名',
+											dns1: '读域名'
+										}
+									} else {
+										i.dnsTableHeadName['dns' + j] = j === 0 ? '读写域名' : '读域名' + j
+									}
+								}
+								
+							}
+							dnsArr.length > 0 && i.dnsTableData.push(obj)
 						}
-						this.mysqlClusterList = response.data.data.mysql_cluster_list
-						this.mongodbClusterList = response.data.data.mongodb_cluster_list
-						this.redisClusterList = response.data.data.redis_cluster_list
-						this.chooseEnvId = this.form.envType + ''
 					}
-				}, this.error)
-
-
-
+					this.mysqlClusterList = response.data.data.mysql_cluster_list
+					this.mongodbClusterList = response.data.data.mongodb_cluster_list
+					this.redisClusterList = response.data.data.redis_cluster_list
+					if (this.activeName === 'one') {
+						this.chooseEnvId = this.oneForm.envType + ''
+					}
+				} else if (code != '505') {
+					this.$alert(response.data.msg, {
+						title: '提示',
+						type: 'info'
+					})
+				}
 			},
 			//获取环境列表数据
 			getEnvList () {
@@ -1036,10 +1110,11 @@
 			//获取应用列表数据
 			getAppList (val) {
 				//应用
-				this.form.application = ''
+				let formObj = this[this.activeName + 'Form']
+				formObj.application = ''
 				this.applicationList = []
-				this.form.dept && app.post('/Gaea_database/getApp', {
-					deptId: this.form.dept,
+				formObj.dept && app.post('/Gaea_database/getApp', {
+					deptId: formObj.dept,
 					appType: 0,
                     envId: val,
                     userMip: this.$store.state.username

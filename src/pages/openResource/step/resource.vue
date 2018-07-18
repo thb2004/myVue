@@ -125,39 +125,27 @@
 							labelName: '环境类型',
 							selectData: [
 								{
-									label: '(传统)生产环境',
-									value: 'F'
-								},
-								{
-									label: '(传统)测试环境',
-									value: 'T'
-								},
-								{
-									label: '(传统)容灾环境',
-									value: 'D'
-								},
-								{
-									label: '(开源)开发环境',
+									label: '开发环境',
 									value: 'DEV'
 								},
 								{
-									label: '(开源)测试环境',
+									label: '测试环境',
 									value: 'SIT'
 								},
 								{
-									label: '(开源)uat环境',
+									label: 'uat环境',
 									value: 'UAT'
 								},
 								{
-									label: '(开源)ver环境',
+									label: 'ver环境',
 									value: 'VER'
 								},
 								{
-									label: '(开源)生产环境',
+									label: '生产环境',
 									value: 'PRD'
 								},
 								{
-									label: '(开源)容灾环境',
+									label: '容灾环境',
 									value: 'DIS'
 								},
 							],

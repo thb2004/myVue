@@ -4,7 +4,7 @@
     		<div class='main-top'>
 				<el-form :model='form' :label-width='labelWidth'>
 					<el-row>
-						<el-col :md='11'>
+						<el-col :md='9'>
 							<el-form-item label="部门">
 							    <el-select v-model="form.dept" placeholder="请选择" @change='getModule' clearable filterable>
 	         						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -12,7 +12,7 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :md='11'>
+						<el-col :md='{span:9,offset:2}'>
 							<el-form-item label="状态">
 	    						<el-select v-model="form.status" placeholder="请选择" filterable clearable>
 									<el-option value='pending' label='审核中'></el-option>
@@ -23,7 +23,7 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :md='11'>
+						<el-col :md='9'>
 							<el-form-item label="所属模块">
 								<el-select v-model="form.productModule" placeholder="请选择" clearable filterable>
 				                    <el-option v-for='(item,index) in productModuleList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -31,7 +31,7 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :md='11'>
+						<el-col :md='{span:9,offset:2}'>
 							<el-form-item label="请求类型">
 							    <el-select v-model="form.requestType" placeholder="请选择" clearable filterable>
 				                    <el-option v-for='(item,index) in requestTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -39,7 +39,7 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :md='11'>
+						<el-col :md='9'>
 							<el-form-item label="创建人">
 							    <el-select v-model="form.creater" placeholder="请输入"  clearable filterable>
 				                    <el-option v-for='(item,index) in createrList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -47,7 +47,7 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :md='11'>
+						<el-col :md='{span:9,offset:2}'>
 							<el-form-item label="创建时间">
 							    <el-date-picker
 						          v-model="form.date"

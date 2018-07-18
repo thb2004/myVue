@@ -187,6 +187,20 @@ export default {
 				break;
 				//选择的是领域
 			case 'groupId':
+				/*模块/环境类型/应用/系统及应用管理员清空*/
+				vm.formData.moduleId.moduleId = ''
+				vm.formData.moduleId.selectData = [];
+				//环境清空
+				vm.formData.env.env = ''
+
+				//应用清空
+				vm.formData.applicationId.applicationId = ''
+				vm.formData.applicationId.selectData = []
+
+				//系统管理员和应用管理员清空
+				vm.formData.applicationManager.applicationManager = ''
+				vm.formData.systemManager.systemManager = ''
+				
 				vm.regionValue = this.findValInArray(vm.formData[key][key], vm.formData[key].selectData)
 				vm.formData.moduleId.moduleId = ''
 				vm.formData.moduleId.selectData = [];
@@ -202,15 +216,31 @@ export default {
 						vm.productModuleSelArr.push(i)
 						vm.formData.moduleId.selectData.push(i)
 					}
-/*					vm.isShowProductModule = len > 10 ? true : false;
-					vm.isShowSearchInput = len > 10 ? true : false;
-					vm.activeClass = (len <= 10 ? 'low-ten' :'more-ten')*/
 				})
 				break;
-				//选择的是环境类型	
-			case 'env':
+			case 'moduleId':  						//选择模块
+				//环境清空
+				vm.formData.env.env = ''
+
+				//应用清空
+				vm.formData.applicationId.applicationId = ''
+				vm.formData.applicationId.selectData = []
+
+				//系统管理员和应用管理员清空
+				vm.formData.applicationManager.applicationManager = ''
+				vm.formData.systemManager.systemManager = ''
+				
+				break;	
+
+			case 'env':     							//选择的是环境类型
+				//应用清空
 				vm.formData.applicationId.applicationId = ''
 				vm.formData.applicationId.selectData = [];
+
+				//系统管理员和应用管理员清空
+				vm.formData.applicationManager.applicationManager = ''
+				vm.formData.systemManager.systemManager = ''
+
 				/*选择了领域才能调接口*/
 				let regionText = this.findValInArray(vm.formData['groupId']['groupId'], vm.formData['groupId'].selectData)
 				vm.formData.groupId.groupId && vm.formData.env.env && app.post('/Gaea_api/getApplication', {
@@ -226,6 +256,10 @@ export default {
 				break;
 				//选择应用名称
 			case 'applicationId':
+				//系统管理员和应用管理员清空
+				vm.formData.applicationManager.applicationManager = ''
+				vm.formData.systemManager.systemManager = ''
+
 				vm.applicationName = this.findValInArray(vm.formData[key][key], vm.formData[key].selectData)
 				vm.formData[key][key] && app.post('/Gaea_api/getAppmanager', {
 					appId: vm.formData[key][key]

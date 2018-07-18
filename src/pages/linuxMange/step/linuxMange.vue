@@ -113,7 +113,7 @@
 					</el-tab-pane> -->
 
 					<el-tab-pane label="非标准主机命令执行" name="three">
-						<el-form :model='threeForm' :label-width='labelWidth' ref='threeForm' :rules='rules'>
+						<el-form :model='threeForm' :label-width='labelWidth' ref='threeForm' :rules='rules1'>
 							<el-row>
 								<el-col :md='20'>
 									<el-form-item label="IP列表" prop='password'>
@@ -129,7 +129,7 @@
 								<el-col>
 									<el-form-item>
 								        <el-checkbox label="命令" 
-									        @change='isShowCommand=!isShowCommand' 
+									        @change='isShowCommand=!isShowCommand,threeForm.cli_content=""' 
 									        v-model="threeForm.cli"
 									        true-label='true'
 											false-label='false'
@@ -143,7 +143,7 @@
 								</el-col>
 
 								<el-col :md='20' v-show='isShowCommand'>
-									<el-form-item label="命令">
+									<el-form-item label="命令" prop='cli_content'>
 									    <el-input
 									      type="textarea"
 									      :rows='5'
@@ -493,19 +493,7 @@
 						},
 						trigger: 'change'
 					}],
-					password: [{
-						required: true,
-						validator: function(rule, value, callback) {
-							if (!value) {
-								callback(new Error("请输入IP"));
-							} else if (!app.validator.ipUserPwd(value)) {
-								callback(new Error("格式错误请输入IP+英文分号+用户+分号+密码"));
-							} else {
-								callback()
-							}
-						},
-						trigger: 'change'
-					}],
+					
 					copyIpList: [{
 						required: true,
 						validator: function(rule, value, callback) {
@@ -546,6 +534,39 @@
 						trigger: 'blur'
 					}],
 				},
+				rules1: {
+					password: [{
+						required: true,
+						validator: function(rule, value, callback) {
+							if (!value) {
+								callback(new Error("请输入IP"));
+							} else if (!app.validator.ipUserPwd(value)) {
+								callback(new Error("格式错误请输入IP+英文分号+用户+分号+密码"));
+							} else {
+								callback()
+							}
+						},
+						trigger: 'change'
+					}],
+					cli_content: [{
+						required: true,
+						validator: (rule, value, callback) => {
+							if (this[this.activeName + 'Form'].cli === 'true') {
+								if (!value) {
+									callback(new Error("请输入命令"));
+								} if (/\"/g.test(value)) {
+									callback(new Error("命令中不可以有双引号，请用单引号代替"));
+								} else {
+									callback()
+								}
+							} else {
+								callback()
+							}
+						},
+						trigger: 'blur'
+					}]
+				},
+
 				btnDisabled: false,
 			}
 		},
@@ -573,7 +594,7 @@
 								url = '/auto/cliself'
 								params.cli = formObj.cli;
 								params.splunk = formObj.splunk;
-								params.cli_content = formObj.cli_content.replace(/\"/g,'');
+								params.cli_content = formObj.cli_content;
 								break;
 							case 'four':
 								url = '/auto/bulkfile';

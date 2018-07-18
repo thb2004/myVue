@@ -164,7 +164,7 @@
 										</el-col>
 
 										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="three"'>
-											<el-form-item label="源DB">
+											<el-form-item label="源库">
 											    <el-select v-model="twoForm.sourceDB" placeholder="请选择">
 											    	<el-option v-for='(item,index) in twosourceDBList' :key='index' :label='item.label' :value='item.value'></el-option>
 											    </el-select>
@@ -173,13 +173,13 @@
 
 										<el-col :md='9' v-if='childActiveName==="three"'>
 											<el-form-item label='源表'>
-											   <el-input v-model="twoForm.sourceTable"></el-input>
+											   <el-input v-model="twoForm.sourceTable" placeholder='多个表用英文逗号隔开,如table1,table2,table3...'></el-input>
 											</el-form-item>
 										</el-col>
 
 										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="two"'>
 											<el-form-item label='源库'>
-											   <el-input v-model="twoForm.sourceLib"></el-input>
+											   <el-input v-model="twoForm.sourceLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
 											</el-form-item>
 										</el-col>
 
@@ -211,12 +211,12 @@
 
 										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="two"'>
 											<el-form-item label='目标库'>
-											   <el-input v-model="twoForm.targetLib"></el-input>
+											   <el-input v-model="twoForm.targetLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
 											</el-form-item>
 										</el-col>
 
 										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="three"'>
-											<el-form-item label="目标DB">
+											<el-form-item label="目标库">
 											    <el-select v-model="twoForm.targetDB" placeholder="请选择">
 											    	<el-option v-for='(item,index) in twotargetDBList' :key='index' :label='item.label' :value='item.value'></el-option>
 											    </el-select>

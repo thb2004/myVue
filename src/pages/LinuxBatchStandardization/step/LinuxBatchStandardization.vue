@@ -153,7 +153,7 @@
 											false-label='false'
 								        ></el-checkbox>
 								        <el-checkbox label="命令" 
-									        @change='isShowCommand=!isShowCommand' 
+									        @change='isShowCommand=!isShowCommand,threeForm.cli_content=""' 
 									        v-model="threeForm.cli"
 									        true-label='true'
 											false-label='false'
@@ -187,7 +187,7 @@
 
 							<el-row v-show='isShowCommand'>
 								<el-col :md='20'>
-									<el-form-item label="命令">
+									<el-form-item label="命令" prop='cli_content'>
 									    <el-input
 									      type="textarea"
 									      :rows='5'
@@ -372,6 +372,23 @@
 						required: true,
 						message: '请输入密码',
 						trigger: 'blur'
+					}],
+					cli_content: [{
+						required: true,
+						validator: (rule, value, callback) => {
+							if (this[this.activeName + 'Form'].cli === 'true') {
+								if (!value) {
+									callback(new Error("请输入命令"));
+								} if (/\"/g.test(value)) {
+									callback(new Error("命令中不可以有双引号，请用单引号代替"));
+								} else {
+									callback()
+								}
+							} else {
+								callback()
+							}
+						},
+						trigger: 'blur'
 					}]
 				},
 				btnDisabled: false,
@@ -382,11 +399,11 @@
 			submitForm (formName) {
 				this.$refs[formName].validate((valid) => {
 					let formObj = this[this.activeName + 'Form'];
-					formObj.cli_content && (formObj.cli_content = formObj.cli_content.replace(/\"/g,''))
 					let url = '';
 					let params = Object.assign(formObj, {mipuser: this.$store.state.username})
 					let arr = ['zabbixclient','zabbixclientdb','tomcat','jdk','nginx','backupclient','zookeeper','ipython','splunk','cli']
 					let msg = app.tools.isChecked(formObj, arr)
+					console.log(valid)
 					if (valid) {
 						switch (this.activeName) {
 							case 'one':
