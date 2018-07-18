@@ -446,6 +446,10 @@
 						}	
 						if (i.inputType === 'select') {
 							data[i.cloumn].selectData = []
+							/*如果申请资源类型未mysql,redis,mongdb中的一种。。则操作系统不可修改，由版本来控制*/
+							if (['mysqlAdd','redisAdd','mongodbAdd'].indexOf(type) != -1 && i.cloumn === 'os') {
+								data[i.cloumn].disabled = true;
+							}
 							let obj = JSON.parse(i.value)
 							for (let key in obj) {
 								data[i.cloumn].selectData.push({

@@ -295,6 +295,19 @@ export default {
 					}
 				}
 				break;
+			case 'version':
+				let formObj = vm.currentName === 'openResource' ? vm[vm.activeName + 'DialogFormData'] :
+							  vm.currentName === 'processingList' ? vm.oneDialogFormData : {}	
+				if (['mariadb 10.1','3.2.4','3.2.9'].indexOf(formObj[key][key]) != -1) {	//版本为10.1则系统只能为6.9
+					formObj['os']['os'] = 'centos 6.9'
+					formObj['os'].disabled = true
+				} else if (formObj[key][key] === 'mariadb 10.3') {
+					formObj['os']['os'] = 'centos 7.3'
+					formObj['os'].disabled = true
+				} else {
+					formObj['os'].disabled = false
+				}
+				break;
 
 		}
 	},

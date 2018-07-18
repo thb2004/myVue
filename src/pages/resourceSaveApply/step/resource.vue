@@ -375,15 +375,6 @@
 					}
 				})
 			},
-			getApplicationData () {
-				app.post('/Gaea_api/getApplication', {}, res => {
-					for (let i of res.data.data) {
-						i.label = i.appName;
-						i.value = i.appName;
-						this.formData.applicationId.selectData.push(i)
-					}
-				})
-			}
 		},
 		created () {
 			//获取san申请表格下拉框的下拉选项
@@ -415,8 +406,6 @@
 
 			//获取领域下拉选项
 			this.getRegionData()
-			//获取应用名称下拉框选项
-			this.getApplicationData()
 		}
 	}
 </script>
