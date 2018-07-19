@@ -960,7 +960,7 @@
 						}
 						return msg
 					case 'two':
-						return !formObj.ip ? '请输入Ip' : app.validator.ipValidate(formObj.ip)
+						return !formObj.ip ? '请输入Ip' : app.validator.ipValidate(formObj.ip.trim())
 				}		
 			},
 			onSubmit () {
@@ -986,9 +986,9 @@
 							appId: formObj.application
 						}
 						//table数据清空
-						this.mysqlTableData = [];
-						this.redisTableData = [];
-						this.mangodbTableData = [];
+						this.mysqlClusterList = [];
+						this.redisClusterList = [];
+						this.mongodbClusterList = [];
 						break;
 					case 'two':
 						url = '/Gaea_database/dbClusterManageQueryIp';
@@ -1006,7 +1006,7 @@
 			twoQuery (response) {
 				let formObj = this[this.activeName + 'Form']
 				//根据筛选类型对应的table清空
-				formObj[formObj.setsType + 'TableData'] = []
+				this[formObj.setsType + 'ClusterList'] = []
 				this.childActiveName = formObj.setsType === "mysql" ? 'one' : formObj.setsType === "redis" ? 'two' : formObj.setsType === "mongodb" ? 'three' : ''
 				this.querySuccess(response)
 			},

@@ -208,9 +208,9 @@
 				app.post(url, {}, res => {
 					this.$router.push({
 						path: '/',
-						/*query: {
+						query: {
 							redirect: this.$router.currentRoute.fullPath
-						}*/
+						}
 					})
 					this.setCount(0)
 					this.setUsername('')

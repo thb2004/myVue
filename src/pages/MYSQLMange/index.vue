@@ -910,11 +910,11 @@
 					} else if (!formObj.IP1) {
 						msg = '请输入IP1！'
 					} else if (formObj.cluster <= 2) {
-						msg = app.validator.ipValidate(formObj.IP1)
+						msg = app.validator.ipValidate(formObj.IP1.trim())
 						return msg ? msg : formObj.cluster === '1' ? '' 
 										 : !formObj.IP2 ? '请输入IP2！' 
 										 : formObj.IP2 === formObj.IP1 ? 'IP不能相同'
-										 : app.validator.ipValidate(formObj.IP2)
+										 : app.validator.ipValidate(formObj.IP2.trim())
 					} else if (formObj.cluster >= 3) {
 						if (!formObj.IP3) {
 							msg = '请输入IP3！'
@@ -922,9 +922,9 @@
 							if (!formObj.IP2) {
 								msg = '请输入IP2！'
 							} else {
-								msg = app.validator.ipValidate(formObj.IP1)
-								msg2 = app.validator.ipValidate(formObj.IP2)
-								msg3 = app.validator.ipValidate(formObj.IP3)
+								msg = app.validator.ipValidate(formObj.IP1.trim())
+								msg2 = app.validator.ipValidate(formObj.IP2.trim())
+								msg3 = app.validator.ipValidate(formObj.IP3.trim())
 								return msg ? msg : msg2 ? msg2 : msg3 ? msg3 : (formObj.IP1 === formObj.IP2 || formObj.IP1 === formObj.IP3 || formObj.IP2 === formObj.IP3) ? 'IP不能相同' : ''
 							}
 						}	

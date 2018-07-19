@@ -1679,6 +1679,8 @@
 			},
 			/*预检车成功回调函数*/
 			preCheckFn (response) {
+				let code = response.data.code
+				let res = response.data.data
 				if (response.data.code === 'Gaea20011') {
 					let v_sql_all = response.data.data.v_inc_errormessage;
 					let msg = app.tools.validate_dba_rule(v_sql_all)
@@ -1693,17 +1695,17 @@
 					this.threeSubmitBtnDisabled = false;
 				}
 				this.checkOutMsg = response.data.msg
-				if (response.data.code != '505') {
+				if (code != '505') {
 					this.$alert(this.checkOutMsg, {
 						title: '提示',type: 'info'
 					})
 				}
-				if (response.data.code != 'Gaea40011') {
-					this.errorMsg = response.data.data.v_inc_errormessage;
-					this.errorLevel = response.data.data.v_inc_errlevel;
-					this.affectedRows = response.data.data.v_inc_affected_rows;
+				if (res) {
+					this.errorMsg = res.v_inc_errormessage;
+					this.errorLevel = res.v_inc_errlevel;
+					this.affectedRows = res.v_inc_affected_rows;
 				}
-				if (response.data.code === 'Gaea10011' || response.data.code === 'Gaea20011') {		//检查通过
+				if (code === 'Gaea10011' || code === 'Gaea20011') {		//检查通过
 					this.submitJobBtn = false;
 					this.threeSubmitBtnDisabled = false;
 				} else {
@@ -1880,7 +1882,7 @@
 			//分片环境预检查
 			fivePreCheckFn (response) {
 				let code = response.data.code
-				let data = response.data.data
+				let res = response.data.data
 				if (code === 'Gaea20013') {
 					let v_sql_all = data.v_inc_errormessage;
 					let msg = app.tools.validate_dba_rule(v_sql_all, 'shared')
@@ -1898,10 +1900,10 @@
 						title: '提示',type: 'info'
 					})
 				}
-				if (code != 'Gaea40013') {
-					this.fiveErrMsg = data.v_inc_errormessage;
-					this.fiveErrLevel = data.v_inc_errlevel;
-					this.fiveAffectedRows = data.v_inc_affected_rows;
+				if (res) {
+					this.fiveErrMsg = res.v_inc_errormessage;
+					this.fiveErrLevel = res.v_inc_errlevel;
+					this.fiveAffectedRows = res.v_inc_affected_rows;
 				}
 				if (code === 'Gaea10013' || code === 'Gaea20013') {		//检查通过
 					this.fiveSubmitBtnDisabled = false;
@@ -1979,9 +1981,16 @@
 			//DDL/DML 批量入库和分片入库提交
 			fourSubmitFn (response) {
 				let type = this.activeName
-				let arr = response.data.data.dmlddl_log_list || response.data.data.wait_inyard_list
-				let flag = response.data.data.dmlddl_log_list ? true : false
-				let name = type + (flag ? 'Log' : 'Sql')
+				let res = response.data.data
+				let arr = []
+				let flag = false
+				let name = ''
+				if (res) {
+					arr = res.dmlddl_log_list || res.wait_inyard_list
+					flag = res.dmlddl_log_list ? true : false
+					name = type + (flag ? 'Log' : 'Sql')
+				}
+				
 				//不管提交成功或失败清除上传成功的文件列表
 				this.fileList = [];
 				for (let i of arr) {
@@ -1997,9 +2006,16 @@
 				}
 			},
 			immediateFn (response) {
-				let arr = response.data.data.dmlddl_log_list || response.data.data.wait_inyard_list
-				let flag = response.data.data.dmlddl_log_list ? true : false
-				let name = flag ? 'dml_ddl_' : 'sqlList'
+				let res = response.data.data
+				let arr = []
+				let flag = false
+				let name = ''
+				if (res) {
+					arr = res.dmlddl_log_list || res.wait_inyard_list
+					flag = res.dmlddl_log_list ? true : false
+					name = flag ? 'dml_ddl_' : 'sqlList'
+				}
+				
 				for (let i of arr) {
 					this.$alert(i.result_output ? i.result_output : '提交成功，已进入待入库SQL列表!', {
 						title: '提示',type: 'info'

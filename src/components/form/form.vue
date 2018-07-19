@@ -50,7 +50,7 @@
 					    <el-input
 					    	v-else-if='value.type === "text"'
 							v-model="value[key]" 
-						    :placeholder="value.placeholder ? value.placeholder : '请输入内容'" 
+						    :placeholder="value.labelName === '备注' ? '请输入资源申请的目的' : value.placeholder ? value.placeholder : '请输入内容'" 
 						    :disabled = 'value.disabled'
 						    clearable
 					    >

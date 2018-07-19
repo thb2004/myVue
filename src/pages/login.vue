@@ -207,9 +207,16 @@
 								this.$store.commit('setCnname', cnname)
 								this.$store.commit('setMenuList', userLevel)
 								this.$store.commit('setLeftMenuList', userLevel)
-								$root.$router.replace({
-									name: 'firstHomeContent'
-								})
+								/*如果url带了redirect而且redirect不为斜杠*/
+								if (redirect && redirect != '/') {
+									$root.$router.replace({
+										path: redirect
+									})
+								} else {
+									$root.$router.replace({
+										name: 'firstHomeContent'
+									})
+								}
 							} else {
 								this.$refs['pwd'].blur()
 								this.$alert(res.data.Message, {

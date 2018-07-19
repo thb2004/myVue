@@ -102,8 +102,12 @@ export default [
 		component: resolve => require(['../../pages/resetPwd/index'], resolve),
 	},
 	{
-		path: '*',
+		path: '/page404',
 		name: 'Page404',
 		component: resolve => require(['../../pages/notFound'], resolve),
+	},
+	{
+		path: '*',
+		redirect: '/page404'	
 	}
 ]
