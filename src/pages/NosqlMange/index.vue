@@ -840,9 +840,9 @@
 						cluster_archi: formObj.cluster,
 						[str + '_version']: formObj.version,
 						role_desc: formObj.clusterDesc,
-						IP1: formObj.IP1,
-						IP2: formObj.IP2,
-						IP3: formObj.IP3,
+						IP1: formObj.IP1.trim(),
+						IP2: formObj.IP2.trim(),
+						IP3: formObj.IP3.trim(),
 						userMip: this.$store.state.username,
 					}
 					if (str === 'influxdb') {
@@ -850,7 +850,7 @@
 							deptId: formObj.dept,
 							appId: formObj.region,
 							role_desc: formObj.clusterDesc,
-							IP: formObj.IP,
+							IP: formObj.IP.trim(),
 							userMip: this.$store.state.username
 						}
 					}
@@ -861,7 +861,7 @@
 						envId: formObj.envType || 0,
 						appId: formObj.region || 0,
 						role_query: formObj.role,
-						ipport_query: formObj.IPPort,
+						ipport_query: formObj.IPPort.trim(),
 						hostName: formObj.host
 					}
 				}

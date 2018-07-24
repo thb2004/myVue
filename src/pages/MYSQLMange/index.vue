@@ -1022,7 +1022,7 @@
 				let successFn = null;
 				let v_view_sleep_check = this.threeFirstForm.sleep ? 1 : 0
 				let v_view_slave_check = this.threeFirstForm.slave ? 1: 0
-				let ipport_query = formObj.IPPort;
+				let ipport_query = formObj.IPPort.trim();
 				if (formObj.IPPort && this.activeName === 'three') {
 					if (formObj.IPPort.indexOf(':') < 0) {
 						ipport_query = formObj.IPPort + ":3306"
@@ -1043,9 +1043,9 @@
 						mysql_version: formObj.version,
 						//mysql_unicode: formObj.unicode,
 						role_desc: formObj.clusterDesc,
-						IP1: formObj.IP1,
-						IP2: formObj.IP2,
-						IP3: formObj.IP3,
+						IP1: formObj.IP1.trim(),
+						IP2: formObj.IP2.trim(),
+						IP3: formObj.IP3.trim(),
 						userMip: this.$store.state.username
 					}
 				} else if (type === 'twoExe') {
@@ -1077,7 +1077,7 @@
 					url = '/Gaea_database/processListKill'
 					params = {
 						server_id: formObj.host,
-						ipport_query: ipport_query,
+						ipport_query,
 						kill_thread_id: this.threeFirst2Form.threadNo,
 						kill_key_word: this.threeFirst2Form.keyword,
 						text_exe_time_kill: this.threeFirst2Form.exeTime,
