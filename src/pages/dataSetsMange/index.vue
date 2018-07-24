@@ -57,7 +57,7 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='9' class='required'>
+									<el-col :md='{span:9,offset:2}' class='required'>
 										<el-form-item label="IP:">
 										    <el-input v-model="twoForm.ip" placeholder='请输入IP'></el-input>
 										</el-form-item>

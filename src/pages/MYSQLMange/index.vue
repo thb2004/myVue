@@ -157,9 +157,9 @@
 										</el-form-item>
 									</el-col>
 									<el-col :md='9'>
-										<el-form-item label="IP:PORT">
+										<el-form-item label="IP">
 										    <el-input
-										      placeholder="IP:PORT"
+										      placeholder="请输入IP"
 										      v-model="twoForm.IPPort">
 										    </el-input>
 										</el-form-item>
@@ -1023,7 +1023,7 @@
 				let v_view_sleep_check = this.threeFirstForm.sleep ? 1 : 0
 				let v_view_slave_check = this.threeFirstForm.slave ? 1: 0
 				let ipport_query = formObj.IPPort;
-				if (formObj.IPPort) {
+				if (formObj.IPPort && this.activeName === 'three') {
 					if (formObj.IPPort.indexOf(':') < 0) {
 						ipport_query = formObj.IPPort + ":3306"
 					} else {

@@ -86,7 +86,8 @@
 	    		   	 v-if='workMangeTableData.length>0'
 	    		   	 @size-change='sizeChange'
 	    		   	 @current-change='currentChange'
-	    		     :page-sizes="[10, 50, 100]"
+	    		   	 :current-page.sync='workMangeCurrentPage'
+	    		     :page-sizes="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
 	    		     :page-size='workMangePageSize'
 	    		     layout="total, sizes, prev, pager, next, jumper"
 	    		     :total="workMangeTotal">
@@ -452,7 +453,7 @@
 					startDate: formObj.date[0] || '',
 					endDate: formObj.date[1] || '',
 					pageSize: this.workMangePageSize + '',
-					pageIndex: this.workMangeCurrentPage - 1 + ''
+					pageIndex: this.workMangePageSize * (this.workMangeCurrentPage - 1) + ''
 				}, response => {
 					this.queryBtnDisabled = false;
 					this.workMangeTableData = []

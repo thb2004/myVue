@@ -28,12 +28,12 @@
 
 								<el-row>
 									<el-col>
-										<p class="title m-b20">选择服务器或实例</p>
+										<p class="title m-b20">选择服务器或实例(实例：选择部门应用主机或输入IP)</p>
 									</el-col>
 								</el-row>
 
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='9' :class='{"required":oneForm.serverQueryMethod==="2"}'>
 										<el-form-item label="部门">
 										    <el-select v-model="oneForm.busiDep" placeholder="请选择" :disabled='oneFormDisabled' @change='getServerDomainList' clearable filterable>
 												<el-option v-for='(item,index) in oneDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -41,7 +41,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='{span:9,offset:2}' :class='{"required":oneForm.serverQueryMethod==="2"}'>
 										<el-form-item label="应用">
 										    <el-select v-model="oneForm.serverDomain" placeholder="请选择" :disabled='oneFormDisabled' @change='getServerList' clearable filterable>
 		                 						<el-option v-for='(item,index) in oneFormServerDomainList' :key='index' :value='item.value' :label='item.label'></el-option>
@@ -49,13 +49,25 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9' :class='{"required":hostIsRequired}'>
+									<el-col :md='9'>
 										<el-form-item label="主机">
 										    <el-select v-model="oneForm.case" placeholder="请选择" :disabled='oneFormCaseDisabled' clearable filterable>
 		                 						<el-option v-for='(item,index) in oneFormServerList' :key='index' :value='item.value' :label='item.label'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
+
+									<el-col :md='{span:9,offset:2}' v-show='oneForm.serverQueryMethod==="3"'>
+										<el-form-item label="IP">
+										    <el-input
+										      placeholder="请输入IP"
+										      v-model="oneForm.Ip">
+										    </el-input>
+										</el-form-item>
+
+									</el-col>
+
+
 								</el-row>
 
 								<el-row>
@@ -413,7 +425,6 @@
 	export default {
 		data () {
 			return {
-				hostIsRequired: false,
 				loading: false,
 				open: 'true',
 				labelWidth: '10rem',
@@ -443,6 +454,7 @@
 					tableName: '',						//表名
 					slowQueryMode: '1',
 					sortType: '2',
+					Ip: '',
 				},
 				oneFormInitData: {
 					serverQueryMethod: '2',				//服务器查询方式
@@ -547,15 +559,12 @@
 				if (val === '1') {
 					this.oneFormDisabled = true;
 					this.oneFormCaseDisabled = true;
-					this.hostIsRequired = false
 				} else if (val === '2') {
 					this.oneFormDisabled = false;
 					this.oneFormCaseDisabled = true;
-					this.hostIsRequired = false
 				} else if (val === '3') {
 					this.oneFormDisabled = false;
 					this.oneFormCaseDisabled = false;
-					this.hostIsRequired = true
 				}
 			},
 			/**
@@ -622,13 +631,25 @@
 
 			validatorForm () {
 				let formObj = this[this.activeName + 'Form'];
-				if (!formObj.busiDep) {
-					return '请选择部门'
-				} else if (!formObj.serverDomain) {
-					return '请选择应用'
-				}
-				if (formObj.serverQueryMethod === '3' && !formObj.case) {
-					return '请选择主机'
+				if (formObj.serverQueryMethod === '3') {
+					if (formObj.Ip) {
+						return app.validator.ipValidate(formObj.Ip.trim())
+					} else {
+						if (!formObj.busiDep) {
+							return '请选择部门应用主机或输入IP'
+						} else if (!formObj.serverDomain) {
+							return '请选择应用主机或输入IP'
+						} else if (!formObj.case) {
+							return '请选择主机或输入IP'
+						}
+					}
+					
+				} else {
+					if (!formObj.busiDep) {
+						return '请选择部门'
+					} else if (!formObj.serverDomain) {
+						return '请选择应用'
+					}
 				}
 
 				if (formObj.userList != '' && (formObj.filterType === '0')) {
@@ -666,7 +687,8 @@
 	                    query_user: formObj.userList,				//查询用户
 	                    query_user_type: formObj.filterType,			//过滤类型
 	                    sql_exe_time: formObj.timeThreshold,			//sql执行时间
-	                    exclude_table: formObj.tableName    			//表名
+	                    exclude_table: formObj.tableName,    			//表名
+	                    IP: formObj.Ip || ''
 					}
 				} else {
 					url = '/Gaea_database/slowQueryTop'
@@ -691,12 +713,19 @@
 				this.btnDisabled = false;
 				this.loading = false;
 				let name = this.showOption ? 'oneDetail' : 'one'
-				this[name + 'AllTableData'] = []
-				for (let i of response.data.data.slow_query_log) {
-					this[name + 'AllTableData'].push(i)
+				this[name + 'AllTableData'] = [];
+				let code = response.data.code
+				if (code === 'Gaea10020') {
+					for (let i of response.data.data.slow_query_log) {
+						this[name + 'AllTableData'].push(i)
+					}
+				} else if (code === 'Gaea30020') {
+					this.$alert(response.data.msg, {title: '提示',type: 'info'})
 				}
 				this[name + 'Total'] = this[name + 'AllTableData'].length;
 				app.tools.changeTable(this, name)
+
+				
 			},
 			sizeChange (pageSize) {
 				app.tools.sizeChange(this, pageSize, this.showOption ? 'oneDetail' : '')

@@ -428,6 +428,7 @@
 									<el-button type="primary" @click="onSubmit('preCheck')" class='btn-lg'>预检查</el-button>
 									<el-button type="primary" class='btn-lg' @click="onSubmit('immediate')" :disabled='threeSubmitBtnDisabled' :class='["btn-lg",threeSubmitBtnDisabled ? "my-disabled" : ""]'>提 交</el-button>
 									<el-button @click="resetForm" class='btn-lg btn-normal'>重 置</el-button>
+									<el-button type="primary" @click="openLink" class='btn-lg'>sql审核提交标准说明</el-button>
 									<!-- <el-button type="primary" class='btn-lg' @click="onSubmit('fixedTime')" size='small' :disabled='submitJobBtn'>提交定时任务</el-button> -->
 								</div>
 
@@ -1238,6 +1239,9 @@
 			}
 		},
 		methods: {
+			openLink () {
+				window.open('http://wiki.midea.com/pages/viewpage.action?pageId=5423664')
+			},
 			uploadError (response, file, fileList) {
 				this.$message({
 		          message: '上传失败',

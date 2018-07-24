@@ -346,13 +346,13 @@ export default {
 					/*{
 						text: '性能统计及报表',
 						name: 'performanceStatistics'
-					},*/
+					},
 					{
 						text: '平台自助服务流程指引',
 						name: 'platformGuide',
 						icon: require('../assets/images/guide.png'),
 						blueIcon: require('../assets/images/blueGuide.png'),
-					},
+					},*/
 					{
 						text: '后台管理',
 						name: 'backMange',

@@ -79,6 +79,7 @@
 		    	:formData='activeName === "x86Add" ? x86AddDialogFormData : activeName === "x86Update" ? x86UpdateDialogFormData : x86RecycleDialogFormData'
 		    	:hiddenField='activeName === "x86Add" ? x86AddHiddenFormField : activeName === "x86Update" ? x86UpdateHiddenFormField : x86RecycleHiddenFormField'
 		    	:span='12'
+		    	:isShowDiskComment='activeName === "x86Update" ? true : false'
 		    	:isOffset='false'
 		    	:isShowTooltips='true'
 		    	:isGutter='true'

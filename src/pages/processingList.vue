@@ -295,7 +295,7 @@
 				let formData = this[this.activeName + 'DialogFormData'];
 				let tableData = this[this.activeName + 'TableData'];
 				let obj = {
-					id: this.dataIds
+					id: this.dataIds.split(',')[this.index],
 				}
 				for (let key in formData) {
 					obj[key] = String(formData[key][key])
@@ -358,6 +358,7 @@
 					})
 					return
 				}
+				this.index = index
 				this.$confirm('确认要删除？', {
 					title: '提示',
 					type: 'warning',
@@ -381,7 +382,7 @@
 			},
 			deleteData () {
 				app.post('/Gaea_api/deleteDate', {
-					dataId: this.dataIds,
+					dataId: this.dataIds.split(',')[this.index],
 				}, res => {
 					if (res.data.code != '505') {
 						this.$alert(res.data.msg, {
@@ -389,7 +390,7 @@
 							type: 'info'
 						})
 					}
-					if (res.data.msg === 'success') {					//删除成功
+					if (res.data.data === 'success') {					//删除成功
 						//更新table数据
 						this[this.activeName + 'TableData'].splice(this.index, 1)
 					}

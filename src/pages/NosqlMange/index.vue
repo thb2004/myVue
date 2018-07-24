@@ -137,8 +137,8 @@
 									</el-col>
 
 									<el-col :md='9'>
-										<el-form-item label="IP:PORT">
-										    <el-input v-model="one1Form.IPPort" placeholder='IP:PORT'></el-input>
+										<el-form-item label="IP">
+										    <el-input v-model="one1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
 
@@ -375,8 +375,8 @@
 									</el-col>
 
 									<el-col :md='9'>
-										<el-form-item label="IP:PORT">
-										    <el-input v-model="three1Form.IPPort" placeholder='IP:PORT'></el-input>
+										<el-form-item label="IP">
+										    <el-input v-model="three1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
 

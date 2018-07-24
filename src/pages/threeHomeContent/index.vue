@@ -35,7 +35,7 @@
 				<el-col :md='12' class='notice'>
 					<p class='title'>公告</p>
 					<ul>
-						<li>雅典娜自动化平台产品发布会将在7月16日14:00在总部C407召开</li>
+						<li><a href="https://mp.weixin.qq.com/s/9bJriW-k1imQFseoXQZrCA" target="_blank" class='link'>雅典娜自动化平台产品在7月16日正式发布</a></li>
 					</ul>
 				</el-col>
 	    	</el-row>
@@ -53,6 +53,13 @@
 			color: $fontBaseColor;
 			.main-content {
 				padding: 20px;
+			}
+			.link {
+				color: #61c23a;
+				&:hover {
+					text-decoration: underline;
+					color: red
+				}
 			}
 			.notice {
 				margin-left: 10px;
