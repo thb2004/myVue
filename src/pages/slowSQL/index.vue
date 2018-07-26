@@ -365,7 +365,7 @@
 	    	  width="50%"
 	    	  @close='dialogVisible=false'
 	    	  >
-	    	  	<div>{{exe_sql}}</div>
+	    	  	<div style='word-break: break-word;'>{{exe_sql}}</div>
 	    	  	<div class="text-right">
 	    	  		<el-button type="primary" @click="dialogVisible=false">关 闭</el-button>
 	    	  	</div>
