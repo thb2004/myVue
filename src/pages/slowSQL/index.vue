@@ -427,7 +427,7 @@
 			return {
 				loading: false,
 				open: 'true',
-				labelWidth: '10rem',
+				labelWidth: '140px',
 				oneDeptList: [],
 				btnDisabled: false,
 				oneFormIsFocus: false,					//是否聚焦

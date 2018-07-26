@@ -117,7 +117,7 @@
 						</div>
 					</el-tab-pane>
 
-					<el-tab-pane label="Mysql实例列表清单" name="two">
+					<el-tab-pane label="MySQL实例列表清单" name="two">
 						<div class="compenent-form">
 							<el-form :model="twoForm" :label-width="labelWidth">
 								<el-row>	
@@ -149,7 +149,7 @@
 										</el-form-item>
 									</el-col>
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="主机名">
+										<el-form-item label="主机名(模糊查询)">
 											<el-input
 											  placeholder="请输入主机名"
 											  v-model="twoForm.host">
@@ -157,7 +157,7 @@
 										</el-form-item>
 									</el-col>
 									<el-col :md='9'>
-										<el-form-item label="IP">
+										<el-form-item label="IP(模糊查询)">
 										    <el-input
 										      placeholder="请输入IP"
 										      v-model="twoForm.IPPort">
@@ -698,8 +698,8 @@
 	export default {
 		data () {
 			return {
-				labelWidth: '10rem',
-				labelWidth5: '5rem',
+				labelWidth: '140px',
+				labelWidth5: '70px',
 				activeName: 'one',
 				timer: null,				//获取状态定时器
 				btnDisabled: false,

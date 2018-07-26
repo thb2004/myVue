@@ -391,7 +391,7 @@
 	export default {
 		data () {
 			return {
-				labelWidth: '10rem',
+				labelWidth: '140px',
 				btnDisabled: false,
 				childActiveName: 'one',
 				activeName: 'one',

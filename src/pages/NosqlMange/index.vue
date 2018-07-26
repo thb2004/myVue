@@ -128,7 +128,7 @@
 									</el-col>
 
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="主机名">
+										<el-form-item label="主机名(模糊查询)">
 											<el-input
 											  placeholder="请输入主机名"
 											  v-model="one1Form.host">
@@ -137,13 +137,13 @@
 									</el-col>
 
 									<el-col :md='9'>
-										<el-form-item label="IP">
+										<el-form-item label="IP(模糊查询)">
 										    <el-input v-model="one1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
 
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="Role（模糊查询）">
+										<el-form-item label="Role(模糊查询)">
 											<el-input v-model="one1Form.role"></el-input>
 										</el-form-item>
 									</el-col>
@@ -366,7 +366,7 @@
 									</el-col>
 
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="主机名">
+										<el-form-item label="主机名(模糊查询)">
 											<el-input
 											  placeholder="请输入主机名"
 											  v-model="three1Form.host">
@@ -375,7 +375,7 @@
 									</el-col>
 
 									<el-col :md='9'>
-										<el-form-item label="IP">
+										<el-form-item label="IP(模糊查询)">
 										    <el-input v-model="three1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
@@ -383,7 +383,7 @@
 									
 
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="Role（模糊查询）">
+										<el-form-item label="Role(模糊查询)">
 											<el-input v-model="three1Form.role"></el-input>
 										</el-form-item>
 									</el-col>
@@ -549,7 +549,7 @@
 	export default {
 		data () {
 			return {
-				labelWidth: '10rem',
+				labelWidth: '140px',
 				dialogVisibile: false,
 				rowData: {},		//每行数据
 				btnDisabled: false,	//提交按钮是否禁用
