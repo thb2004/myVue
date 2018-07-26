@@ -199,7 +199,7 @@
 	export default {
 		data () {
 			return {
-				labelWidth: '10rem',
+				labelWidth: '140px',
 				activeName: 'one',
 				dbaList: [],
 				dbaListData: [],

@@ -928,8 +928,8 @@
 		data () {
 			return {
 				fileList: [],
-				labelWidth: '10rem',
-				labelWidth1: '8rem',
+				labelWidth: '140px',
+				labelWidth1: '100px',
 				/*平台访问权限申请----------------------------------------------------------start*/
 				title: '权限申请详情',					//查看详情对话框标题
 				dialogVisible: false,

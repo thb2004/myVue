@@ -12,6 +12,7 @@
 						v-show='hiddenField[key]!=false'
 						:label='value.labelName' 
 						:hiddenField='hiddenField'
+						:title="value.labelName === '磁盘(GB)' && isShowDiskComment ? '变更后的空间大小' : ''"
 					>
 						<el-tooltip placement="right" v-if='key==="osauto"&&isShowTooltips'>
 						  <div slot="content">
@@ -94,7 +95,7 @@
 					    <el-select 
 					    	v-else
 					    	v-model="value[key]"
-						    :placeholder="value.placeholder ? value.placeholder : '请选择'" 
+						    :placeholder="value.labelName === '磁盘(GB)' && isShowDiskComment ? '变更后的空间大小' : value.placeholder ? value.placeholder : '请选择'" 
 						    :class='[key === "moduleId" ? "more-ten" : ""]'
 						    @change='handle(key)'
 						    @focus='focus'
@@ -186,6 +187,10 @@
 		},
 		props: {
 			isShowTooltips: {
+				type: Boolean,
+				default: false
+			},
+			isShowDiskComment: {
 				type: Boolean,
 				default: false
 			},

@@ -393,7 +393,7 @@
 				tableIndex: 0,
 				index: 0,
 				loading: false,
-				labelWidth: '10rem',
+				labelWidth: '140px',
 				width: '300px',
 				allCheck: false,
 				percentage: 0,

@@ -347,7 +347,7 @@
     data() {
       return {
         showOperator: true,
-        labelWidth: '10rem',
+        labelWidth: '140px',
         activeName: 'one',
         row_id: '',
         index: 0,

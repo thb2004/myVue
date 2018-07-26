@@ -248,7 +248,7 @@
 				let formData = this.storageAuditDialogFormData;
 				let tableData = this.storageAuditTableData;
 				let tableHeadName = this.storageAuditDialogFormData;
-				let res = app.validator.isFormCheck(formData)
+				let res = app.validator.isFormCheck(formData, true)
 				if (res) {
 					this.$alert(res, {
 						title: '提示',
@@ -514,11 +514,16 @@
 		},
 		created () {
 			let pages = this.pages
-			//获取工单详情
-			this.getDetailData(pages.params.ticketNumber)
-
-			//获取审批流程
-			this.viewProcess(pages.params.taskId)
+			if (!pages.params.ticketNumber && !pages.params.taskId) {			//这2个从前一页面带过来的数据如果都为空，。则代表此页面刷新过
+				app.go({
+					path: this.$route.path.replace('processingList', 'firstPage')
+				})
+			} else {
+				//获取工单详情
+				this.getDetailData(pages.params.ticketNumber)
+				//获取审批流程
+				this.viewProcess(pages.params.taskId)
+			}
 		},
 	}
 </script>

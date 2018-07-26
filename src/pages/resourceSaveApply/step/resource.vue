@@ -307,7 +307,7 @@
 			},
 			saveData (url, params) {
 				app.post(url, params, res => {
-					app.go({path: 'openResourceProcessingList', params: {ticketNumber: res.data.data.ticketNum, taskId: res.data.data.taskId}})
+					app.go({path: 'resourceSaveApplyProcessingList', params: {ticketNumber: res.data.data.ticketNum, taskId: res.data.data.taskId}})
 				}, err => {
 					this.$alert('提交失败', {
 						title: '提示',
