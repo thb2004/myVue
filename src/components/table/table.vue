@@ -49,7 +49,7 @@
           :key='key' 
           :label='value' 
           :sortable='isSort && key==="createTime"'
-          :min-width="key==='no_success_result' || key==='db_all' || key==='MEMORY_USED' || key==='doc_subject' ? '160' : key==='hostname' || key==='app_administrator' || key==='COMMAND' || key==='DBA' || key==='db_port' || key==='db_name' || key==='exe_cost_time' ? '100' : key==='ticketNumber' || key==='createTime' || key==='modifyTime' ? '180' : ''"
+          :min-width="key==='no_success_result' || key==='db_all' || key==='MEMORY_USED' || key==='doc_subject' || key==='opComment' ? '160' : key==='hostname' || key==='app_administrator' || key==='COMMAND' || key==='DBA' || key==='db_port' || key==='db_name' || key==='exe_cost_time' ? '100' : key==='ticketNumber' || key==='createTime' || key==='modifyTime' ? '180' : ''"
         >
           <template slot-scope="scope">
             <div v-if='key==="role" || key==="group_dns" || key==="exe_sql" || key==="no_success_result" || key==="result_output" || key==="INFO" || key==="sql" || key==="remark" || key==="cmd"' :class='key'>
@@ -58,7 +58,7 @@
                 <span>{{scope.row[key]}}</span>
               </el-tooltip>
             </div>
-            <div v-else-if='key==="status"'>
+            <div v-else-if='key==="status" && !isShowIcon'>
                <span v-if="scope.row[key]==='pending'" class='pengding'>经理审批中</span>
                <span v-else-if="scope.row[key]==='draft'" class='draft'>草稿</span>
                <span v-else-if="scope.row[key]==='dispose'" class='dispose'>运维审批中</span>
@@ -84,6 +84,32 @@
                   :class='[scope.row[key] >= 80 ? "use-warning" : "use-success"]'
                 ></el-progress>
             </div>
+            <div v-else-if='key==="opComment"' :class='key'>
+                <div v-if='["3","6"].indexOf(scope.row[key])!=-1'>       <!-- 下线和升级 -->
+                  <el-button @click='stopApp(scope.row,scope.$index)' type="primay" size="small" class='fa fa-pause-circle' style='background: #148EF5;color:#fff'></el-button>
+                  <el-button @click='editApp(scope.row,scope.$index)' type="primay" size="small" class='fa fa-pencil' style='background: #148EF5;color:#fff'></el-button>
+                </div>
+                <div v-else-if='scope.row[key]==="9"' :class='key'> <!-- 停止 -->
+                  <el-button @click="startApp(scope.row,scope.$index)" type="primay" size="small" class='fa fa-play-circle-o' style='background: #148EF5;color:#fff'></el-button>
+                </div>
+
+               <div v-else :class='key'> <!-- 不可操作状态 -->
+                 <el-button type="info" size="small" class='fa fa-ban' disabled></el-button>
+               </div>
+            </div>
+
+            <div v-else-if='key==="Status" && isShowIcon' :class='key'>
+                <span v-for='(item,index) in scope.row[key].split(";")' :key='index'>
+                   <i :class="['fa','fa-lg',item==='-1' ? 'fa-exclamation-triangle' : 'fa-check-circle-o']" :style="{'color': item==='-1' ? '#dd514c' :'#148EF5'}"></i>
+                </span>
+            </div>
+
+            <div v-else-if='key==="MonitorLink" && isShowIcon' :class='key'>
+                <a v-for='(item,index) in scope.row[key].split(";")' :key='index' :href='item' v-show='item' target="_blank">
+                   <i class="fa fa-lg fa-chain" style='color:#0e90d2'></i>
+                </a>
+            </div>
+
             <div v-else @click="tdClick(scope.row,scope.$index,scope.column,index)" :class='key'>
               <span>{{scope.row[key]}}</span>
             </div>
@@ -94,8 +120,8 @@
             :label="labelName"
             :width="width">
            <template slot-scope="scope">
-            <div v-if='operatorTexts.length > 2'>
-               <el-button @click='editRow(scope.row, item, scope.$index, index)' type="text" size="small" v-for='(item,itemIndex) in operatorTexts' :key='itemIndex'>{{item}}</el-button>
+            <div v-if='operatorTexts.length > 2' :class='{"no-margin": showNoMargin}'>
+               <el-button @click='editRow(scope.row, item, scope.$index, index)' type="text" size="small" v-for='(item,itemIndex) in operatorTexts' :key='itemIndex' v-show='item'>{{item}}</el-button>
             </div>
             <div v-else-if='!isShowComments'>
                <el-button @click="editRow(scope.row,operatorTexts[0],scope.$index, index)" type="text" size="small">{{operatorTexts[0]}}</el-button>
@@ -122,6 +148,11 @@
       margin-right: 0;
       margin-bottom: 0;
   }
+  .no-margin {
+    .el-button+.el-button {
+      margin-left: 0;
+    }
+  }
 }
 
 </style>
@@ -132,6 +163,14 @@
         props: {
             data: Array,   //表单数据
             isSort: {
+              type: Boolean,
+              default: false,
+            },
+            showNoMargin: {
+              type: Boolean,
+              default: false,
+            },
+            isShowIcon: {
               type: Boolean,
               default: false,
             },
@@ -206,6 +245,15 @@
                   tableIndex
                 })
               }
+            },
+            startApp (row, $index) {
+              this.$emit('startApp', {row, $index})
+            },
+            stopApp (row, $index) {
+              this.$emit('stopApp', {row, $index})
+            },
+            editApp (row, $index) {
+              this.$emit('editApp', {row, $index})
             },
             deleteRow (row, index, title) {
               if (this.pages.to === 'workMange' ||  (this.pages.to === 'myMattersFirstPage')) {

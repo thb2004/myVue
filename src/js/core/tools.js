@@ -441,11 +441,12 @@ export default {
 				vm.checkOutMsg = msg
 				return msg
 			}
-			if (v_sql_all.indexOf("database") >= 0 || v_sql_all.indexOf("grant") >= 0 || v_sql_all.indexOf("revoke") >= 0 || v_sql_all.indexOf("flush") >= 0 || v_sql_all.indexOf("truncate") >= 0 || v_sql_all.indexOf("rename") >= 0 || v_sql_all.indexOf("view") >= 0 || v_sql_all.indexOf("function") >= 0 || v_sql_all.indexOf("procedure") >= 0) {
+			/*应丁工的要求此段校验逻辑暂时先屏蔽*/
+			/*if (v_sql_all.indexOf("database") >= 0 || v_sql_all.indexOf("grant") >= 0 || v_sql_all.indexOf("revoke") >= 0 || v_sql_all.indexOf("flush") >= 0 || v_sql_all.indexOf("truncate") >= 0 || v_sql_all.indexOf("rename") >= 0 || v_sql_all.indexOf("view") >= 0 || v_sql_all.indexOf("function") >= 0 || v_sql_all.indexOf("procedure") >= 0) {
 				msg = '检查未通过:包含数据库敏感关键字(database,grant,revoke,flush,truncate,rename,view,function,procedure)中的一个或多个，为防止误操作，禁止执行，有误判情况，请联系DBA!!'
 				vm.checkOutMsg = msg
 				return msg
-			}
+			}*/
 			//prd,uat,ver环境需校验drop
 			if ([3,2,6,33,38].indexOf(env) != -1) {
 				if (regu.test(v_sql_all)) {

@@ -40,7 +40,7 @@ import threeHomeContent from '../../pages/threeHomeContent/router'
 import authorityCenter from '../../pages/authorityCenter/router'
 
 /*云容器平台*/
-import developing from '../../pages/developing/router'
+import scada from '../../pages/scada/router'
 
 export default [
 	{
@@ -88,7 +88,8 @@ export default [
 
 			/*云管理平台*/
 			...authorityCenter,
-			...developing,
+			/*云容器平台*/
+			...scada,
 		]
 	},
 	{

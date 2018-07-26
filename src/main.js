@@ -40,8 +40,8 @@ router.beforeEach((to, from, next) => {
           	duration: 1500,
 		})
 	}
-	if (to.meta.requireAuth) { 										// 判断该路由是否需要登录权限
-		let userLevel = store.getters.getUserLevel
+	if (to.meta.requireAuth) { 
+		let userLevel = store.getters.getUserLevel										// 判断该路由是否需要登录权限
 		if (from.name === 'login' && userLevel) {	//从登陆页面过来。不需校验token
 			if (userLevel === '1') {								//1代表dba权限,需不展示云管理平台
 				if (to.name === 'authorityCenter') {

@@ -44,11 +44,6 @@ export default {
 					childTitle: '开源数据库资源',
 					index: 0,
 				},
-				/*copyApplyFirstPage: {
-					title: '资源申请变更',
-					childTitle: '备份资源',
-					index: 0,
-				},*/
 				resourceSaveApplyFirstPage: {
 					title: '资源申请变更',
 					childTitle: '存储资源',
@@ -75,10 +70,6 @@ export default {
 				myMattersProcessingList: {
 					index: 0,
 				},
-				/*sysMange: {
-					title: '系统管理',
-					index: 0,
-				},*/
 				secondHomeContent: {
 					index: 1,
 				},
@@ -171,7 +162,10 @@ export default {
 					title: '平台用户授权',
 					index: 3,
 				},
-
+				scada: {
+					title: 'scada',
+					index: 4
+				}
 			},
 			menuList: [{
 				text: '云资源平台',
@@ -346,13 +340,13 @@ export default {
 					/*{
 						text: '性能统计及报表',
 						name: 'performanceStatistics'
-					},
+					},*/
 					{
 						text: '平台自助服务流程指引',
 						name: 'platformGuide',
 						icon: require('../assets/images/guide.png'),
 						blueIcon: require('../assets/images/blueGuide.png'),
-					},*/
+					},
 					{
 						text: '后台管理',
 						name: 'backMange',
@@ -367,11 +361,16 @@ export default {
 					icon: require('../assets/images/auth.png'),
 					blueIcon: require('../assets/images/blueAuth.png'),
 				}],
+
 				[{
-					text: '首页',
-					name: 'developing',
-					icon: require('../assets/images/home.png'),
-					blueIcon: require('../assets/images/blueHome.png'),
+					text: '工业互联网',
+					value: [{
+						text: 'scada',
+						name: 'scada',
+					}],
+					isAccordion: true,
+					icon: require('../assets/images/resource.png'),
+					blueIcon: require('../assets/images/blueResource.png'),
 				}],
 			],
 			leftMenuIndex: 0, //侧边栏对应的索引号

@@ -195,7 +195,7 @@
 						pageName = 'authorityCenter';
 						break;
 					case '4':
-						pageName = 'developing';
+						pageName = 'scada';
 						break;
 				}
 				app.go(pageName)
