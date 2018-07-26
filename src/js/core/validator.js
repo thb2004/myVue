@@ -5,14 +5,14 @@ export default {
 			if (obj[key].required ==='required' && !obj[key][key]) {
 				return obj[key].labelName + '必填'
 			}
-			if (obj[key].inputType === 'number') {
+			if (obj[key].inputType === 'number' && obj[key][key]) {
 				let reg = /^[1-9]\d{0,6}$/;
 				if (!reg.test(obj[key][key])) {
 					return obj[key].labelName + '格式不正确'
 				}
 			}
-			if (key === 'ipAddress') {
-				let res = type ? this.ipValidateManyIP(obj[key][key]): this.ipValidate(obj[key][key])
+			if ((key === 'ipAddress' || key === 'DNSipdress') && obj[key][key]) {
+				let res = type ? this.ipValidateManyIP(obj[key][key]) : this.ipValidate(obj[key][key])
 				if (res) {
 					return res
 				}	

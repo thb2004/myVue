@@ -185,15 +185,23 @@ axios.interceptors.response.use(response => {
 })
 //初始化
 let init = () => {
+	cal()
+}
+function cal () {
 	//设置<html>的fontSize，作为rem的基数
 	let fontSize = (innerWidth/100).toFixed(0);
 	document.getElementsByTagName('html')[0].style.fontSize = fontSize + 'px'
 	let sideBarWidth = 15*fontSize < 145 ? 145 : 15*fontSize
 	store.commit('setBannerHeight', (innerWidth-sideBarWidth-60)/5.23)
+	store.state.windowHeight = window.screen.availHeight - 200;
+	store.state.innerHeight = window.innerHeight - 60;
 	if (innerWidth < 500) {
 		store.commit('setLabelPosition', 'top');
 	} else {
 		store.commit('setLabelPosition', 'left');
 	}
+}
+window.onresize = function () {
+	cal()
 }
 init()

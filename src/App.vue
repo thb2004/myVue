@@ -12,8 +12,6 @@ import axios from 'axios'
 export default {
   name: 'app',
   created () {
-    this.$store.state.windowHeight = window.screen.availHeight - 200;
-    this.$store.state.innerHeight = window.innerHeight - 60;
     window.$root = this;
     window.axios = axios;  
   },
