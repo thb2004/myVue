@@ -630,6 +630,7 @@
 						i.approvalOperator = i.Status
 						this.twoTableData.push(i)
 					}
+					this.twoTableData.reverse()
 					this.twoTotal = res.data.Data.counts;
 				})
 			},
