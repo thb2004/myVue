@@ -982,7 +982,8 @@
 				//清空table数据
 				this.btnDisabled = false
 				this[tabName + 'AllTableData'] = []
-				let res = response.data.data.process_list
+				let res = response.data.data && response.data.data.process_list || []
+				this.$alert(response.data.msg, {title: '提示',type: 'info'})
 				//将请求到的数据加入table中
 				for (let i of res) {
 					this[tabName + 'AllTableData'].push(i)
@@ -1022,7 +1023,7 @@
 				let successFn = null;
 				let v_view_sleep_check = this.threeFirstForm.sleep ? 1 : 0
 				let v_view_slave_check = this.threeFirstForm.slave ? 1: 0
-				let ipport_query = formObj.IPPort.trim();
+				let ipport_query = formObj.IPPort && formObj.IPPort.trim();
 				if (formObj.IPPort && this.activeName === 'three') {
 					if (formObj.IPPort.indexOf(':') < 0) {
 						ipport_query = formObj.IPPort + ":3306"
@@ -1211,9 +1212,13 @@
 				})
 			},
 
-			startStatusProcessing () {
+			startStatusProcessing (val) {
 				//获取Mysql管理/processlist监控及kill/状态显示
-				this.timer = window.setInterval(this.getProcessListStatus, 2000)
+				if (!val) {
+					clearInterval(this.timer)
+				} else {
+					this.timer = window.setInterval(this.getProcessListStatus, 2000)
+				}
 			},
 
 			getProcessListStatus () {

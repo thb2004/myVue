@@ -99,9 +99,36 @@
             </div>
 
             <div v-else-if='key==="Status" && isShowIcon' :class='key'>
-                <span v-for='(item,index) in scope.row[key].split(";")' :key='index'>
+                <!-- <span v-for='(item,index) in scope.row[key].split(";")' :key='index'>
                    <i :class="['fa','fa-lg',item==='-1' ? 'fa-exclamation-triangle' : 'fa-check-circle-o']" :style="{'color': item==='-1' ? '#dd514c' :'#148EF5'}"></i>
+                </span> -->
+                <span v-show='scope.row["disabledStatus"]'>
+                     <el-badge :value='scope.row["disabledStatus"]' v-show='scope.row["disabledStatus"] > 1'>
+                       <i class="fa fa-lg fa-exclamation-triangle" style="color: #dd514c"></i>
+                     </el-badge>
+                     <i class="fa fa-lg fa-exclamation-triangle" style="color: #dd514c" v-show='scope.row["disabledStatus"] === 1'></i>
                 </span>
+
+                <span v-show='scope.row["normalStatus"]'>
+                     <el-badge :value='scope.row["normalStatus"]' v-show='scope.row["normalStatus"] > 1'>
+                       <i class="fa fa-lg fa-check-circle-o" style="color: #148EF5"></i>
+                     </el-badge>
+                     <i class="fa fa-lg fa-check-circle-o" style="color: #148EF5" v-show='scope.row["normalStatus"] === 1'></i>
+                </span>
+            </div>
+
+            <div v-else-if='key==="approvalOperator"' :class='key'>
+              <div v-if='scope.row[key]==="1"' :class='key'> <!-- 停止 -->
+                <el-button @click='approve(scope.row,scope.$index)' type="primay" size="small" class='fa fa-arrow-circle-o-right' style='background: #148EF5;color:#fff'></el-button>
+                <el-button @click='reject(scope.row,scope.$index)' type="primay" size="small" class='fa fa-hand-stop-o ' style='background: #148EF5;color:#fff'></el-button>
+              </div>
+               <div v-else :class='key'> <!-- 不可操作状态 -->
+                 <el-button type="info" size="small" class='fa fa-ban' disabled></el-button>
+               </div>
+            </div>
+
+            <div v-else-if='key==="approvalStatus"' :class='key'>
+                <span :class='["common", scope.row.Status === "1" ? "approving" : scope.row.Status === "2" ? "approve-success" : "approve-reject"]'>{{scope.row[key]}}</span>
             </div>
 
             <div v-else-if='key==="MonitorLink" && isShowIcon' :class='key'>
@@ -248,6 +275,12 @@
             },
             startApp (row, $index) {
               this.$emit('startApp', {row, $index})
+            },
+            approve (row, $index) {
+              this.$emit('approve', {row, $index})
+            },
+            reject (row, $index) {
+              this.$emit('reject', {row, $index})
             },
             stopApp (row, $index) {
               this.$emit('stopApp', {row, $index})

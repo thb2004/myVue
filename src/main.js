@@ -24,7 +24,7 @@ import ScrollBar from 'vue2-scrollbar'
 Vue.component('vue-scrollbar', ScrollBar)
 Vue.use(Vuex)
 Vue.use(ElementUI)
-Vue.config.productionTip = false
+//Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 const store = new Vuex.Store(stores)
@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
 		Message.warning({
 			title: '警告',
           	message: '网络异常,请先检查网络',
+          	customClass: 'my-message',
           	duration: 1500,
 		})
 	}

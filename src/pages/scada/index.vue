@@ -2,64 +2,69 @@
 	<div class='box'>
 		<div class="scada">
 			<div class='main-middle'>
-				<el-tabs v-model="activeName">
+				<el-tabs v-model="activeName" @tab-click='changeTab'>
 					<el-tab-pane label="新建scada微服务" name="one">
 						<div class="compenent-form">
 				    		<el-form rel='form' :model='oneForm' :label-width='labelWidth' ref='oneForm' :rules='rules'>
 								<el-row>
-									<el-col :md='9'>
+									<el-col :md='10'>
 										<el-form-item label='实例名称' prop='caseName'>
 										   <el-input v-model="oneForm.caseName" placeholder='请输入实例名称'></el-input>
 										</el-form-item>
 									</el-col>
-									<el-col :md='{span:9,offset:2}'>
+									<!-- <el-col :md='{span:9,offset:2}'>
 										<el-form-item label="部门" prop='dept'>
 										    <el-select v-model="oneForm.dept" @change='getModule' placeholder="请选择" clearable filterable>
-		                 						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
+											                 						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-
+									
 									<el-col :md='9'>
 										<el-form-item label="产品模块" prop='module'>
 										    <el-select v-model="oneForm.module" placeholder="请选择" clearable filterable>
-							                    <el-option v-for='(item,index) in moduleList' :label='item.label' :value='item.value' :key='index'></el-option>
+																                    <el-option v-for='(item,index) in moduleList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-
+									
 									<el-col :md='{span:9,offset:2}'>
 										<el-form-item label="环境类型" prop='envType'>
 										    <el-select v-model="oneForm.envType" @change='getApp' placeholder="请选择" clearable filterable>
-							                    <el-option v-for='(item,index) in envList' :label='item.label' :value='item.value' :key='index'></el-option>
+																                    <el-option v-for='(item,index) in envList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-
+									
 									<el-col :md='9'>
 										<el-form-item label="应用" prop='application'>
 										    <el-select v-model="oneForm.application" @change='getAppInfo' placeholder="请选择" clearable filterable>
-							                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
+																                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										</el-form-item>
-									</el-col>
+									</el-col> -->
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='{span:10,offset:2}'>
 										<el-form-item label='镜像名' prop='imageName'>
-										    <el-select v-model="oneForm.imageName" @change='getVersion("oneForm")' placeholder="请选择" clearable filterable>
+										    <el-select v-model="oneForm.imageName" @change='getVersion("oneForm")' @focus='getImageName' placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in imageNameList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										   <!-- <el-input v-model="oneForm.imageName" placeholder="请输入镜像名" type='textarea'></el-input> -->
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='10'>
 										<el-form-item label='系统管理员' prop='sysAdmin'>
-										   <el-input v-model="oneForm.sysAdmin" :disabled='disabled'></el-input>
+										   <!-- <el-input v-model="oneForm.sysAdmin" :disabled='false'></el-input> -->
+										   <el-autocomplete v-model="oneForm.sysAdmin" :disabled='false' :fetch-suggestions="querySearch">
+											   	<template slot-scope="{ item }">
+											   	    <div>{{ item.label }}</div>
+											   	</template>
+										   </el-autocomplete>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='{span:10,offset:2}'>
 										<el-form-item label="版本" prop='version'>
 										    <el-select v-model="oneForm.version" placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in oneFormVersionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -69,27 +74,32 @@
 									</el-col>
 
 
-									<el-col :md='9'>
+									<el-col :md='10'>
 										<el-form-item label='应用管理员' prop='appAdmin'>
-										   <el-input v-model="oneForm.appAdmin" :disabled='disabled'></el-input>
+											<el-autocomplete v-model="oneForm.appAdmin" :disabled='false' :fetch-suggestions="querySearch">
+												<template slot-scope="{ item }">
+												    <div>{{ item.label }}</div>
+												</template>
+											</el-autocomplete>
+										   <!-- <el-input v-model="oneForm.appAdmin" :disabled='false'></el-input> -->
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='{span:10,offset:2}'>
 										<el-form-item label='备注' prop='opComment'>
 										   <el-input v-model="oneForm.opComment" placeholder="请输入备注" type='textarea'></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='10'>
 										<el-form-item label='CollectionMicro' prop='param1'>
-										   <el-input v-model="oneForm.param1" placeholder="请输入CollectionMicro" type='textarea' :rows='10'></el-input>
+										   <el-input v-model="oneForm.param1" placeholder="请输入CollectionMicro" type='textarea' :rows='15'></el-input>
 										</el-form-item>
 									</el-col>
 									
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='{span:10,offset:2}'>
 										<el-form-item label='RegisterClient' prop='param2'>
-										   <el-input v-model="oneForm.param2" placeholder="请输入RegisterClient" type='textarea' :rows='10'></el-input>
+										   <el-input v-model="oneForm.param2" placeholder="请输入RegisterClient" type='textarea' :rows='15'></el-input>
 										</el-form-item>
 									</el-col>			    								
 								</el-row>
@@ -148,6 +158,50 @@
 							     layout="total, sizes, prev, pager, next, jumper"
 							     :page-size='onePageSize'
 							     :total="oneTotal">
+							   </el-pagination>
+							</div>
+						</div>
+					</el-tab-pane>
+
+					<el-tab-pane label="我的审批列表" name="two">
+						<div class="compenent-form">
+							<el-row :gutter='30'>
+								<el-col :md='1'>
+									<el-button @click='approvalRefresh' type='primay' class='fa fa-refresh search-btn'></el-button>
+								</el-col>
+
+								<el-col :md='{span:5,offset:12}'>
+								    <el-select v-model="approvalStatus" placeholder="请选择">
+					                   <el-option label='全部' value='0'></el-option>
+					                   <el-option label='可用' value='1'></el-option>
+					                   <el-option label='不可用' value='-1'></el-option>
+								    </el-select>
+								</el-col>
+								<el-col :md='6'>
+									<el-input v-model="approvalSearchText" placeholder='请输入搜索条件'>
+										<el-button @click='approvalSearch' slot="append" icon="el-icon-search" class='search-btn'></el-button>
+									</el-input>
+								</el-col>
+							</el-row>
+							<v-table 
+								:data='twoTableData' 
+								:tableHeadName='twoTableHeadName'
+								:showOperator='false'
+								@reject='reject'
+								@approve='approve'
+								class='m-t20'
+							></v-table>
+
+							<div class="block pagination-wraper">
+							   <el-pagination
+							   	 v-if='twoTableData.length > 0'
+							   	 @size-change='sizeChange'
+							   	 @current-change='currentChange'
+							     :page-sizes="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+							     :current-page.sync="twoCurrentPage"
+							     layout="total, sizes, prev, pager, next, jumper"
+							     :page-size='twoPageSize'
+							     :total="twoTotal">
 							   </el-pagination>
 							</div>
 						</div>
@@ -219,12 +273,13 @@
 			width="50%"
 		>
 			<div>
-				<el-input readonly type='textarea' :rows='10' v-model='param'></el-input>
+				<el-input readonly type='textarea' :rows='10' v-model='param' ref='myTextarea'></el-input>
 			</div>
 
 			<div class='text-right m-tb15'>
 		    	<span slot="footer" class="dialog-footer">
-		    	  	<el-button type="primary" @click="paramDialogVisible=false">关闭</el-button>
+		    		<el-button type="primary" @click='copy' class='fa fa-copy'></el-button>
+		    	  	<el-button type="primary" @click="paramDialogVisible=false">关 闭</el-button>
 		    	</span>
 	    	</div>
 		</el-dialog>
@@ -239,6 +294,12 @@
 		}
 		.el-tabs__header,.compenent-form,{
 			padding: 0 20px;
+		}
+		.el-table .cell {
+			overflow: visible;
+		}
+		.Status span {
+			margin-right: 5px;
 		}
 	}
 	.search-btn {
@@ -259,8 +320,6 @@
 				btnDisabled: false,
 				labelWidth: '10rem',
 				activeName: 'one',
-				status: '0',
-				searchText: '',
 				oneForm: {
 					caseName: '',		//实例名称
 					dept: '',			//部门
@@ -339,10 +398,26 @@
 					'MonitorLink': '监控连接',
 					'opComment': '操作'
 				},
-				onePageSize: 1,		//每页显示数		
+				onePageSize: 10,		//每页显示数		
 		 		oneCurrentPage: 1,	//当前页码	
-				oneTotal: 10,		//总页数
-				status: '0',				//状态
+				oneTotal: 1,		//总页数
+				twoTableData: [],
+				twoTableHeadName: {
+					Creator: '申请人',
+					Type: '操作类型',
+					approvalStatus: '状态',
+					Desc: '描述',
+					approvalOperator: '操作'
+				},
+				twoPageSize: 10,
+				twoCurrentPage: 1,
+				twoTotal: 1,
+				approvalStatus: '0',
+				approvalPrevStatus: '0',
+				approvalSearchText: '',
+				approvalPreSearchText: '',
+
+				status: '0',			//状态
 				preStatus: '0',			//记录搜索时候所选的状态
 				preText: '',			//记录搜索时候所输入的文字
 				searchText: '',
@@ -443,6 +518,28 @@
 					}
 				})
 			},
+			copy () {
+				this.$refs['myTextarea'].select(); 					// 选择对象
+				document.execCommand("Copy"); 						// 执行浏览器复制命令
+				this.$message({
+		          message: '复制成功',
+		          type: 'success',
+		          customClass: 'my-message',
+		          duration: 800,
+		        });
+			},
+			querySearch (queryString, cb) {
+				queryString && app.post('/Gaea_api/getUserlike', {
+					search: queryString
+				}, res => {
+					for (let item of res.data.data) {
+						item.label = item.cn_name + item.uid;
+						item.value = item.uid
+					}
+					cb(res.data.data || [])
+				}, err => {
+				}, false)
+			},
 			/*获取版本号*/
 			getVersion (imagename, flag) {
 				let imageName = this[imagename].imageName
@@ -458,12 +555,16 @@
 							value: i
 						})
 					}
+					this[imagename + 'VersionList'] = this[imagename + 'VersionList'].sort( (a, b) => {
+						return b.value - a.value;
+					})
 				})
 			},
 
 			/*获取镜像名*/
-			getImageName () {
-				app.post('/caas/v1/getimagename', {
+			getImageName (val) {
+				this.imageNameList = []
+				val && app.post('/caas/v1/getimagename', {
 
 				}, res => {
 					for (let i of res.data.Data.imagesname) {
@@ -472,6 +573,64 @@
 							value: i
 						})
 					}
+				})
+			},
+			/*切换标签页*/
+			changeTab (vm) {
+				if (vm.name === 'two') {
+					this.getApprovalList('init')
+				}
+			},
+			/*获取审批数据*/
+			getApprovalList (opType) {
+				let status = '';
+				let offset = '0';
+				let searchtext = ''
+				switch (opType) {
+					case 'search': 				//搜索按钮
+						//当前页码重置为第一页
+						this.twoCurrentPage = 1;
+						//记录此刻的搜索状态
+						this.approvalPrevStatus = status = this.approvalStatus;
+						offset = '0'
+						//记录此刻的搜索文字
+						this.approvalPreSearchText = searchtext = this.approvalSearchText;
+						break;
+					case 'pageChange':
+						status = this.approvalPrevStatus;
+						searchtext = this.approvalPreSearchText;
+						offset = this.twoPageSize * (this.twoCurrentPage - 1) + ''
+						break;
+					case 'init':
+						//初始化分页参数
+						this.twoPageSize = 10;
+						this.twoCurrentPage = 1;
+						status = '0';
+						offset = '0';
+						searchtext = '';
+						break;
+					case 'refresh':
+						this.twoPageSize = 10;
+						this.twoCurrentPage = 1;
+						status = '0';
+						offset = '0';
+						searchtext = '';
+						break;
+				} 
+				let params = {
+					status,
+					pagesize: this.twoPageSize + '',
+					offset,
+					searchtext,
+				}
+				app.post('/caas/v1/approvallist', params, res => {
+					this.twoTableData = []
+					for (let i of res.data.Data.approvals) {
+						i.approvalStatus = i.Status === '1' ? '待审核' : i.Status === '2' ? '审核通过' : '拒绝'
+						i.approvalOperator = i.Status
+						this.twoTableData.push(i)
+					}
+					this.twoTotal = res.data.Data.counts;
 				})
 			},
 
@@ -512,14 +671,15 @@
 				})  
 			},
 			sizeChange (pageSize) {
-				console.log(pageSize)
-				this.onePageSize = pageSize
-				this.getAppList('pageChange')
+				this[this.activeName + 'PageSize'] = pageSize
+				let fn = this.activeName === 'one' ? this.getAppList : this.getApprovalList
+				fn('pageChange')
 			},
+
 			currentChange (currentPage) {
-				console.log(currentPage)
-				this.oneCurrentPage = currentPage
-				this.getAppList('pageChange')
+				this[this.activeName + 'CurrentPage'] = currentPage
+				let fn = this.activeName === 'one' ? this.getAppList : this.getApprovalList
+				fn('pageChange')
 			},
 			resetForm (formName) {
 				app.tools.resetFormData(this[formName], this.oneInitData)
@@ -565,10 +725,10 @@
 						params = {
 							replica: '1',
 							commonname: formObj.caseName,		//实例名称					
-							appid: formObj.application,			//应用id
-							appname: app.tools.findValInArray(formObj.application, this.applicationList),		//应用名称
-							orgname: app.tools.findValInArray(formObj.dept, this.deptList),						//部门名
-							departmentname: app.tools.findValInArray(formObj.module, this.moduleList),			//模块名
+							appid: 'scada' || formObj.application,			//应用id
+							appname: 'scada' || app.tools.findValInArray(formObj.application, this.applicationList),		//应用名称
+							orgname: 'scada' || app.tools.findValInArray(formObj.dept, this.deptList),						//部门名
+							departmentname: 'scada' || app.tools.findValInArray(formObj.module, this.moduleList),			//模块名
 							version: formObj.version,
 							manager: formObj.appAdmin,
 							systemmanager: formObj.sysAdmin,
@@ -602,25 +762,87 @@
 			},
 			/*启动app*/
 			startApp ({row, $index}) {
-				app.post('/caas/v1/startapp', {
-					"appids": [row.Id + '']
-				}, res => {
-					let code = res.data.Code
-					this.$alert(res.data.Message, {title: '提示',type: 'info'})
-					if (code === '2000000') {
-						this.getAppList('refresh')
+				this.$confirm('确定启动应用?', {
+					title: '提示',
+					type: 'warning',
+					callback: (action, instance) => {
+						if (action === 'confirm') {
+							app.post('/caas/v1/startapp', {
+								"appids": [row.Id + '']
+							}, res => {
+								let code = res.data.Code
+								this.$alert(res.data.Message, {
+									title: '提示',
+									type: 'info'
+								})
+								if (code === '2000000') {
+									this.getAppList('refresh')
+								}
+							})
+						}
+					}
+				})
+				
+			},
+			approve ({row, $index}) {
+				this.$confirm('确定要审核通过?', {
+					title: '提示',
+					type: 'warning',
+					callback: (action, instance) => {
+						if (action === 'confirm') {
+							app.post('/caas/v1/approve', {
+								approvalids: [row.Id + '']
+							}, res => {
+								let code = res.data.Code
+								this.$alert(res.data.Message, {
+									title: '提示',
+									type: 'info'
+								})
+								if (code === '2000000') {
+									this.getApprovalList('refresh')
+								}
+							})
+						}
+					}
+				})
+			},
+
+			reject ({row, $index}) {
+				this.$confirm('确定驳回?', {
+					title: '提示',
+					type: 'warning',
+					callback: (action, instance) => {
+						if (action === 'confirm') {
+							app.post('/caas/v1/reject', {
+								"approvalids": [row.Id + '']
+							}, res => {
+								let code = res.data.Code
+								this.$alert(res.data.Message, {title: '提示',type: 'info'})
+								if (code === '2000000') {
+									this.getAppList('refresh')
+								}
+							})
+						}
 					}
 				})
 			},
 			/*停止app*/
 			stopApp ({row, $index}) {
-				app.post('/caas/v1/stopapp', {
-					"appids": [row.Id + '']
-				}, res => {
-					let code = res.data.Code
-					this.$alert(res.data.Message, {title: '提示',type: 'info'})
-					if (code === '2000000') {
-						this.getAppList('refresh')
+				this.$confirm('确定停止应用?', {
+					title: '提示',
+					type: 'warning',
+					callback: (action, instance) => {
+						if (action === 'confirm') {
+							app.post('/caas/v1/stopapp', {
+								"appids": [row.Id + '']
+							}, res => {
+								let code = res.data.Code
+								this.$alert(res.data.Message, {title: '提示',type: 'info'})
+								if (code === '2000000') {
+									this.getAppList('refresh')
+								}
+							})
+						}
 					}
 				})
 			},
@@ -658,6 +880,13 @@
 
 			refresh () {
 				this.getAppList('refresh')
+			},
+
+			approvalRefresh () {
+				this.getApprovalList('refresh')
+			},
+			approvalSearch () {
+				this.getApprovalList('search')
 			},
 
 			search () {
@@ -718,9 +947,18 @@
 				}, res => {
 					this.oneTableData = []
 					for (let i of res.data.Data.apps) {
+						let normalStatus = 0
+						let disabledStatus = 0
 						i.CreateTime = app.tools.formatDate(i.CreateTime)
 						i.ModifyTime = app.tools.formatDate(i.ModifyTime)
 						i.opComment = i.State
+						for (let j of i.Status.split(';')) {
+							if (j === '1') {
+								i.normalStatus = ++normalStatus;
+							} else {
+								i.disabledStatus = ++disabledStatus;
+							}
+						}
 						this.transferState(i)
 						this.oneTableData.push(i)
 					}
@@ -767,7 +1005,7 @@
 			//获取mysql列表数据
 			this.getAppList('addApp')
 			//获取镜像名
-			this.getImageName()
+			//this.getImageName()
 		}
 	}
 

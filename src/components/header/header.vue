@@ -55,7 +55,7 @@
 						<i class="fa fa-navicon"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item v-for='(item,index) in $store.state.pages.menuList' :key="index" :command='index' v-if='item.isShow'>
+					    <el-dropdown-item v-for='(item,index) in $store.state.pages.menuList' :key="index" :command='"" + index' v-if='item.isShow'>
 					    	{{item.text}}
 					    </el-dropdown-item>
 					</el-dropdown-menu>

@@ -41,6 +41,9 @@
 		word-break: break-all;
 	}
 }
+.my-message {
+	z-index: 10000 !important;
+}
 @keyframes rotateplane {
   0% {
     transform: rotateX(90deg);
@@ -373,6 +376,19 @@
  }
  .clear-overflow {
 	overflow: hidden;
+}
+.common {
+	color: #fff;
+	padding: 5px 10px;
+}
+.approve-reject {
+	background: #F56C6C;
+}
+.approve-success {
+	background: #67C23A;
+}
+.approving {
+	background: #F37B1D;
 }
 @media screen and (max-width:910px) {
 	* {
