@@ -92,8 +92,8 @@
 									</el-col>
 
 									<el-col :md='10'>
-										<el-form-item label='CollectionMicro' prop='param1'>
-										   <el-input v-model="oneForm.param1" placeholder="请输入CollectionMicro" type='textarea' :rows='15'></el-input>
+										<el-form-item label='Config' prop='param1'>
+										   <el-input v-model="oneForm.param1" placeholder="请输入Config" type='textarea' :rows='15'></el-input>
 										</el-form-item>
 									</el-col>
 									
@@ -137,7 +137,7 @@
 								:tableHeadName='oneTableHeadName'
 								:showOperator='true'
 								:isShowIcon='true'
-								:operatorTexts='["CollectionMicro","RegisterClient",""]'
+								:operatorTexts='["Config","RegisterClient",""]'
 								:showNoMargin='true'
 								labelName='查看详情'
 								@editRow='viewDetail'
@@ -250,8 +250,8 @@
 					</el-col>
 
 					<el-col :md='12'>
-						<el-form-item label='CollectionMicro' prop='param1'>
-						   <el-input v-model="dialogForm.param1" placeholder="请输入CollectionMicro" type='textarea' :rows='10'></el-input>
+						<el-form-item label='Config' prop='param1'>
+						   <el-input v-model="dialogForm.param1" placeholder="请输入Config" type='textarea' :rows='10'></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :md='12'>
@@ -464,7 +464,7 @@
 					}],
 					param1: [{
 						required: true,
-						message: '请输入CollectionMicro',
+						message: '请输入Config',
 						trigger: 'blur'
 					}],
 					memory: [{
@@ -872,7 +872,7 @@
 
 			viewDetail ({row, title}) {
 				this.paramDialogVisible = true
-				if (title === 'CollectionMicro') {
+				if (title === 'Config') {
 					this.param = row.Params1
 				} else {
 					this.param = row.Params2
