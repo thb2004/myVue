@@ -25,6 +25,7 @@ Vue.component('vue-scrollbar', ScrollBar)
 Vue.use(Vuex)
 Vue.use(ElementUI)
 //Vue.config.productionTip = false
+//Vue.config.devtools = true;
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
 const store = new Vuex.Store(stores)
@@ -45,7 +46,7 @@ router.beforeEach((to, from, next) => {
 		let userLevel = store.getters.getUserLevel										// 判断该路由是否需要登录权限
 		if (from.name === 'login' && userLevel) {	//从登陆页面过来。不需校验token
 			if (userLevel === '1') {								//1代表dba权限,需不展示云管理平台
-				if (to.name === 'authorityCenter') {
+				if (to.name === 'authorityCenter' || to.name === 'scada') {
 					next({ 
 						path: '/home/firstHomeContent',
 					})
@@ -60,7 +61,8 @@ router.beforeEach((to, from, next) => {
 					'VirtualMachineApply', 'linuxMangeFirstPage','automationFirstPage',
 					'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
 					'netVlanList','LinuxBatchStandardizationFirstPage',
-					'otherFirstPage','history','secondHomeContent'
+					'otherFirstPage','history','secondHomeContent',
+					'scada'
 				]
 				if (noAuthorArr.indexOf(to.name) != -1) {
 					next({
@@ -68,7 +70,7 @@ router.beforeEach((to, from, next) => {
 					})
 					return;
 				}
-			} else if (userLevel === '4') {
+			} else if (userLevel === '4' || userLevel === '5') {
 				let noAuthorArr = [
 					'workMange', 
 					'MYSQLMange','NosqlMange','dataSetsMange',
@@ -79,6 +81,7 @@ router.beforeEach((to, from, next) => {
 					'netVlanList','LinuxBatchStandardizationFirstPage',
 					'otherFirstPage','history',
 				]
+				userLevel === '4' && noAuthorArr.push('scada')
 				if (noAuthorArr.indexOf(to.name) != -1) {
 					next({
 						path: '/home/firstHomeContent',
@@ -103,7 +106,7 @@ router.beforeEach((to, from, next) => {
 					let mipAccount = data.username;		//登录mip账号
 					//if (!store.getters.getUserLevel) {	//如果userlevel存在代表已经登录
 					if (userLevel === '1') {
-						if (to.name === 'authorityCenter') {
+						if (to.name === 'authorityCenter' || to.name === 'scada') {
 							next({ //1代表dba权限,需不展示云管理平台
 								path: '/page404',
 							})
@@ -118,7 +121,8 @@ router.beforeEach((to, from, next) => {
 							'VirtualMachineApply', 'linuxMangeFirstPage','automationFirstPage',
 							'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
 							'netVlanList','LinuxBatchStandardizationFirstPage',
-							'otherFirstPage','history','secondHomeContent'
+							'otherFirstPage','history','secondHomeContent',
+							'scada'
 						]
 						if (noAuthorArr.indexOf(to.name) != -1) {
 							next({
@@ -126,7 +130,7 @@ router.beforeEach((to, from, next) => {
 							})
 							return;
 						}
-					} else if (userLevel === '4') {
+					} else if (userLevel === '4' || userLevel === '5') {
 						let noAuthorArr = [
 							'workMange', 
 							'MYSQLMange','NosqlMange','dataSetsMange',
@@ -137,6 +141,7 @@ router.beforeEach((to, from, next) => {
 							'netVlanList','LinuxBatchStandardizationFirstPage',
 							'otherFirstPage','history',
 						]
+						userLevel === '4' && noAuthorArr.push('scada')
 						if (noAuthorArr.indexOf(to.name) != -1) {
 							next({
 								path: '/page404',

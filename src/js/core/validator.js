@@ -11,14 +11,50 @@ export default {
 					return obj[key].labelName + '格式不正确'
 				}
 			}
-			if ((key === 'ipAddress' || key === 'DNSipdress') && obj[key][key]) {
+			if ((key === 'ipAddress' || key === 'DNSipdress' || key === 'natipdress') && obj[key][key]) {
 				let res = type ? this.ipValidateManyIP(obj[key][key]) : this.ipValidate(obj[key][key])
 				if (res) {
 					return res
 				}	
 			}
+
+			if ((key === 'ipdress' || key === 'toipdress') && obj[key][key]) {
+				if (!this.ipList(obj[key][key])) {
+					return 'ip地址格式不正确,多个ip之间以回车符分隔'
+				}
+			}
+			if (key ==='port'&& obj[key][key]) {
+				if (!this.portValidate(obj[key][key])) {
+					return '端口格式不正确,端口值在0-65535之间'
+				}
+			}
+			if (key ==='ipAddressport'&& obj[key][key]) {
+				if (!this.ipPortValidate(obj[key][key])) {
+					return 'IP端口格式不正确,如IP:PORT'
+				}
+			}
+
+			if (key === 'toport' && obj[key][key]) {
+				if (!this.manyPortValidate(obj[key][key])) {
+					return '端口格式不正确,多个端口之间以回车符分隔,且端口值在0-65535之间'
+				}
+			}
 		}
 		return ''
+	},
+	/*校验ip:port*/
+	ipPortValidate (ipPort) {
+		let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]):([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])((\r|\n)+(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]):([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))*$/;
+		return reg.test(ipPort)
+	},
+	portValidate (port) {
+		let reg = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/
+		return reg.test(port)
+	},
+
+	manyPortValidate (port) {
+		let reg = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])((\r|\n)+([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5]))*$/
+		return reg.test(port)
 	},
 	ipValidateManyIP (ip) {
 		let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])((;\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))*$/;

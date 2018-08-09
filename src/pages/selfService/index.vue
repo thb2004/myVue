@@ -22,10 +22,10 @@
 										<p>没有权限</p>
 									</el-col>
 									<el-col :md='{span:6,offset:2}' :sm='{span:6,offset:2}'>
-										<p>只读权限 <span>（拥有慢查询和创建数据库的权限）</span></p>
+										<p>只读权限 <span>（慢SQL查询、DB访问账号申请：仅查询权限）</span></p>
 									</el-col>
 									<el-col :md='{span:6,offset:2}' :sm='{span:6,offset:2}'>
-										<p>读写权限<span>（拥有DDL/DML数据库授权及慢查询权限）</span></p>
+										<p>读写权限<span>（慢SQL查询、DB创建及访问账号申请、DDL/DML入库）</span></p>
 									</el-col>
 								</el-row>
 								<el-row class='transfer'>
@@ -1737,7 +1737,7 @@
 				let opType = '';
 				let successFn = this[this.activeName + 'Success'];
 				let formObj = this[this.activeName + 'Form'];
-				let sql = formObj.command || '', 				//sql语句
+				let sql = formObj.command && formObj.command.toLowerCase() || '', 				//sql语句
 					serverId = formObj.host, 				//主机id
 					dbName = formObj.dbName,
 					dbaName = formObj.approver,

@@ -37,7 +37,7 @@
 					    <el-autocomplete 
 					    	v-if='value.type === "input"'
 						    v-model="value[key]" 
-						    :placeholder="value.placeholder ? value.placeholder : '请输入内容'"  
+						    :placeholder="value.placeholder ? value.placeholder : '请输入'"  
 						    :fetch-suggestions='querySearch' 
 						    :trigger-on-focus="false"
 						    clearable 
@@ -51,8 +51,8 @@
 					    <el-input
 					    	v-else-if='value.type === "text"'
 							v-model="value[key]" 
-						    :placeholder="value.labelName === '备注' ? '请输入资源申请的目的' : value.placeholder ? value.placeholder : '请输入内容'" 
-						    :disabled = 'value.disabled'
+						    :placeholder="value.placeholder ? value.placeholder : '请输入'" 
+						    :disabled='value.disabled'
 						    clearable
 					    >
 					    	
@@ -86,9 +86,10 @@
 						    v-else-if='value.type === "textarea"' 
 						    v-model="value[key]" 
 						    :disabled='value.disabled'
+						    :rows='3'
 						    type="textarea" 
 						    class='textarea' 
-						    placeholder="请输入内容"
+						    :placeholder= "value.placeholder ? value.placeholder : '请输入'"
 						    clearable
 					    ></el-input>
 					    <!-- 只有当为产品模块的时候才去根据数量更改产品模块的图标 -->

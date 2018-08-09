@@ -2,6 +2,7 @@
 import firstHomeContent from '../../pages/firstHomeContent/router'
 /*import copyApply from '../../pages/copyApply/router'*/
 import IPResource from '../../pages/IPResource/router'
+import netResource from '../../pages/netResource/router'
 import middleResource from '../../pages/middleResource/router'
 import myMatters from '../../pages/myMatters/router'
 import openResource from '../../pages/openResource/router'
@@ -56,6 +57,7 @@ export default [
 			...X86Resource,					//x86资源
 			//...copyApply,					//备份资源
 			...IPResource,					//IP资源
+			...netResource,					//网络资源
 			...middleResource,				//中间件资源
 			...myMatters,					//x86资源
 			...openResource,				//开源数据库资源

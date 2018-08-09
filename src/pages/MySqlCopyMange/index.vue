@@ -326,52 +326,124 @@
 								</div>
 							</el-form>
 						</div>
-					</el-tab-pane>
+					</el-tab-pane> -->
 					
 					<el-tab-pane label="DB备份日志查看" name="four">
 						<div class="compenent-form">
 							<el-form rel='form' :model='fourForm' :label-width='labelWidth'>
 								<el-row>
 									<el-col :md='9'>
-										<el-form-item label="DB域">
-										    <el-select v-model="fourForm.DB" placeholder="请选择">
-										    	<el-option v-for='(item,index) in fourDBist' :key='index' :label='item.label' :value='item.value'></el-option>
+										<el-form-item label="部门">
+										    <el-select v-model="fourForm.dept" placeholder="请选择" @change='clearRelatedData' clearable filterable>
+		                 						<el-option v-for='(item,index) in fourDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-					
+
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="DB实例">
-										    <el-select v-model="fourForm.DBCase" placeholder="请选择">
-										    	<el-option v-for='(item,index) in fourDBCaseist' :key='index' :label='item.label' :value='item.value'></el-option>
+										<el-form-item label="环境">
+										    <el-select v-model="fourForm.envType" placeholder="请选择" @change='getApp' clearable filterable>
+							                    <el-option v-for='(item,index) in fourEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-					
+
 									<el-col :md='9'>
-										<el-form-item label="最小备份时间（秒）">
-										    <el-select v-model="fourForm.minBackupTime" placeholder="请选择">
-										    	<el-option v-for='(item,index) in fourMinBackupTimeList' :key='index' :label='item.label' :value='item.value'></el-option>
+										<el-form-item label="应用">
+										    <el-select v-model="fourForm.application" @change='getHost' placeholder="请选择" clearable filterable>
+							                   <el-option v-for='(item,index) in fourApplicationList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
+										</el-form-item>
+									</el-col>
+
+									<el-col :md='{span:9,offset:2}'>
+										<el-form-item label="主机">
+										    <el-select v-model="fourForm.host" placeholder="请选择"  clearable filterable>
+							                   <el-option v-for='(item,index) in fourHostList' :label='item.label' :value='item.value' :key='index'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
+
+									<el-col :md='9'>
+										<el-form-item label='IP'>
+										   <el-input v-model="fourForm.IP" placeholder='请输入IP' clearable></el-input>
+										</el-form-item>
+									</el-col>
+
+									<el-col :md='{span:9,offset:2}'>
+										<el-form-item label="备份结果">
+										    <el-select v-model="fourForm.backupRes" placeholder="请选择" clearable>
+										    	<el-option label='失败' :value='3'></el-option>
+										    	<el-option label='成功' :value='2'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
+
+									<el-col :md='9'>
+										<el-form-item label="备份时间大于(秒)">
+										    <el-input v-model="fourForm.backupTime" placeholder='请输入' clearable></el-input>
 										</el-form-item>
 									</el-col>
 					
 									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="最小备份文件（M）">
-										    <el-select v-model="fourForm.minBackupFile" placeholder="请选择">
-										    	<el-option v-for='(item,index) in fourminBackupFileList' :key='index' :label='item.label' :value='item.value'></el-option>
-										    </el-select>
+										<el-form-item label="备份文件大于(M)">
+										    <el-input v-model="fourForm.backupSize" placeholder='请输入' clearable></el-input>
+										</el-form-item>
+									</el-col>
+
+									<el-col :md='9'>
+										<el-form-item label="备份时间">
+										    <el-date-picker
+									          v-model="fourForm.date"
+									          type="daterange"
+									          align="right"
+										      unlink-panels
+										      range-separator="至"
+										      start-placeholder="选择开始日期"
+										      end-placeholder="选择结束日期"
+										      value-format='yyyy-MM-dd HH:mm:ss'
+										      
+										      :picker-options="pickerOptions"
+										      :default-time="['00:00:00', '23:59:00']"
+										    >
+										    </el-date-picker>
 										</el-form-item>
 									</el-col>
 								</el-row>
 					
 								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>提 交</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
+								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
+								    <el-button @click="resetForm('four')">重 置</el-button>
 								</div>
 							</el-form>
 						</div>
-					</el-tab-pane> -->
+
+						<div class="empty"></div>
+
+						<div class="compenent-form">
+							<v-table 
+								:data='fourTableData' 
+								:tableHeadName='fourTableHeadName'
+								:showOperator='false'
+								:isSetTableHeadWidth='true'
+								:tableHeadObj='tableHeadObj'
+								:showTips='showTips'
+								class='m-t20 four-table'
+							></v-table>
+
+							<div class="block pagination-wraper">
+							   <el-pagination
+							   	 v-if='fourTableData.length > 0'
+							   	 @size-change='sizeChange'
+							   	 @current-change='currentChange'
+							     :page-sizes="[10, 15, 20, 25, 30, 35, 40, 45, 50]"
+							     layout="total, sizes, prev, pager, next, jumper"
+							     :page-size='fourPageSize'
+							     :total="fourTotal">
+							   </el-pagination>
+							</div>
+						</div>
+					</el-tab-pane>
 	    		</el-tabs>
     		</div>
     	</div>
@@ -385,12 +457,100 @@
   .el-tabs__header,.compenent-form,{
     padding: 0 20px;
   }
+  .four-table, {
+	    .cell {
+	      .backup_result_log,.role,.name {
+	        span {
+	          display:block;
+	          width:100%;
+	          white-space: nowrap;
+	          overflow: hidden;
+	          text-overflow: ellipsis
+	        }
+	      }
+	    }
+	}
 };
 </style>
 <script type="text/javascript">
 	export default {
 		data () {
 			return {
+				pickerOptions: {
+					shortcuts: [
+						{
+				            text: '今天',
+				            onClick(picker) {
+				              const date = new Date()
+				              date.setHours(0, 0, 0, 0)
+				              picker.$emit('pick',[date,new Date()]);
+				            }
+				        }, 
+				        {
+				            text: '昨天',
+				            onClick(picker) {
+				              const date = new Date();
+				              date.setTime(date - 3600 * 1000 * 24);
+				              picker.$emit('pick',[app.tools.formatDate(new Date(date),2) + ' 00:00:00',app.tools.formatDate(new Date(date),2) + ' 23:59:00']);
+				              
+				        	}
+				        }, 
+				        {
+				            text: '一周前',
+				            onClick(picker) {
+				              const date = new Date();
+				              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+				              picker.$emit('pick', [date,new Date()]);
+				            }
+				        },
+				        {
+				        	text: '最近30天',
+				            onClick(picker) {
+				              const date = new Date();
+				              date.setTime(date.getTime() - 3600 * 1000 * 24 * 30);
+				              picker.$emit('pick', [date,new Date()]);
+				            }
+				        },
+				        {
+				        	text: '这个月',
+				            onClick(picker) {
+				              const firstDate = new Date();
+				              firstDate.setDate(1); //第一天
+
+				              const endDate = new Date(firstDate);
+
+				              endDate.setMonth(firstDate.getMonth()+1);
+
+				              endDate.setDate(0);
+				              picker.$emit('pick', [firstDate, endDate]);
+				            }
+				        },
+				        {
+				        	text: '上个月',
+				            onClick(picker) {
+				              var nowdays = new Date();  
+				              var year = nowdays.getFullYear();  
+				              var month = nowdays.getMonth();  
+				              if(month==0)  
+				              {  
+				                  month=12;  
+				                  year=year-1;  
+				              }  
+				              if (month < 10) {  
+				                  month = "0" + month;  
+				              }  
+				              var firstDay = year + "/" + month + "/" + "01";//上个月的第一天  
+				                
+				                
+				                
+				              var myDate = new Date(year, month, 0);  
+				              var lastDay = year + "/" + month + "/" + myDate.getDate();//上个月的最后一天  
+				              picker.$emit('pick', [new Date(firstDay),new Date(lastDay)]);
+				            }
+				        }
+					]
+				},
+
 				labelWidth: '140px',
 				btnDisabled: false,
 				childActiveName: 'one',
@@ -454,15 +614,54 @@
 				threeBackupCycleList: [],
 
 				fourForm: {
-					DB: '',
-					DBCase: '',
-					minBackupFile: '',
-					minBackupTime: '',
+					dept: '',				//部门
+					envType: '',			//环境
+					application: '',		//应用
+					host: '',				//主机
+					IP: '',					//ip
+					backupRes: '',			//备份结果
+					backupTime: '',			//备份时间
+					backupSize: '',			//备份文件大小
+					date: [app.tools.formatDate(new Date(),2) + ' 00:00:00',app.tools.formatDate(new Date())],//备份时间
 				},
-				fourDBist: [],
-				fourDBCaseist: [],
-				fourMinBackupTimeList: [],
-				fourminBackupFileList: [],
+				fourTableHeadName: {
+					id: 'ID',
+					name: '应用',
+					ip: 'IP',
+					role: 'ROLE',
+					backup_type: '备份类型',
+					backup_result_type: '备份结果状态',
+					backup_start_time: '备份开始时间',
+					backup_end_time: '备份结束时间',
+					backup_cost_time: '备份花费时间(分)',
+					backup_file_size: '备份文件大小(M)',
+					backup_result_log: '备份结果日志',
+					create_time: '创建时间'
+				},
+				tableHeadObj: {
+					id: '50',
+
+					backup_result_type: '110',
+					backup_start_time: '110',
+					backup_end_time: '110',
+					backup_cost_time: '110',
+					backup_file_size: '110',
+					backup_result_log: '110',
+				},
+				showTips: {
+					name: true,
+					role: true,
+					backup_result_log: true,
+				},
+				fourDeptList: [],
+				fourEnvTypeList: [],
+				fourApplicationList: [],
+				fourHostList: [],
+				fourTableData: [],
+				fourAllTableData: [],
+				fourPageSize: 10,
+				fourCurrentPage: 1,
+				fourTotal: 10,
 			}
 		},
 		methods: {
@@ -472,6 +671,12 @@
 					type: 'info'
 				})
 				this.btnDisabled = false
+			},
+			sizeChange (pageSize) {
+				app.tools.sizeChange(this, pageSize)
+			},
+			currentChange (currentPage) {
+				app.tools.currentChange(this, currentPage)
 			},
 			onSubmit (type) {
 				let res = this.validatorForm (type)
@@ -515,6 +720,38 @@
 					}
 				}
 				this.btnDisabled = true
+				if (this.activeName === 'four') {
+					url = '/Gaea_database/dbBackupLogQuery'
+					console.log(formObj)
+					params = {
+						appId: formObj.application || 0,
+						serverId: formObj.host || 0,
+						IP: formObj.IP.trim(),
+						backup_status: formObj.backupRes || 0,
+						backup_cost_time: formObj.backupTime,
+						backup_file_size: formObj.backupSize,
+						query_start_time: formObj.date && formObj.date[0] || '',
+						query_end_time: formObj.date && formObj.date[1] || '',
+					}
+					app.post(url, params, res => {
+						this.btnDisabled = false
+						let code = res.data.code
+						this[this.activeName + 'AllTableData'] = []
+						if (code === 'Gaea10071') {						//成功
+							for (let i of res.data.data.dbBackupLogList) {
+								i.backup_end_time = app.tools.formatDate(i.backup_end_time)
+								i.backup_start_time = app.tools.formatDate(i.backup_start_time)
+								this[this.activeName + 'AllTableData'].push(i)
+							}
+							this[this.activeName + 'Total'] = this[this.activeName + 'AllTableData'].length;
+							app.tools.changeTable(this)
+						} else if (code != '505') {						//失败给出错误提示
+							this.$alert(res.data.msg, {title: '提示',type: 'info'})
+						}
+
+					}, this.error)
+					return;
+				}
 				this.$confirm("确认提交？", {
 					title: '提示',type: 'info',
 					callback: (action, instance) => {
@@ -536,29 +773,37 @@
 			},
 			validatorForm (type) {
 				let msg = ''
-				if (!this[this.activeName + 'Form'].dept) {
+				let formObj = this[this.activeName + 'Form']
+				if (this.activeName === 'four') {
+					if (formObj.dept && !formObj.application) {
+						return '请选择部门/应用'
+					}
+					if (formObj.IP.trim()) {
+						return app.validator.ipValidate(formObj.IP.trim())
+					}
+				} else if (!formObj.dept) {
 					msg = '请选择部门'
-				} else if (!this[this.activeName + 'Form'].envType) {
+				} else if (!formObj.envType) {
 					msg = '请选择环境类型'
-				} else if (!this[this.activeName + 'Form'].sourceApplication) {
+				} else if (!formObj.sourceApplication) {
 					msg = '请选择源应用'
-				} else if (!this[this.activeName + 'Form'].sourceHostIp) {
+				} else if (!formObj.sourceHostIp) {
 					msg = '请选择源主机'
-				} else if (type === '2' && !this[this.activeName + 'Form'].sourceLib) {
+				} else if (type === '2' && !formObj.sourceLib) {
 					msg = '请填写源库'
-				} else if (type === '3' && !this[this.activeName + 'Form'].sourceTable) {
+				} else if (type === '3' && !formObj.sourceTable) {
 					msg = '请填写源表'
-				} else if (!this[this.activeName + 'Form'].targetApplication) {
+				} else if (!formObj.targetApplication) {
 					msg = '请选择目标应用'
-				} else if (!this[this.activeName + 'Form'].targetHostIp) {
+				} else if (!formObj.targetHostIp) {
 					msg = '请选择目标主机'
-				} else if (type === '2' && !this[this.activeName + 'Form'].targetLib) {
+				} else if (type === '2' && !formObj.targetLib) {
 					msg = '请填写目标库'
-				} else if (typeof type === 'object' && !this[this.activeName + 'Form'].recoveryTime) {
+				} else if (typeof type === 'object' && !formObj.recoveryTime) {
 					msg = '恢复时间不能为空!!'
-				} else if (!this[this.activeName + 'Form'].DBA) {
+				} else if (!formObj.DBA) {
 					msg = '请选择审批DBA!!'
-				} else if (typeof type === 'object' && this[this.activeName + 'Form'].recoveryTime) {
+				} else if (typeof type === 'object' && formObj.recoveryTime) {
 					msg = this.validateTime()
 				}
 				return msg
@@ -642,6 +887,7 @@
 						i.value = i.deptId;
 						this.oneDeptList.push(i)
 						this.twoDeptList.push(i)
+						this.fourDeptList.push(i)
 					}
 				})
 			},
@@ -657,6 +903,7 @@
 						i.value= i.envId;
 						this.oneEnvTypeList.push(i)
 						this.twoEnvTypeList.push(i)
+						this.fourEnvTypeList.push(i)
 					}
 				})
 			},
@@ -773,6 +1020,56 @@
 			resetForm (name) {
 				app.tools.resetFormData(this[name + "Form"])
 			},
+			/*清除联动关系的数据*/
+			clearRelatedData () {
+				//清空环境所选内容
+				this[this.activeName + 'Form'].envType=""
+				//清空应用
+				this[this.activeName + 'Form'].application = ''
+				this[this.activeName + 'Form'].host = ''
+				//清空主机
+				this[this.activeName + 'ApplicationList'] = []
+				this[this.activeName + 'HostList'] = []
+			},
+			/*获取应用数据*/
+			getApp (val) {
+				//应用/主机清空/审批人清空
+				let formObj = this[this.activeName + 'Form']
+				formObj.application = ''
+				formObj.host = ''
+				this[this.activeName + 'ApplicationList'] = []
+				this[this.activeName + 'HostList'] = []
+				val && app.post('/Gaea_database/getApp', {
+					deptId: formObj.dept,
+                    envId: val,
+                    appType: 0,
+                    userMip: this.$store.state.username
+				}, response => {
+					for (let i of response.data.data.appList) {
+						i.label = i.appName
+						i.value = i.appId
+						this[this.activeName + 'ApplicationList'].push(i)
+					}
+				})
+			},
+			/*获取主机*/
+			getHost (val) {
+				let formObj = this[this.activeName + 'Form']
+				//主机清空
+				formObj.host = ''
+				this[this.activeName + 'HostList'] = []
+
+				val && app.post('/Gaea_database/getServer', {
+					appId: val + ''
+				}, response => {
+					for (let i of response.data.data.serverList) {
+						this[this.activeName + 'HostList'].push({
+							label: i.role + i.ip + ':' + i.port,
+							value: i.tag_id
+						})
+					}
+				})
+			}
 
 		},
 		created () {

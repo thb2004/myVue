@@ -532,7 +532,14 @@
 						}
 						this.dialogTableData.push(i)
 					}
-					this.activeIndex = this.dialogTableData.length - 2;
+					if (this.dialogTableData.length > 0 && this.dialogTableData[this.dialogTableData.length - 1].taskName === '资源申请') {
+						this.activeIndex = 0
+					} else {
+						let newArr = this.dialogTableData.filter((item, index, arr) => {
+							return item.taskName != (arr[index + 1] || {}).taskName
+						});
+						this.activeIndex = newArr.length - 2
+					}
 				})
 			},
 			goProcessPage ({row, index, column}) {

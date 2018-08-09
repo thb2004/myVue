@@ -71,6 +71,7 @@
     	<el-dialog
     	  :title="title"
     	  :visible.sync="dialogVisible"
+    	  :close-on-click-modal='false'
     	  width="50%"
     	  @close='closeDialog'
     	  >
@@ -226,7 +227,7 @@
 				let formObj = this[this.activeName + 'DialogFormData']
 				let updateType = formObj['updateType']['updateType']
 				for (let item in this[this.activeName + 'HiddenFormField']) {
-					if (item == 'updateType' || item == updateType || item == 'masterName'|| item == 'ipAddress'|| item == 'original') {
+					if (item == 'updateType' || item == updateType || item == 'masterName'|| item == 'ipAddress'|| item ==='remark' || item == 'original') {
 						let val = formObj[item][item]
 						if (!val && (item != 'original')) {
 							return formObj[item].labelName + '必填'
@@ -344,14 +345,14 @@
 			resetHiddenFormField () {
 				this[this.activeName + 'HiddenFormField'] = Object.assign({}, this[this.activeName + 'SourceHiddenFormField'])
 			},
-			getData (params, type) {
+			getData (params, type, placeholder) {
 				let url = '/Gaea_api/getDeployfrom'
 				app.post(url, params, response => {
 					let data = {}
 					let labelObj = {}
 					for (let i of response.data.data) {
 						if (type === 'x86Update') {
-							if (['updateType','masterName','ipAddress'].indexOf(i.cloumn) != -1) {
+							if (['updateType','masterName','ipAddress', 'remark'].indexOf(i.cloumn) != -1) {
 								this[type + 'HiddenFormField'][i.cloumn] = true;
 								this[type + 'SourceHiddenFormField'][i.cloumn] = true;
 							} else {
@@ -378,6 +379,9 @@
 								})
 							}
 						}
+						if (i.cloumn === 'remark') {
+							app.tools.setInputPlaceholder(i, placeholder)
+						}
 					}
 					this[type + 'TableHeadName'] = Object.assign({}, labelObj)
 					this[type + 'DialogFormData'] = Object.assign({}, data)
@@ -401,16 +405,16 @@
 			//x86资源申请下拉框的下拉选项
 			this.getData({
 				typeCode: 'x86Add'
-			}, 'x86Add')
+			}, 'x86Add', '请输入资源申请的目的')
 			//x86资源变更表格下拉框的下拉选项
 			this.getData({
 				typeCode: 'x86Update'
-			}, 'x86Update')
+			}, 'x86Update', '请输入资源变更的目的')
 
 			//x86资源回收表格下拉框的下拉选项
 			this.getData({
 				typeCode: 'x86Recycle'
-			}, 'x86Recycle')
+			}, 'x86Recycle', '请输入资源回收的目的')
 
 			//获取领域下拉选项
 			this.getRegionData()

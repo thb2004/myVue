@@ -114,24 +114,30 @@
 						<div class="empty"></div>
 
 						<div class="compenent-form">
-							<el-row class='m-t20' :gutter='30'>
-								<el-col :md='1'>
-									<el-button @click='refresh' type='primay' class='fa fa-refresh search-btn'></el-button>
-								</el-col>
-
-								<el-col :md='{span:5,offset:12}'>
-								    <el-select v-model="status" placeholder="请选择">
-					                   <el-option label='全部' value='0'></el-option>
-					                   <el-option label='可用' value='1'></el-option>
-					                   <el-option label='不可用' value='-1'></el-option>
-								    </el-select>
-								</el-col>
-								<el-col :md='6'>
-									<el-input v-model="searchText" placeholder='请输入搜索条件'>
-										<el-button @click='search' slot="append" icon="el-icon-search" class='search-btn'></el-button>
-									</el-input>
-								</el-col>
-							</el-row>
+							<el-form label-width='60px'>
+								<el-row class='m-t20' :gutter='30'>
+									<el-col :md='1'>
+										<el-button @click='refresh' type='primay' class='fa fa-refresh search-btn'></el-button>
+									</el-col>
+									
+									<el-col :md='{span:5,offset:12}'>
+										<el-form-item label='状态'>
+										    <el-select v-model="status" placeholder="请选择">
+							                   <el-option label='全部' value='0'></el-option>
+							                   <el-option label='可用' value='1'></el-option>
+							                   <el-option label='不可用' value='-1'></el-option>
+										    </el-select>
+									    </el-form-item>
+									</el-col>
+									<el-col :md='6'>
+										<el-form-item>
+											<el-input v-model="searchText" placeholder='请输入搜索条件'>
+												<el-button @click='search' slot="append" icon="el-icon-search" class='search-btn'></el-button>
+											</el-input>
+										</el-form-item>
+									</el-col>
+								</el-row>
+							</el-form>
 							<v-table 
 								:data='oneTableData' 
 								:tableHeadName='oneTableHeadName'
@@ -165,24 +171,30 @@
 
 					<el-tab-pane label="我的审批列表" name="two">
 						<div class="compenent-form">
-							<el-row :gutter='30'>
-								<el-col :md='1'>
-									<el-button @click='approvalRefresh' type='primay' class='fa fa-refresh search-btn'></el-button>
-								</el-col>
-
-								<el-col :md='{span:5,offset:12}'>
-								    <el-select v-model="approvalStatus" placeholder="请选择">
-					                   <el-option label='全部' value='0'></el-option>
-					                   <el-option label='可用' value='1'></el-option>
-					                   <el-option label='不可用' value='-1'></el-option>
-								    </el-select>
-								</el-col>
-								<el-col :md='6'>
-									<el-input v-model="approvalSearchText" placeholder='请输入搜索条件'>
-										<el-button @click='approvalSearch' slot="append" icon="el-icon-search" class='search-btn'></el-button>
-									</el-input>
-								</el-col>
-							</el-row>
+							<el-form label-width='60px'>
+								<el-row :gutter='30'>
+									<el-col :md='1'>
+										<el-button @click='approvalRefresh' type='primay' class='fa fa-refresh search-btn'></el-button>
+									</el-col>
+									<el-col :md='{span:5,offset:12}'>
+										<el-form-item label='状态'>
+										    <el-select v-model="approvalStatus" placeholder="请选择">
+							                   <el-option label='全部' value='0'></el-option>
+							                   <el-option label='待审核' value='1'></el-option>
+							                   <el-option label='审核通过' value='2'></el-option>
+							                   <el-option label='拒绝' value='3'></el-option>
+										    </el-select>
+										</el-form-item>
+									</el-col>
+									<el-col :md='6'>
+										<el-form-item>
+											<el-input v-model="approvalSearchText" placeholder='请输入搜索条件'>
+												<el-button @click='approvalSearch' slot="append" icon="el-icon-search" class='search-btn'></el-button>
+											</el-input>
+										</el-form-item>
+									</el-col>
+								</el-row>
+							</el-form>
 							<v-table 
 								:data='twoTableData' 
 								:tableHeadName='twoTableHeadName'
@@ -630,7 +642,7 @@
 						i.approvalOperator = i.Status
 						this.twoTableData.push(i)
 					}
-					this.twoTableData.reverse()
+					//this.twoTableData.reverse()
 					this.twoTotal = res.data.Data.counts;
 				})
 			},

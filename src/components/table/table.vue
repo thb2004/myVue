@@ -49,10 +49,11 @@
           :key='key' 
           :label='value' 
           :sortable='isSort && key==="createTime"'
+          :width='isSetTableHeadWidth && tableHeadObj[key]'
           :min-width="key==='no_success_result' || key==='db_all' || key==='MEMORY_USED' || key==='doc_subject' || key==='opComment' ? '160' : key==='hostname' || key==='app_administrator' || key==='COMMAND' || key==='DBA' || key==='db_port' || key==='db_name' || key==='exe_cost_time' ? '100' : key==='ticketNumber' || key==='createTime' || key==='modifyTime' ? '180' : ''"
         >
           <template slot-scope="scope">
-            <div v-if='key==="role" || key==="group_dns" || key==="exe_sql" || key==="no_success_result" || key==="result_output" || key==="INFO" || key==="sql" || key==="remark" || key==="cmd"' :class='key'>
+            <div v-if='key==="role" || key==="group_dns" || key==="exe_sql" || key==="no_success_result" || key==="result_output" || key==="INFO" || key==="sql" || key==="remark" || key==="cmd" || showTips[key]' :class='key'>
               <el-tooltip placement="bottom" popper-class="toolTipClass">
                 <div slot="content">{{scope.row[key]}}</div>
                 <span>{{scope.row[key]}}</span>
@@ -131,6 +132,10 @@
                 <span :class='["common", scope.row.Status === "1" ? "approving" : scope.row.Status === "2" ? "approve-success" : "approve-reject"]'>{{scope.row[key]}}</span>
             </div>
 
+            <div v-else-if='key==="backup_result_type"' :class='key'>
+                <span :class='["common", scope.row[key] === "备份失败" ? "approve-reject" : "approve-success"]'>{{scope.row[key]}}</span>
+            </div>
+
             <div v-else-if='key==="MonitorLink" && isShowIcon' :class='key'>
                 <a v-for='(item,index) in scope.row[key].split(";")' :key='index' :href='item' v-show='item' target="_blank">
                    <i class="fa fa-lg fa-chain" style='color:#0e90d2'></i>
@@ -196,6 +201,22 @@
             showNoMargin: {
               type: Boolean,
               default: false,
+            },
+            isSetTableHeadWidth: {
+              type: Boolean,
+              default: false,
+            },
+            tableHeadObj: {
+              type: Object,
+              default: function () {
+                return {}
+              }
+            },
+            showTips: {
+              type: Object,
+              default: function () {
+                return {}
+              }
             },
             isShowIcon: {
               type: Boolean,

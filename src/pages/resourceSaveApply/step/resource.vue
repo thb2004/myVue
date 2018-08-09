@@ -86,6 +86,7 @@
 	    <el-dialog
     	  :title="title"
     	  :visible.sync="dialogVisible"
+    	  :close-on-click-modal='false'
     	  width="50%"
     	  @close='closeDialog'
     	  >
@@ -327,7 +328,8 @@
 			emitFromChild(key) {
 				app.tools.emitFromChild(this, key)
 			},
-			getData (url, params, type) {
+			getData (params, type, placeholder) {
+				let url = '/Gaea_api/getDeployfrom' 
 				app.post(url, params, response => {
 					let data = {}
 					let labelObj = {}
@@ -348,6 +350,9 @@
 								})
 							}
 						}
+						if (i.cloumn === 'remark') {
+							app.tools.setInputPlaceholder(i, placeholder)
+						}
 					}
 					this[type + 'TableHeadName'] = Object.assign({}, labelObj)
 					this[type + 'DialogFormData'] = Object.assign({}, data)
@@ -366,31 +371,31 @@
 		},
 		created () {
 			//获取san申请表格下拉框的下拉选项
-			this.getData('/Gaea_api/getDeployfrom', {
+			this.getData({
 				typeCode: 'sanAdd'
-			}, 'SANApply')
+			}, 'SANApply', '请输入资源申请的目的')
 
 			//获取san回收表格下拉框的下拉选项
 
-			this.getData('/Gaea_api/getDeployfrom', {
+			this.getData({
 				typeCode: 'sanRecycle'
-			}, 'SANRecycle')
+			}, 'SANRecycle', '请输入资源回收的目的')
 
 			//获取nas申请表格下拉框的下拉选项
 
-			this.getData('/Gaea_api/getDeployfrom', {
+			this.getData({
 				typeCode: 'nasAdd'
-			}, 'NASApply')
+			}, 'NASApply', '请输入资源申请的目的')
 
 			//获取nas回收表格下拉框的下拉选项
-			this.getData('/Gaea_api/getDeployfrom', {
+			this.getData({
 				typeCode: 'nasRecycle'
-			}, 'NASRecycle')
+			}, 'NASRecycle', '请输入资源回收的目的')
 
 			//获取nas变更表格下拉框的下拉选项
-			this.getData('/Gaea_api/getDeployfrom', {
+			this.getData({
 				typeCode: 'NASChange'
-			}, 'NASChange') 
+			}, 'NASChange', '请输入资源变更的目的') 
 
 			//获取领域下拉选项
 			this.getRegionData()

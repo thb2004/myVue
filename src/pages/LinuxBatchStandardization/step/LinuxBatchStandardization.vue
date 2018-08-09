@@ -11,7 +11,7 @@
 									    <el-input
 									      type="textarea"
 									      :rows='6'
-									      :placeholder="'填写格式如下：\nIP1:password \nIP2:password\n或者格式如下：\nIP1\nIP2'"
+									      :placeholder="'填写格式如下：\nIP1;password \nIP2;password\n或者格式如下：\nIP1\nIP2'"
 									      v-model="oneForm.iplist">
 									    </el-input>
 									</el-form-item>

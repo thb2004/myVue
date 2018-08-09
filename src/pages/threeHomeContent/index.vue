@@ -36,8 +36,8 @@
 					<p class='title'>公告</p>
 					<ul>
 						<li><a href="https://mp.weixin.qq.com/s/9bJriW-k1imQFseoXQZrCA" target="_blank" class='link'>雅典娜自动化平台产品在7月16日正式发布</a></li>
-						<li>云资源平台和云系统平台功能和需求对接人:丁以然,程序bug对接人：刘振南</li>
-						<li>云数据库平台功能和需求对接人:丁以然,程序bug对接人：郭鹏姣</li>
+						<li>云资源平台和云系统平台功能和需求对接人：丁以然<span class='float-r'>程序bug对接人：刘振南</span></li>
+						<li>云数据库平台功能和需求对接人：丁以然<span class='float-r'>程序bug对接人：郭鹏姣</span></li>
 					</ul>
 				</el-col>
 	    	</el-row>

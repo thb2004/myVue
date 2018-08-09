@@ -59,6 +59,11 @@ export default {
 					childTitle: 'IP资源',
 					index: 0,
 				},
+				netResourceFirstPage: {
+					title: '资源申请变更',
+					childTitle: '网络资源',
+					index: 0,
+				},
 				myMattersFirstPage: {
 					title: '我的事项',
 					index: 0,
@@ -210,6 +215,9 @@ export default {
 						}, {
 							text: 'IP资源',
 							name: 'IPResourceFirstPage'
+						}, {
+							text: '网络资源',
+							name: 'netResourceFirstPage'
 						}],
 						isAccordion: true,
 						icon: require('../assets/images/resource.png'),
@@ -435,6 +443,9 @@ export default {
 						break;
 					case '云管理平台':
 						i.isShow = userLevel === '0';
+						break;
+					case '云容器平台':
+						i.isShow = ['0','5'].indexOf(userLevel) != -1;
 						break;
 				}
 			}

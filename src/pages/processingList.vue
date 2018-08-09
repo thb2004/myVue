@@ -123,6 +123,7 @@
 		<el-dialog
        	  :title="title"
        	  :visible.sync="dialogVisible"
+       	  :close-on-click-modal='false'
        	  width="50%"
        	  @close='closeDialog'
        	  >
@@ -132,13 +133,14 @@
    		    	:span='12'
 		    	:isOffset='false'
 		    	:isGutter='true'
-		    	labelWidth='93px'
+		    	:isChangePlaceholder='true'
+		    	:labelWidth='resourceType === "networkF5" ? "140px" : resourceType === "networkDNS" ? "155px" : "100px"'
    		    	@emitFromChild='emitFromChild'
    		    >
    	    	</v-form>
 
 	    	<el-row>
-	    		<el-col :md='22' class='text-right'>
+	    		<el-col :md='24' class='text-right'>
     			  	<el-button type="primary" @click="addData">确 定</el-button>
     				<el-button @click="dialogVisible = false">取 消</el-button>
 	    		</el-col>
@@ -177,6 +179,7 @@
 	export default {
 		data () {
 			return {
+				proccessStep: '1',		//记录审批流程到了第几步
 				type: '',
 				currentName: 'processingList',
 				showOperator: true,
@@ -248,7 +251,7 @@
 				let formData = this.storageAuditDialogFormData;
 				let tableData = this.storageAuditTableData;
 				let tableHeadName = this.storageAuditDialogFormData;
-				let res = app.validator.isFormCheck(formData, true)
+				let res = app.validator.isFormCheck(formData)
 				if (res) {
 					this.$alert(res, {
 						title: '提示',
@@ -277,7 +280,7 @@
 				let formData = this[this.activeName + 'DialogFormData'];
 				let tableData = this[this.activeName + 'TableData'];
 				let tableHeadName = this[this.activeName + 'TableHeadName'];
-				let res = app.validator.isFormCheck(formData)
+				let res = app.validator.isFormCheck(formData, true)
 				let obj = {
 					storageType: this.resourceType
 				}
@@ -340,7 +343,7 @@
 				this.index = $index
 				/*获取编辑内容并将编辑的内容赋予formdata*/
 				for (let k in row) {
-					if (!row[k]) {			//当前td没有数据，，则此项不能修改
+					if (!row[k] && ['networkDNS', 'networkF5', 'networkFIR'].indexOf(this.resourceType) === -1) {			//当前td没有数据，，则此项不能修改
 						this[this.activeName + 'DialogFormData'][k].disabled = true;
 						this[this.activeName + 'DialogFormData'][k].required = '';
 					} else {
@@ -417,7 +420,9 @@
 							this.isShowStorageAudit = true
 							this.getTableHead('storageAudit', 'storageAudit')
 						}
-
+					}
+					if (['networkDNS', 'networkF5', 'networkFIR'].indexOf(this.resourceType) != -1 && this.proccessStep === '4') {
+						this.showOperator = true
 					}
 					this.getTableHead(res.data.data.resourceType, 'one')
 					this.getTableBody(res.data.data.dataIds)
@@ -435,6 +440,7 @@
 				}, res => {
 					let data = {}
 					let labelObj = {}
+					let placeholder = ''
 					for (let i of res.data.data) {
 						i.labelName = i.lableName
 						i[i.cloumn] = i.defaultValue || ''
@@ -459,9 +465,15 @@
 								})
 							}
 						}
-						this[name + 'TableHeadName'] = Object.assign({}, labelObj)
-						this[name + 'DialogFormData'] = Object.assign({}, data)
+						if (i.cloumn === 'remark') {
+							if (type) {
+								placeholder = type.toLowerCase().indexOf('add') != -1 ? '请输入资源申请的目的' : type.toLowerCase().indexOf('recycle') != -1 ? '请输入资源回收的目的' : '请输入资源变更的目的'
+							}
+							app.tools.setInputPlaceholder(i, placeholder)
+						}
 					}
+					this[name + 'TableHeadName'] = Object.assign({}, labelObj)
+					this[name + 'DialogFormData'] = Object.assign({}, data)
 				})
 
 			},
@@ -496,7 +508,14 @@
 						}
 						this.approveRecordTableData.push(i)
 					}
-					this.activeIndex = this.approveRecordTableData.length - 2;
+					if (this.approveRecordTableData.length > 0 && this.approveRecordTableData[this.approveRecordTableData.length - 1].taskName === '资源申请') {
+						this.activeIndex = 0
+					} else {
+						let newArr = this.approveRecordTableData.filter((item, index, arr) => {
+							return item.taskName != (arr[index + 1] || {}).taskName
+						});
+						this.activeIndex = newArr.length - 2
+					}
 				})
 			},
 
@@ -507,7 +526,11 @@
 					taskId
 				}, res => {
 					for (let i of res.data.data) {
+						i.nodeName === '资源管理' && (this.proccessStep = '4')
 						this.processingList.push(i)
+					}
+					if (['networkDNS', 'networkF5', 'networkFIR'].indexOf(this.resourceType) != -1 && this.proccessStep === '4') {
+						this.showOperator = true
 					}
 				})
 			},
@@ -524,6 +547,7 @@
 				//获取审批流程
 				this.viewProcess(pages.params.taskId)
 			}
+			
 		},
 	}
 </script>

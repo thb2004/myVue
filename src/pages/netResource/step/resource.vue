@@ -1,104 +1,113 @@
 <template>
     <div class='box'>
-    	<div class="open-resource">
-    		<div class='main-top'>
-	    		<p class='title'>资源信息</p>
-	    		<v-form 
-		    		:formData='formData'
-		    		:isShowProductModule='isShowProductModule'
-					:isShowSearchInput='isShowSearchInput'
-					:isShowNoData='isShowNoData'
-					:activeClass='activeClass' 
-		    		@emitFromChild='emitFromChild'
-					@querySearch='querySearch'
-					@focus='focus'
-			    	ref='form'
-		    	>
-		    	</v-form>
-	    	</div>
-	    	<div class="empty"></div>
-	    	<div class='main-middle'>
-	    		<el-tabs v-model="activeName">
-		    	    <el-tab-pane label="MYSQL申请" name="mysql">
-						
+    	<div class='net-resource'>
+    		<div class='main-middle'>
+		    	<el-tabs v-model="activeName">
+		    		<div class="compenent-form">
+			    		<v-form 
+				    		:formData='formData'
+				    		:isShowProductModule='isShowProductModule'
+							:isShowSearchInput='isShowSearchInput'
+							:isShowNoData='isShowNoData'
+							:activeClass='activeClass' 
+				    		@emitFromChild='emitFromChild'
+							@querySearch='querySearch'
+							@focus='focus'
+					    	ref='form'
+				    	>
+				    	</v-form>
+			    	</div>
+		    	    <el-tab-pane label="F5自动化表单" name="F5">
+		    	    	<div class="empty"></div>
 						<v-table 
 							@editRow='editRow'
-							:data='mysqlTableData' 
-							:tableHeadName='mysqlTableHeadName'  
+							:data='F5TableData' 
+							:tableHeadName='F5TableHeadName'  
 						></v-table>
 
 	    	    	    <div class='btn-wraper btn-add'>
 	    	    	    	<button @click="validatorTableLength">+</button>
 	    	    	    </div>
 		    	    </el-tab-pane>
-		    	    <el-tab-pane label="Redis申请" name="redis">
-						<v-table 
+		    	    <el-tab-pane label="DNS自动化表单" name="DNS">
+		    	    	<div class="empty"></div>
+		    	    	<v-table 
 							@editRow='editRow'
-							:data='redisTableData' 
-							:tableHeadName='redisTableHeadName'  
+							:data='DNSTableData' 
+							:tableHeadName='DNSTableHeadName'  
 						></v-table>
 
 	    	    	    <div class='btn-wraper btn-add'>
 	    	    	    	<button @click="validatorTableLength">+</button>
 	    	    	    </div>
 		    	    </el-tab-pane>
-		    	    <el-tab-pane label="MongoDB申请" name="mongodb">
-						<v-table 
+
+		    	     <el-tab-pane label="防火墙" name="networkFIR">
+		    	    	<div class="empty"></div>
+		    	    	<v-table 
 							@editRow='editRow'
-							:data='mongodbTableData' 
-							:tableHeadName='mongodbTableHeadName'  
+							:data='networkFIRTableData' 
+							:tableHeadName='networkFIRTableHeadName'  
 						></v-table>
 
 	    	    	    <div class='btn-wraper btn-add'>
 	    	    	    	<button @click="validatorTableLength">+</button>
 	    	    	    </div>
 		    	    </el-tab-pane>
-		    	</el-tabs>
+			    </el-tabs>
 
-    	    	<div class='btn-group-lg'>
-    	    		<el-button type="primary" @click="save('form')">保 存</el-button>
-    				<el-button @click="resetForm('form')">重 置</el-button>
-    	    	</div>
-	    	</div>
-    		
-    	</div>
-    	<el-dialog
-    	  :title="title"
-    	  :visible.sync="dialogVisible"
-    	  :close-on-click-modal='false'
-    	  width="50%"
-    	  @close='closeDialog'
-    	  >
-	    	<v-form 
-		    	ref='form' 
-		    	:formData='activeName === "mysql" ? mysqlDialogFormData : 
-		    			   activeName === "redis" ? redisDialogFormData : 
-		    			   mongodbDialogFormData'
-		    	:span='12'
+	    	    <div class='btn-group-lg'>
+	        		<el-button type="primary" @click="save('form')">保 存</el-button>
+	    			<el-button @click="resetForm('form')">重 置</el-button>
+	        	</div>
+    		</div>
+	   </div>
+
+   	    <el-dialog
+       	  :title="title"
+       	  :visible.sync="dialogVisible"
+       	  :close-on-click-modal='false'
+       	  width="50%"
+       	  @close='closeDialog'
+       	  >
+   	    	<v-form 
+   		    	ref='form' 
+   		    	:formData='activeName === "F5" ? F5DialogFormData : activeName === "DNS" ? DNSDialogFormData : networkFIRDialogFormData'
+   		    	:span='12'
 		    	:isOffset='false'
 		    	:isGutter='true'
-		    	labelWidth='93px'
-		    	@emitFromChild='emitFromChild'
-		    >
-	    	</v-form>
+		    	:labelWidth='activeName === "networkFIR" ? "100px" : activeName === "F5" ? "140px" : "155px"'
+   		    	@emitFromChild='emitFromChild'
+   		    >
+   	    	</v-form>
 	    	<el-row>
 	    		<el-col class='text-right'>
     			  	<el-button type="primary" @click="addData">确 定</el-button>
-	    	    	<el-button @click="dialogVisible = false">取 消</el-button>
+   	    	    	<el-button @click="dialogVisible = false">取 消</el-button>
 	    		</el-col>
 	    	</el-row>
-    	</el-dialog>
+       	</el-dialog>
     </div>
 </template>
 
 <style lang='scss'>
-	
+	.net-resource {
+		.main-middle {
+			padding: 0;
+		}
+		.el-tabs__header,.compenent-form,{
+			padding: 0 20px;
+		}
+		.component-table {
+			padding: 20px 20px 0 20px;
+		}
+	}
 </style>
+
 <script type="text/javascript">
 	export default {
 		data () {
 			return {
-				currentName: 'openResource',
 				title: '添加',
 				index: 0,					//table表格索引
 				activeClass: '',			
@@ -106,92 +115,73 @@
 				isShowProductModule: false,	//产品模块下拉框是否展示选择产品模块选项
 				isShowSearchInput: false,	//产品模块下拉框是否展示模糊搜索输入框
 				isShowNoData: false,		//产品模块下拉框是否展示暂无数据
+				activeName: 'F5',
 				dialogVisible: false,
 				formData: {
-						
-						groupId: {
-							groupId: '',
-							labelName: '部门',
-							selectData: [],
-							required: 'required'
-						},
-						moduleId: {
-							moduleId: '',
-							labelName: '产品模块',
-							selectData: [],
-							required: 'required'
-						},
-						env: {
-							env: '',
-							labelName: '环境类型',
-							selectData: [
-								{
-									label: '开发环境',
-									value: 'DEV'
-								},
-								{
-									label: '测试环境',
-									value: 'SIT'
-								},
-								{
-									label: 'uat环境',
-									value: 'UAT'
-								},
-								{
-									label: 'ver环境',
-									value: 'VER'
-								},
-								{
-									label: '生产环境',
-									value: 'PRD'
-								},
-								{
-									label: '容灾环境',
-									value: 'DIS'
-								},
-							],
-							required: 'required'
-						},
-						applicationId: {
-							applicationId: '',
-							labelName: '应用名称',
-							selectData: [],
-							required: 'required'
-						},
-						
-						applicationManager: {
-							applicationManager: '',
-							labelName: '应用管理员',
-							type: 'input',
-							required: 'required'
-						},
-						systemManager: {
-							systemManager: '',
-							labelName: '系统管理员',
-							type: 'input',
-							required: 'required'
-						},
+					groupId: {
+						groupId: '',
+						labelName: '部门',
+						selectData: [],
+						required: 'required'
+					},
+					moduleId: {
+						moduleId: '',
+						labelName: '产品模块',
+						selectData: [],
+						required: 'required'
+					},
+					env: {
+						env: '',
+						labelName: '环境类型',
+						selectData: [{
+							label: '开发环境',
+							value: 'DEV'
+						}, {
+							label: '测试环境',
+							value: 'SIT'
+						}, {
+							label: 'uat环境',
+							value: 'UAT'
+						}, {
+							label: 'ver环境',
+							value: 'VER'
+						}, {
+							label: '生产环境',
+							value: 'PRD'
+						}, {
+							label: '容灾环境',
+							value: 'DIS'
+						}, ],
+						required: 'required'
+					},
+					applicationId: {
+						applicationId: '',
+						labelName: '应用名称',
+						selectData: [],
+						required: 'required'
+					},
+					applicationManager: {
+						applicationManager: '',
+						labelName: '应用管理员',
+						type: 'input',
+						required: 'required'
+					},
+					systemManager: {
+						systemManager: '',
+						labelName: '系统管理员',
+						type: 'input',
+						required: 'required'
+					},
 				},
-				mysqlDialogFormData: {
-					
-				},
-				redisDialogFormData: {
-					
-				},
-				mongodbDialogFormData: {},
-				activeName: 'mysql',
-				mysqlTableData: [],
-		        mysqlTableHeadName: {
-		 
-		        },
-		        redisTableData:[],
-		        redisTableHeadName: {
-		 
-		        },
-		        mongodbTableData:[],
-		        mongodbTableHeadName: {
-		 
-		        },
+				F5TableData: [],
+		        F5TableHeadName: {},
+		        DNSTableData: [],
+		        DNSTableHeadName: {},
+		        F5DialogFormData: {},
+			    DNSDialogFormData: {},
+			    networkFIRTableData: [],
+			    networkFIRTableHeadName: {},
+			    networkFIRDialogFormData: {},
 			}
 		},
 		methods: {
@@ -213,7 +203,7 @@
 				let tableData = this[this.activeName + 'TableData'];
 				let tableHeadName = this[this.activeName + 'TableHeadName'];
 				let obj = {}
-				let res = app.validator.isFormCheck(formData)
+				let res = app.validator.isFormCheck(formData, true)
 				if (res) {
 					this.$alert(res, {
 						title: '提示',type: 'info'
@@ -228,7 +218,7 @@
 					}
 				} else {
 					for (let key in formData) {
-						obj[key] = formData[key][key].toString();
+						obj[key] = formData[key][key].toString()
 					}
 					tableData.push(obj)
 				}
@@ -246,9 +236,10 @@
 				/*校验数据*/
 				let res = app.validator.isFormCheck(this.formData)
 				let url = '/Gaea_api/requestFrom'
+				let resourceType = this.activeName === 'F5' ? 'networkF5' : this.activeName === 'DNS' ? 'networkDNS' : 'networkFIR'
 				let params = {
 					json: this[this.activeName + 'TableData'],
-					resourceType: this.activeName + 'Add',
+					resourceType,
 					applicationName: this.applicationName,
 					userid: this.$store.state.username
 				};
@@ -263,7 +254,6 @@
 					this.$alert("至少填写一行数据", {
 						title: '提示',type: 'info'
 					})
-					return
 				}
 				for (let key in this.formData) {
 					params[key] = this.formData[key][key]
@@ -272,7 +262,7 @@
 			},
 			saveData (url, params) {
 				app.post(url, params, res => {
-					app.go({path: 'openResourceProcessingList', params: {ticketNumber: res.data.data.ticketNum, taskId: res.data.data.taskId}})
+					app.go({path: 'netResourceProcessingList', params: {ticketNumber: res.data.data.ticketNum, taskId: res.data.data.taskId}})
 				}, err => {
 					this.$alert('提交失败', {
 						title: '提示',
@@ -292,8 +282,7 @@
 			emitFromChild(key) {
 				app.tools.emitFromChild(this, key)
 			},
-			getData (params, type) {
-				let url = '/Gaea_api/getDeployfrom'
+			getData (url, params, type) {
 				app.post(url, params, response => {
 					let data = {}
 					let labelObj = {}
@@ -303,9 +292,10 @@
 						i.disabled = i.disabled != 'true' ? false : true
 						i.type = i.inputType
 						data[i.cloumn] = i
-						labelObj[i.cloumn] = i.lableName		
+						labelObj[i.cloumn] = i.lableName	
 						if (i.inputType === 'select') {
 							data[i.cloumn].selectData = []
+
 							let obj = JSON.parse(i.value)
 							for (let key in obj) {
 								data[i.cloumn].selectData.push({
@@ -314,6 +304,15 @@
 								})
 							}
 						}
+
+						if (i.cloumn === 'ipdress' || i.cloumn === 'toipdress') {
+							i.placeholder = '格式如下：\nIP1 \nIP2'
+						} else if (i.cloumn === 'toport') {
+							i.placeholder = '格式如下：\nPORT1 \nPORT2'
+						} else if (i.cloumn === 'ipAddressport') {
+							i.placeholder = '格式如下：\nIP1:PORT \nIP2:PORT'
+						}
+
 					}
 					this[type + 'TableHeadName'] = Object.assign({}, labelObj)
 					this[type + 'DialogFormData'] = Object.assign({}, data)
@@ -331,21 +330,23 @@
 			},
 		},
 		created () {
-			//获取mysql主机类型table表格下拉框的下拉选项
-			this.getData({
-				typeCode: 'mysqlAdd'
-			}, 'mysql')
-			//获取redis主机类型table表格下拉框的下拉选项
-			this.getData({
-				typeCode: 'redisAdd'
-			}, 'redis')
-			//获取mangdb主机类型table表格下拉框的下拉选项
-			this.getData({
-				typeCode: 'mongodbAdd'
-			}, 'mongodb')
+			//获取F5申请表格下拉框的下拉选项
+			this.getData('/Gaea_api/getDeployfrom', {
+				typeCode: 'networkF5'
+			}, 'F5')
+			//获取DNS表格下拉框的下拉选项
+			this.getData('/Gaea_api/getDeployfrom', {
+				typeCode: 'networkDNS'
+			}, 'DNS')
+
+			//获取防火墙表格下拉框的下拉选项
+			this.getData('/Gaea_api/getDeployfrom', {
+				typeCode: 'networkFIR'
+			}, 'networkFIR')
 
 			//获取领域下拉选项
 			this.getRegionData()
-		},
+		}
+
 	}
 </script>

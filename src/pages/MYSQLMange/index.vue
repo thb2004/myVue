@@ -405,13 +405,14 @@
 										</el-row>
 
 										<el-row>
-											<el-col :md='9'>
+											<el-col :md='11'>
 												<el-form-item label="查询时间范围">
 													<el-col :md='11'>
 							              				<el-date-picker
 						              				      v-model="threeSecondForm.startDate"
-						              				      type="datetime"
+						              				      type="date"
 						              				      popper-class='my-animation'
+						              				      value-format='yyyy-MM-dd HH:mm:ss'
 						              				      placeholder="开始时间">
 							              				</el-date-picker>
 													</el-col>
@@ -423,7 +424,8 @@
 													<el-col :md='11'>
 														<el-date-picker
 						              				      v-model="threeSecondForm.endDate"
-						              				      type="datetime"
+						              				      type="date"
+						              				      value-format='yyyy-MM-dd HH:mm:ss'
 						              				      placeholder="结束时间">
 							              				</el-date-picker>
 													</el-col>
@@ -1025,10 +1027,10 @@
 				let v_view_slave_check = this.threeFirstForm.slave ? 1: 0
 				let ipport_query = formObj.IPPort && formObj.IPPort.trim();
 				if (formObj.IPPort && this.activeName === 'three') {
-					if (formObj.IPPort.indexOf(':') < 0) {
+					if (!formObj.IPPort.match(/[:：]/g)) {
 						ipport_query = formObj.IPPort + ":3306"
 					} else {
-						ipport_query = formObj.IPPort.substring(0, formObj.IPPort.indexOf(':') + 1) + "3306"
+						ipport_query = formObj.IPPort.replace(/[:：].*$/g,':3306')
 					}	
 				}
 				if (msg) {

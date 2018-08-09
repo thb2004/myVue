@@ -309,7 +309,7 @@ export default {
 			case 'updateType':
 				let chhooseItem = vm[vm.activeName + 'DialogFormData'][key][key]
 				for (let key in vm[vm.activeName + 'TableHeadName']) {
-					if (key === 'updateType' || key === 'masterName' || key === 'ipAddress' || chhooseItem === key) {
+					if (key === 'updateType' || key === 'masterName' || key === 'ipAddress' || key ==='remark' || chhooseItem === key) {
 						vm[vm.activeName + 'HiddenFormField'][key] = true;
 					} else {
 						vm[vm.activeName + 'HiddenFormField'][key] = false;
@@ -332,7 +332,7 @@ export default {
 			case 'version':
 				let formObj = vm.currentName === 'openResource' ? vm[vm.activeName + 'DialogFormData'] :
 							  vm.currentName === 'processingList' ? vm.oneDialogFormData : {}	
-				if (['mariadb 10.1','3.2.4','3.2.9'].indexOf(formObj[key][key]) != -1) {	//版本为10.1则系统只能为6.9
+				if (['mariadb 10.1','3.2.4','3.2.9','4.0.1'].indexOf(formObj[key][key]) != -1) {	//版本为10.1则系统只能为6.9
 					formObj['os']['os'] = 'centos 6.9'
 					formObj['os'].disabled = true
 				} else if (formObj[key][key] === 'mariadb 10.3') {
@@ -572,7 +572,8 @@ export default {
 	 * @return    {[type]}                            [description]
 	 */
 	formatDate (dateStr, formatType=1) {
-		let date  = new Date(dateStr.replace(/\s*GMT/g, ''))
+		//let date  = new Date(dateStr.replace(/\s*GMT/g, ''))
+		let date  = new Date(dateStr)
 		let y = date.getFullYear();
 		let m = ('00' + (date.getMonth() + 1)).substr(-2)
 		let d =('00' + date.getDate()).substr(-2)
@@ -581,6 +582,8 @@ export default {
 		let ss = ('00' + date.getSeconds()).substr(-2)
 		if (formatType === 1) {
 			return y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss
+		} else if (formatType === 2) {
+			return y + '-' + m + '-' + d
 		}
 		return ''
 	},
@@ -645,5 +648,9 @@ export default {
 		}
 		return false
 	},
+
+	setInputPlaceholder (obj, placeholder) {
+		obj.placeholder = placeholder
+	}
 
 }
