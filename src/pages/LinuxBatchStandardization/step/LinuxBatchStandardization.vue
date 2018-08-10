@@ -132,6 +132,11 @@
 									        true-label='true'
 											false-label='false'
 								        ></el-checkbox>
+								        <el-checkbox label="Apache" 
+									        v-model="threeForm.apache"
+									        true-label='true'
+											false-label='false'
+								        ></el-checkbox>
 								        <el-checkbox label="备份客户端" 
 									        v-model="threeForm.backupclient"
 									        true-label='true'
@@ -310,6 +315,7 @@
 					tomcat: 'false',
 					jdk: 'false',
 					nginx: 'false',
+					apache: 'false',
 					backupclient: 'false',
 					zookeeper: 'false',
 					ipython: 'false',
@@ -401,7 +407,7 @@
 					let formObj = this[this.activeName + 'Form'];
 					let url = '';
 					let params = Object.assign(formObj, {mipuser: this.$store.state.username})
-					let arr = ['zabbixclient','zabbixclientdb','tomcat','jdk','nginx','backupclient','zookeeper','ipython','splunk','cli']
+					let arr = ['zabbixclient','zabbixclientdb','tomcat','jdk','nginx','apache','backupclient','zookeeper','ipython','splunk','cli']
 					let msg = app.tools.isChecked(formObj, arr)
 					console.log(valid)
 					if (valid) {

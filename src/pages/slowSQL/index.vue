@@ -176,7 +176,7 @@
 										</el-col>
 
 										<el-col>
-											<p class="title m-b20">排除</p>
+											<p class="title m-b20">表和执行时间过滤</p>
 										</el-col>
 										<el-col :md='9'>
 											<el-form-item label="sql执行时间超过">
