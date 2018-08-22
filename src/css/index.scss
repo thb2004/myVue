@@ -14,15 +14,18 @@ html {
     font-family: PingFangSC-Regular,'宋体',Verdana,Arial,Helvetica,sans-serif;
     font-size: 14px;
     color: #666666;
-    background: #0a1c2e;
+   /*  background: #0a1c2e; */
 }
 
 body {
     font-size: 14px;
-    /*避免dialog弹出框弹出时页面出现抖动*/
-    padding-right: 0 !important;
+    height: 100%;
+    overflow: hidden;
 }
 
+#app {
+    height: 100%;
+}
 
 
 a {

@@ -4,11 +4,11 @@
 			<div class='main-middle'>
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="Redis安装" name="one">
-						<div class="compenent-form">
-							<p class="my-remark"><span>提示：请分别选择部门，应用等；redis-4.0.8仅支持centos 7（默认只有生产环境安装zabbix并注册监控）</span></p>
-							<el-form rel='form' :model='oneForm' :label-width='labelWidth'>
+						<div>
+							<p class="my-remark m-b10"><span>提示：请分别选择部门，应用等；redis-4.0.8仅支持centos 7（默认只有生产环境安装zabbix并注册监控）</span></p>
+							<el-form rel='form' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select v-model="oneForm.dept" placeholder="请选择" clearable filterable
 												@change='selectDept("one")'
@@ -18,7 +18,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 									  <el-form-item label="环境">
 									      <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 									          <el-option v-for='(item,index) in oneEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -26,7 +26,7 @@
 									  </el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="应用">
 										    <el-select v-model="oneForm.region" placeholder="请选择" clearable filterable>
 		                 						<el-option v-for='(item,index) in oneRegionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -34,7 +34,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="集群架构">
 										    <el-select v-model="oneForm.cluster" placeholder="请选择" @change='showIpInput'>
 		                 						<el-option value="0" label='选择集群架构'></el-option>
@@ -46,7 +46,7 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="版本">
 										    <el-select v-model="oneForm.version" placeholder="请选择" :disabled='oneFormVersionDisabled'>
 		                 						<el-option value="0" label='选择版本'></el-option>
@@ -57,14 +57,14 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='20' class='required'>
+									<el-col :md='24' class='required'>
 										<el-form-item label="集群描述">
 										    <el-input v-model="oneForm.clusterDesc" placeholder='请输入'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="IP1:">
 										    <el-input v-model="oneForm.IP1" placeholder='192.168.30...'></el-input>
 										</el-form-item>
@@ -72,37 +72,35 @@
 								</el-row>
 
 								<el-row>
-									<el-col :md='9' v-if='isShowIp2' class='required'>
+									<el-col :md='12' v-if='isShowIp2' class='required'>
 										<el-form-item label="IP2:">
 										    <el-input v-model="oneForm.IP2" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
 								<el-row>
-									<el-col :md='9' v-if='isShowIp3' class='required'>
+									<el-col :md='12' v-if='isShowIp3' class='required'>
 										<el-form-item label="IP3:">
 										    <el-input v-model="oneForm.IP3" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
-								    <el-button @click="resetForm('oneForm')">重 置</el-button>
-								</div>
-
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
+							    <el-button @click="resetForm('oneForm')">重 置</el-button>
+							</div>
 						</div>
 
 						<div class="empty"></div>
 						
-						<div class="compenent-form">
-							<el-form rel='form' :model='one1Form' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='one1Form' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
 									<el-col>
 										<p class='title m-b20'>Redis实例列表清单</p>
 									</el-col>
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="部门">
 										    <el-select v-model="one1Form.dept" placeholder="请选择" clearable filterable
 												@change='selectDept("one1")'
@@ -111,7 +109,7 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="环境">
 										    <el-select v-model="one1Form.envType" placeholder="请选择" @change='getAppList(true)' clearable filterable>
 										        <el-option v-for='(item,index) in one1EnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -119,7 +117,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="应用">
 											<el-select v-model="one1Form.region" placeholder="请选择" clearable filterable>
 												<el-option v-for='(item,index) in one1RegionList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -127,7 +125,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="主机名(模糊查询)">
 											<el-input
 											  placeholder="请输入主机名"
@@ -136,30 +134,30 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="IP(模糊查询)">
 										    <el-input v-model="one1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="Role(模糊查询)">
 											<el-input v-model="one1Form.role"></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit('query')" :disabled='btnDisabled'>查 询</el-button>
-						    		<el-button @click="resetForm('one1Form')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit('query')" :disabled='btnDisabled'>查 询</el-button>
+					    		<el-button @click="resetForm('one1Form')">重 置</el-button>
+							</div>
 							<v-table 
 							   :data='oneTableData' 
 							   :tableHeadName='oneTableHeadName'
 							   :isShowComments='true'
+							   :showTips='showTips'
 							   @openRemarkDialog='view'
-							   class='redis-table'
+							   class='redis-table my-table'
 							></v-table>
 
 							<div class="block pagination-wraper">
@@ -176,85 +174,12 @@
 						</div>
 					</el-tab-pane>
 
-					<!-- <el-tab-pane label="Redis数据迁移" name="two">
-						<div class="compenent-form">
-							<el-form rel='form' :model='twoForm' :label-width='labelWidth'>
-								<el-row>
-									<el-col :md='{span:9,offset:15}'>
-										<el-form-item label="Key 过滤：">
-										    <el-input v-model="twoForm.keyword" placeholder='请输入关键字' suffix-icon="el-icon-search"></el-input>
-										</el-form-item>
-									</el-col>
-								</el-row>
-								<el-row>
-									<el-col :md='9'>
-										<el-form-item label="源ip：">
-										    <el-input v-model="twoForm.sourceIp" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="目的ip：">
-										    <el-input v-model="twoForm.targetIp" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :md='9'>
-										<el-form-item label="源端口：">
-										    <el-input v-model="twoForm.sourcePort" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="目的端口：">
-										    <el-input v-model="twoForm.targetPort" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :md='9'>
-										<el-form-item label="源DB名：">
-										    <el-input v-model="twoForm.sourceDb" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="目的DB名：">
-										    <el-input v-model="twoForm.targetDb" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-								</el-row>
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit">迁 移</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
-							</el-form>
-						</div>
-					
-						<div class="empty"></div>
-					
-						<div class="compenent-form">
-							<p class="title m-b20">数据迁移记录</p>
-							<v-table 
-								:data='twoTableData' 
-								:tableHeadName='twoTableHeadName'
-								:showOperator='false'
-							></v-table>
-					
-							<div class="block pagination-wraper">
-							   <el-pagination
-							     v-if='twoTableData.length > 0'
-							   	 @size-change='sizeChange'
-							   	 @current-change='currentChange'
-							     :page-sizes="[10, 15, 20, 25, 30, 35, 40, 45, 50]"
-							     layout="total, sizes, prev, pager, next, jumper"
-							     :page-size='twoPageSize'
-							     :total="twoTotal">
-							   </el-pagination>
-							</div>
-						</div>	
-					</el-tab-pane> -->
-
 					<el-tab-pane label="Mongodb安装" name="three">
-						<div class="compenent-form">
-							<p class="my-remark"><span>提示：请分别选择部门，应用等（默认只有生产环境安装zabbix并注册监控）</span></p>
-							<el-form rel='form' :model='threeForm' :label-width='labelWidth'>
+						<div>
+							<p class="my-remark m-b10"><span>提示：请分别选择部门，应用等（默认只有生产环境安装zabbix并注册监控）</span></p>
+							<el-form rel='form' :model='threeForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select v-model="threeForm.dept" placeholder="请选择" clearable filterable
 												@change='selectDept("three")'
@@ -264,7 +189,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 									  <el-form-item label="环境">
 									      <el-select v-model="threeForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 									          <el-option v-for='(item,index) in threeEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -272,7 +197,7 @@
 									  </el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="应用">
 										    <el-select v-model="threeForm.region" placeholder="请选择" clearable filterable>
 		                 						<el-option v-for='(item,index) in threeRegionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -280,7 +205,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="集群架构">
 										    <el-select v-model="threeForm.cluster" placeholder="请选择" @change='showIpInput'>
 		                 						<el-option value="0" label='选择集群架构'></el-option>
@@ -290,7 +215,7 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="版本">
 										    <el-select v-model="threeForm.version" placeholder="请选择">
 		                 						<el-option value="0" label='选择版本'></el-option>
@@ -299,57 +224,56 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='20' class='required'>
+									<el-col :md='24' class='required'>
 										<el-form-item label="集群描述">
 										    <el-input v-model="threeForm.clusterDesc" placeholder='请输入'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="IP1:">
 										    <el-input v-model="threeForm.IP1" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
 								<el-row>
-									<el-col :md='9' v-if='isShowIp2' class='required'>
+									<el-col :md='12' v-if='isShowIp2' class='required'>
 										<el-form-item label="IP2:">
 										    <el-input v-model="threeForm.IP2" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
 								<el-row>
-									<el-col :md='9' v-if='isShowIp3' class='required'>
+									<el-col :md='12' v-if='isShowIp3' class='required'>
 										<el-form-item label="IP3:">
 										    <el-input v-model="threeForm.IP3" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
-								    <el-button @click="resetForm('threeForm')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
+							    <el-button @click="resetForm('threeForm')">重 置</el-button>
+							</div>
 						</div>
 
 						<div class="empty"></div>
 							
-						<div class="compenent-form">
-							<el-form rel='form' :model='three1Form' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='three1Form' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
 									<el-col>
 										<p class='title m-b20'>Mongodb实例列表清单</p>
 									</el-col>
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="部门">
 										    <el-select v-model="three1Form.dept" placeholder="请选择" clearable filterable @change='selectDept("three1")'>
 					         					<el-option v-for='(item,index) in three1DeptList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="环境">
 										    <el-select v-model="three1Form.envType" placeholder="请选择" @change='getAppList(true)' clearable filterable>
 										        <el-option v-for='(item,index) in three1EnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -357,7 +281,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="应用">
 											<el-select v-model="three1Form.region" placeholder="请选择">
 												<el-option v-for='(item,index) in three1RegionList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -365,7 +289,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="主机名(模糊查询)">
 											<el-input
 											  placeholder="请输入主机名"
@@ -374,7 +298,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="IP(模糊查询)">
 										    <el-input v-model="three1Form.IPPort" placeholder='请输入IP'></el-input>
 										</el-form-item>
@@ -382,24 +306,24 @@
 
 									
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="Role(模糊查询)">
 											<el-input v-model="three1Form.role"></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit('query')" :disabled='btnDisabled'>查 询</el-button>
-						    		<el-button @click="resetForm('three1Form')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit('query')" :disabled='btnDisabled'>查 询</el-button>
+					    		<el-button @click="resetForm('three1Form')">重 置</el-button>
+							</div>
 							<v-table 
 							   :data='threeTableData' 
 							   :tableHeadName='threeTableHeadName'
 							   :isShowComments='true'
+							   :showTips='showTips'
 							   @openRemarkDialog='view'
-							   class='redis-table'
+							   class='redis-table my-table'
 							></v-table>
 
 							<div class="block pagination-wraper">
@@ -418,10 +342,10 @@
 					</el-tab-pane>
 
 					<el-tab-pane label="Influxdb安装" name="four">
-						<div class="compenent-form">
-							<el-form rel='form' :model='fourForm' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='fourForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select v-model="fourForm.dept" placeholder="请选择" clearable filterable
 												@change='selectDept("four")'
@@ -431,7 +355,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 									  <el-form-item label="环境">
 									      <el-select v-model="fourForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 									          <el-option v-for='(item,index) in fourEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -439,7 +363,7 @@
 									  </el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="应用">
 										    <el-select v-model="fourForm.region" placeholder="请选择" clearable filterable>
 		                 						<el-option v-for='(item,index) in fourRegionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -448,25 +372,24 @@
 									</el-col>
 
 
-									<el-col :md='20' class='required'>
+									<el-col :md='24' class='required'>
 										<el-form-item label="集群描述">
 										    <el-input v-model="fourForm.clusterDesc" placeholder='请输入'></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="IP:">
 										    <el-input v-model="fourForm.IP" placeholder='192.168.30...'></el-input>
 										</el-form-item>
 									</el-col>
 
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
-								    <el-button @click="resetForm('fourForm')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit('exe')" :disabled='btnDisabled'>执 行</el-button>
+							    <el-button @click="resetForm('fourForm')">重 置</el-button>
+							</div>
 						</div>
 						
 					</el-tab-pane>
@@ -497,16 +420,17 @@
 
 </template>
 <style lang='scss'>
+@import '../../css/variable';
 .nosql-mange {
 	.main-middle {
 		padding: 0;
 	}
-	.el-tabs__header,.compenent-form,{
-		padding: 0 20px;
+	.el-tabs__header,.my-table, .my-remark, .title{
+		padding: 0 $baseSize*2;
 	}
 	.redis-table {
 		 .cell {
-	      .group_dns {
+	      .group_dns, .role{
 	        span {
 	          display:block;
 	          width:100%;
@@ -622,6 +546,10 @@
 					app_administrator: '应用管理员',
 					DBA: '系统管理员',
 					create_time: "创建时间",
+				},
+				showTips: {
+					role: true,
+					group_dns: true,
 				},
 				threeForm: {
 					version: '0',

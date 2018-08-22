@@ -6,7 +6,6 @@
 import Vue from "vue";
 
 Vue.directive('focus', (el,binding) => {
-	console.log(binding)
 	if (binding.value) {
 		el.focus()
 	}

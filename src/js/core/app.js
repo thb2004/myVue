@@ -21,6 +21,7 @@ export default {
 	},
 	go ({
 		path,
+		query,
 		params,
 		back = null,
 		transition = 'slide',
@@ -30,9 +31,11 @@ export default {
 		//参数是否是字符串
 		if (typeof arguments[0] === 'string') path = arguments[0];
 		path.indexOf('/') === -1 ? path = {
-			name: path
+			name: path,
+			query: query || ''
 		} : path = {
-			path: path
+			path: path,
+			query: query || ''
 		}
 
 		// 设置页面参数
@@ -47,7 +50,6 @@ export default {
 			name: path.name,
 			isKeepAlive,
 		})
-
 		//页面跳转
 		$root.$router.push(path)
 		

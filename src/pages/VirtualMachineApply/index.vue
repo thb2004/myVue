@@ -138,7 +138,7 @@
     	  @close="closeDialog"
     	  class='hand-dialog'
     	  >
-			<el-form :model='dialogForm' label-width='93px' ref='dialogForm' :rules='rules'>
+			<el-form :model='dialogForm' label-width='95px' ref='dialogForm' :rules='rules'>
 				<el-row :gutter='30'>
 					<el-col :md='12'>
 						<el-form-item label="部门" prop='department'>

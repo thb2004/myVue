@@ -7,16 +7,15 @@ export default {
 				text: '' // 显示文字
 			}
 		},
+		labelWidth: '14rem',
+		isLogin: false,
 		labelPosition: 'left',
-		userLevel:  '',		//用户级别
 		username: '',		//用户姓名
-		cnname: '',		   //用户中文姓名 
 		windowHeight: 0,
 		innerHeight: 0,
 		bannerHeight: '350',
 		pages: { // 路由页面对象
 			home: 'firstHomeContent', // 设置首页路由模块
-			login: 'login',
 			navbarIndex: 0, // 页导航栏下标
 			back: null, // 设定的返回页面
 			to: '', // 去的页面
@@ -26,363 +25,8 @@ export default {
 			status: true, // 页面跳转状态 true为新面页  false为返回页面
 			transitiont: 'slide', // 页面过度效果用的是Animate.css动态库
 			params: {}, // 页面参数
-			title: '首页', //main页面头部内容
-			activeName: '0', //折叠菜单活动项索引
-			tabIndex: 0, //一级菜单索引
-			childTabIndex: -1, //一级菜单下的子菜单索引
-			mainHeadTitle: {
-				firstHomeContent: {
-					index: 0,
-				},
-				X86ResourceFirstPage: {
-					title: '资源申请变更',
-					childTitle: 'x86资源',
-					index: 0,
-				},
-				openResourceFirstPage: {
-					title: '资源申请变更',
-					childTitle: '开源数据库资源',
-					index: 0,
-				},
-				resourceSaveApplyFirstPage: {
-					title: '资源申请变更',
-					childTitle: '存储资源',
-					index: 0,
-				},
-				middleResourceFirstPage: {
-					title: '资源申请变更',
-					childTitle: '中间件资源',
-					index: 0,
-				},
-				IPResourceFirstPage: {
-					title: '资源申请变更',
-					childTitle: 'IP资源',
-					index: 0,
-				},
-				netResourceFirstPage: {
-					title: '资源申请变更',
-					childTitle: '网络资源',
-					index: 0,
-				},
-				myMattersFirstPage: {
-					title: '我的事项',
-					index: 0,
-				},
-				workMange: {
-					title: '工单管理',
-					index: 0,
-				},
-				myMattersProcessingList: {
-					index: 0,
-				},
-				secondHomeContent: {
-					index: 1,
-				},
-				VirtualMachineApply: {
-					title: '虚拟化管理',
-					index: 1,
-				},
-				LinuxBatchInitFirstPage: {
-					title: 'Linux系统初始化',
-					index: 1,
-				},
-				linuxMangeFirstPage: {
-					title: 'Linux批量管理',
-					index: 1,
-				},
-				netMangeAutoView: {
-					title: '网络管理',
-					index: 1,
-				},
-				IPList: {
-					title: '网络管理',
-					index: 1,
-				},
-				netVlanList: {
-					title: '网络管理',
-					index: 1,
-				},
-				LinuxBatchStandardizationFirstPage: {
-					title: 'Linux批量标准化',
-					index: 1,
-				},
-				automationFirstPage: {
-					title: '监控自动化',
-					index: 1,
-				},
-				history: {
-					title: '历史记录',
-					index: 1,
-				},
-				otherFirstPage: {
-					title: '其他',
-					index: 1,
-				},
-				threeHomeContent: {
-					index: 2,
-				},
-				selfService: {
-					title: '自助服务',
-					index: 2,
-				},
-				slowSQL: {
-					title: '慢SQL监控',
-					index: 2,
-				},
-				MYSQLMange: {
-					title: 'MySQL管理',
-					index: 2,
-				},
-				NosqlMange: {
-					title: 'NoSQL管理',
-					index: 2,
-				},
-				dataSetsMange: {
-					title: '数据库集群管理',
-					index: 2,
-				},
-
-				DMLDDL: {
-					title: 'DDL/DML操作',
-					index: 2,
-				},
-
-				MySqlCopyMange: {
-					title: 'MySQL备份恢复管理',
-					index: 2,
-				},
-				performanceStatistics: {
-					title: '性能统计及报表',
-					index: 2,
-				},
-				platformGuide: {
-					title: '平台自助流程指引',
-					index: 2,
-				},
-				backMange: {
-					title: '后台管理',
-					index: 2,
-				},
-				authorityCenter: {
-					title: '平台用户授权',
-					index: 3,
-				},
-				scada: {
-					title: 'scada',
-					index: 4
-				}
-			},
-			menuList: [{
-				text: '云资源平台',
-				isShow: true,
-			},{
-				text: '云系统平台',
-				isShow: true,
-			},{
-				text: '云数据库平台',
-				isShow: true,
-			}, {
-				text: '云管理平台',
-				isShow: true,
-			},{
-				text: '云容器平台',
-				isShow: true,
-			}],
-			leftMenuList: [
-				[{
-						text: '首页',
-						name: 'firstHomeContent',
-						path:'firstHomeContent',
-						icon: require('../assets/images/home.png'),
-						blueIcon: require('../assets/images/blueHome.png'),
-					}, {
-						text: '资源申请变更',
-						value: [{
-							text: 'x86资源',
-							name: 'X86ResourceFirstPage',
-						}, {
-							text: '开源数据库资源',
-							name: 'openResourceFirstPage'
-						}, /*{
-							text: '备份资源',
-							name: 'copyApplyFirstPage'
-						},*/ {
-							text: '存储资源',
-							name: 'resourceSaveApplyFirstPage'
-						}, {
-							text: '中间件资源',
-							name: 'middleResourceFirstPage'
-						}, {
-							text: 'IP资源',
-							name: 'IPResourceFirstPage'
-						}, {
-							text: '网络资源',
-							name: 'netResourceFirstPage'
-						}],
-						isAccordion: true,
-						icon: require('../assets/images/resource.png'),
-						blueIcon: require('../assets/images/blueResource.png'),
-					},
-
-					{
-						text: '我的事项',
-						name: 'myMattersFirstPage',
-						icon: require('../assets/images/matters.png'),
-						blueIcon: require('../assets/images/blueMatters.png'),
-					}, {
-						text: '工单管理',
-						name: 'workMange',
-						icon: require('../assets/images/workOrder.png'),
-						blueIcon: require('../assets/images/blueWorkOrder.png'),
-						isShow: true
-					}, /*{
-						text: '系统管理',
-						name: 'sysMange',
-						icon: require('../assets/images/sysMange.png')
-					},*/
-				],
-				[{
-						text: '首页',
-						name: 'secondHomeContent',
-						icon: require('../assets/images/home.png'),
-						blueIcon: require('../assets/images/blueHome.png'),
-					}, {
-						text: '虚拟化管理',
-						name: 'VirtualMachineApply',
-						icon: require('../assets/images/virtual.png'),
-						blueIcon: require('../assets/images/blueVirtual.png'),
-					}, {
-						text: 'Linux系统初始化',
-						name: 'LinuxBatchInitFirstPage',
-						icon: require('../assets/images/init.png'),
-						blueIcon: require('../assets/images/blueInit.png'),
-						isShow: true
-
-					}, {
-						text: 'Linux批量管理',
-						name: 'linuxMangeFirstPage',
-						icon: require('../assets/images/batchMange.png'),
-						blueIcon: require('../assets/images/blueBatchMange.png'),
-						isShow: true
-
-					}, {
-						text: '网络管理',
-						name: 'netMangeAutoView',
-						icon: require('../assets/images/netMange.png'),
-						blueIcon: require('../assets/images/blueNetMange.png'),
-						isShow: true
-
-					}, {
-						text: 'Linux批量标准化',
-						name: 'LinuxBatchStandardizationFirstPage',
-						icon: require('../assets/images/batchStandardization.png'),
-						blueIcon: require('../assets/images/blueBatchStandardization.png'),
-						isShow: true
-					}, {
-						text: '监控自动化',
-						name: 'automationFirstPage',
-						icon: require('../assets/images/automation.png'),
-						blueIcon: require('../assets/images/blueAutomation.png'),
-						isShow: true
-					}, {
-						text: '历史记录',
-						name: 'history',
-						icon: require('../assets/images/history.png'),
-						blueIcon: require('../assets/images/blueHistory.png'),
-						isShow: true
-					}, {
-						text: '其他',
-						name: 'otherFirstPage',
-						icon: require('../assets/images/other.png'),
-						blueIcon: require('../assets/images/blueOther.png'),
-						isShow: true
-					},
-
-				],
-				[{
-						text: '首页',
-						name: 'threeHomeContent',
-						icon: require('../assets/images/home.png'),
-						blueIcon: require('../assets/images/blueHome.png'),
-					}, {
-						text: '自助服务',
-						name: 'selfService',
-						icon: require('../assets/images/selfService.png'),
-						blueIcon: require('../assets/images/blueSelfService.png'),
-					}, {
-						text: '慢SQL监控',
-						name: 'slowSQL',
-						icon: require('../assets/images/slowSql.png'),
-						blueIcon: require('../assets/images/blueSlowSql.png'),
-					}, {
-						text: 'MySQL管理',
-						name: 'MYSQLMange',
-						icon: require('../assets/images/sql.png'),
-						blueIcon: require('../assets/images/blueSql.png'),
-						isShow: true
-					}, {
-						text: 'NoSQL管理',
-						name: 'NosqlMange',
-						icon: require('../assets/images/noSql.png'),
-						blueIcon: require('../assets/images/blueNoSql.png'),
-						isShow: true
-					}, {
-						text: '数据库集群管理',
-						name: 'dataSetsMange',
-						icon: require('../assets/images/dataSets.png'),
-						blueIcon: require('../assets/images/blueDataSets.png'),
-						isShow: true
-					}, {
-						text: 'DDL DML操作',
-						name: 'DMLDDL',
-						icon: require('../assets/images/dml.png'),
-						blueIcon: require('../assets/images/blueDml.png'),
-						isShow: true
-					}, {
-						text: 'MySQL备份恢复管理',
-						name: 'MySqlCopyMange',
-						icon: require('../assets/images/recovery.png'),
-						blueIcon: require('../assets/images/blueRecovery.png'),
-						isShow: true
-					},
-					/*{
-						text: '性能统计及报表',
-						name: 'performanceStatistics'
-					},*/
-					{
-						text: '平台自助服务流程指引',
-						name: 'platformGuide',
-						icon: require('../assets/images/guide.png'),
-						blueIcon: require('../assets/images/blueGuide.png'),
-					},
-					{
-						text: '后台管理',
-						name: 'backMange',
-						icon: require('../assets/images/backMange.png'),
-						blueIcon: require('../assets/images/blueBackMange.png'),
-						isShow: true
-					}
-				],
-				[{
-					text: '权限中心',
-					name: 'authorityCenter',
-					icon: require('../assets/images/auth.png'),
-					blueIcon: require('../assets/images/blueAuth.png'),
-				}],
-
-				[{
-					text: '工业互联网',
-					value: [{
-						text: 'scada',
-						name: 'scada',
-					}],
-					isAccordion: true,
-					icon: require('../assets/images/resource.png'),
-					blueIcon: require('../assets/images/blueResource.png'),
-				}],
-			],
-			leftMenuIndex: 0, //侧边栏对应的索引号
-			leftMenuChildIndex: 0, //侧边栏子菜单对应的索引号
+			menuList: [],
+			leftMenuObj: {},
 		},
 	},
 	actions: {},
@@ -400,6 +44,9 @@ export default {
 		getCount (state) {
 			return state.count;
 		},
+		getLogin (state) {
+			return state.isLogin
+		},
 		/**
 		 * 获取缓存的页面
 		 * @AuthorHTL
@@ -409,10 +56,7 @@ export default {
 		getKeepAlive(state) {
 			return state.pages.home + ',' + state.pages.keepAlive.join(',')
 		},
-		getUserLevel (state) {
-			return state.userLevel
-		},
-
+		
 		getNavbarIndex (state) {
 			return state.pages.navbarIndex
 		}
@@ -425,33 +69,12 @@ export default {
 		setLabelPosition (state, labelPosition) {
 			state.labelPosition = labelPosition
 		},
-		setUserLevel (state, userLevel) {
-			state.userLevel = userLevel
+		
+		setLeftMenuObj (state, obj) {
+			state.pages.leftMenuObj = obj
 		},
-		setLeftMenuList (state, userLevel) {
-			for (let i of state.pages.leftMenuList) {
-				for (let j of i) {
-					j.hasOwnProperty('isShow') && (j.isShow = ['0', '1'].indexOf(userLevel) != -1)
-				}
-			}
-		},
-		setMenuList (state, userLevel) {
-			for (let i of state.pages.menuList) {
-				switch (i.text) {
-					case '云系统平台':
-						i.isShow = ['0','1','4'].indexOf(userLevel) != -1
-						break;
-					case '云管理平台':
-						i.isShow = userLevel === '0';
-						break;
-					case '云容器平台':
-						i.isShow = ['0','5'].indexOf(userLevel) != -1;
-						break;
-				}
-			}
-		},
-		setCnname (state, name) {
-			state.cnname = name
+		setMenuList (state, arr) {
+			state.pages.menuList = arr
 		},
 		setUsername (state, username) {
 			state.username = username
@@ -603,51 +226,12 @@ export default {
 		setNavbarIndex(state, index) {
 			state.pages.navbarIndex = index
 		},
-		/**
-		 * 重置侧边栏索引(切换头部导航栏时避免保存了第一个页面的状态)
-		 * @AuthorHTL
-		 * @DateTime  2018-04-17T09:23:36+0800
-		 * @param     {Object}                 state vuex状态对象
-		 */
-		resetLeftMenuIndex(state) {
-			state.pages.activeName = '0'; //折叠菜单活动项索引
-			state.pages.tabIndex = 0; //一级菜单索引
-			state.pages.childTabIndex = -1; //一级菜单下的子菜单索引
-		},
-		/**
-		 * 设置侧边栏一级菜单对应的活动项索引
-		 * @AuthorHTL
-		 * @DateTime  2018-04-18T15:44:50+0800
-		 * @param     {Object}                 state vuex状态对象
-		 * @param     {Number}                 index [索引号]
-		 */
-		setMainMenuIndex(state, index) {
-			state.pages.tabIndex = index; //一级菜单索引
-		},
 
-		/**
-		 * 设置侧边栏二级级菜单对应的活动项索引
-		 * @AuthorHTL
-		 * @DateTime  2018-04-18T15:44:50+0800
-		 * @param     {Object}                 state vuex状态对象
-		 * @param     {Number}                 index [索引号]
-		 */
-		setChildMenuIndex(state, index) {
-			state.pages.childTabIndex = index; //一级菜单索引
-		},
-
-		/**
-		 * 修改页面主体部分标题内容
-		 * @AuthorHTL
-		 * @DateTime  2018-04-17T13:30:55+0800
-		 * @param     {Object}                 state vuex状态对象
-		 * @param     {String}                 title 
-		 */
-		setTitle(state, title) {
-			state.pages.title = title
-		},
 		setCount (state, count) {
 			state.count = count
 		},
+		setLogin (state, isLogin) {
+			state.isLogin = isLogin
+		}
 	},
 }

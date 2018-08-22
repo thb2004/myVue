@@ -6,10 +6,10 @@
 	    			v-model="activeName"
 	    		>
 					<el-tab-pane label="慢SQL日志查询" name="one">
-						<div class="compenent-form">
-							<el-form rel='form' :model='oneForm' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='oneForm' :label-width='$store.state.labelWidth' :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row :gutter='16'>
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="服务器查询方式">
 										    <el-select v-model="oneForm.serverQueryMethod" placeholder="请选择" @change='setDisabled'>
 		                 						<!-- <el-option value="1" label='所有Mysql服务器'></el-option> -->
@@ -19,7 +19,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label-width='0'>
 										    <el-checkbox v-model="oneForm.chooseSever" :disabled='oneFormDisabled' @change='getServerDomainList'>仅生产环境</el-checkbox>
 										</el-form-item>
@@ -33,7 +33,7 @@
 								</el-row>
 
 								<el-row>
-									<el-col :md='9' :class='{"required":oneForm.serverQueryMethod==="2"}'>
+									<el-col :md='12' :class='{"required":oneForm.serverQueryMethod==="2"}'>
 										<el-form-item label="部门">
 										    <el-select v-model="oneForm.busiDep" placeholder="请选择" :disabled='oneFormDisabled' @change='getServerDomainList' clearable filterable>
 												<el-option v-for='(item,index) in oneDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -41,7 +41,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' :class='{"required":oneForm.serverQueryMethod==="2"}'>
+									<el-col :md='12' :class='{"required":oneForm.serverQueryMethod==="2"}'>
 										<el-form-item label="应用">
 										    <el-select v-model="oneForm.serverDomain" placeholder="请选择" :disabled='oneFormDisabled' @change='getServerList' clearable filterable>
 		                 						<el-option v-for='(item,index) in oneFormServerDomainList' :key='index' :value='item.value' :label='item.label'></el-option>
@@ -49,7 +49,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="主机">
 										    <el-select v-model="oneForm.case" placeholder="请选择" :disabled='oneFormCaseDisabled' clearable filterable>
 		                 						<el-option v-for='(item,index) in oneFormServerList' :key='index' :value='item.value' :label='item.label'></el-option>
@@ -57,7 +57,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' v-show='oneForm.serverQueryMethod==="3"'>
+									<el-col :md='12' v-show='oneForm.serverQueryMethod==="3"'>
 										<el-form-item label="IP">
 										    <el-input
 										      placeholder="请输入IP"
@@ -66,15 +66,13 @@
 										</el-form-item>
 
 									</el-col>
-
-
 								</el-row>
 
 								<el-row>
 									<el-col>
 										<p class="title m-b20">时间查询</p>
 									</el-col>
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="查询方式">
 										    <el-select v-model="oneForm.queryMode" placeholder="按时间范围查询" @change='setTimeDisabled'>
 					              				<el-option value="0" label='按时间范围查询'></el-option>
@@ -88,7 +86,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="时间查询范围">
 											<el-col :md='11'>
 					              				<el-date-picker
@@ -123,7 +121,7 @@
 										<p class="title m-b20">查询方式</p>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="慢查询查询方式">
 										    <el-select v-model="oneForm.slowQueryMode" placeholder="请选择" @change='changeSelectOption'>
 					              				<el-option value="1" label='单条慢SQL语句查询'></el-option>
@@ -132,7 +130,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="排序方式">
 										    <el-select v-model="oneForm.sortType" placeholder="请选择">
 					              				<el-option value="2" label='按时间排序' v-if='!showOption'></el-option>
@@ -159,7 +157,7 @@
 										<el-col>
 											<p class="title m-b20">用户过滤</p>
 										</el-col>
-										<el-col :md='9'>
+										<el-col :md='12'>
 											<el-form-item label="过滤类型">
 											    <el-select v-model="oneForm.filterType" placeholder="请选择">
 						              				<el-option value="0" label='选择发起用户过滤类型'></el-option>
@@ -169,22 +167,42 @@
 											</el-form-item>
 										</el-col>
 
-										<el-col :md='{span:9,offset:2}'>
+										<el-col :md='12'>
 											<el-form-item label="用户列表">
 											    <el-input v-model="oneForm.userList" placeholder='请输入用户名列表，多用户用逗号分隔！'></el-input>
 											</el-form-item>
 										</el-col>
 
 										<el-col>
+											<p class="title m-b20">只包含</p>
+										</el-col>
+										<el-col :md='12'>
+											<el-form-item label="sql类型">
+											    <el-select v-model="oneForm.sql_type" placeholder="请选择">
+						              				<el-option value="1" label='select'></el-option>
+						              				<el-option value="2" label='update'></el-option>
+						              				<el-option value="3" label='insert'></el-option>
+						              				<el-option value="4" label='delete'></el-option>			
+											    </el-select>
+											</el-form-item>
+										</el-col>
+
+										<el-col :md='12'>
+											<el-form-item label="包含的表">
+											    <el-input v-model="oneForm.include_table" placeholder='只能输入一个表'></el-input>
+											</el-form-item>
+										</el-col>
+
+										<el-col>
 											<p class="title m-b20">表和执行时间过滤</p>
 										</el-col>
-										<el-col :md='9'>
+										<el-col :md='12'>
 											<el-form-item label="sql执行时间超过">
 											    <el-input v-model="oneForm.timeThreshold" placeholder='请输入SQL执行时间阈值'></el-input>
 											</el-form-item>
 										</el-col>
 
-										<el-col :md='{span:9,offset:2}'>
+										<el-col :md='12'>
 											<el-form-item label="排除" class='exclude'>
 											    <el-input v-model="oneForm.tableName" placeholder='请输入单个超时SQL表名'></el-input>
 											</el-form-item>
@@ -192,28 +210,27 @@
 
 									</el-row>
 								</transition>
-								<div class="condition m-t20 text-center">
-									<div>
-										<i 
-											:class='["condition-icon","animated",open ? "slideInDown" : "slideOutUp"]' 
-											@click='openAndClose' 
-											:style='styleObj'
-										>
-											{{tips}}
-										</i>
-									</div>
-								</div>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='btnDisabled'>查 询</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
-
 							</el-form>
+							<div class="condition m-t20 text-center">
+								<div>
+									<i 
+										:class='["condition-icon","animated",open ? "slideInDown" : "slideOutUp"]' 
+										@click='openAndClose' 
+										:style='styleObj'
+									>
+										{{tips}}
+									</i>
+								</div>
+							</div>
+
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='btnDisabled'>查 询</el-button>
+							    <el-button @click="resetForm">重 置</el-button>
+							</div>
 						</div>
 
 						<div class="empty"></div>
-						<div class="compenent-form m-t20">
+						<div class="compenent-table">
 							<div v-if='!showOption'>
 								<v-table 
 									@openRemarkDialog='editRow'
@@ -246,6 +263,7 @@
 									:isShowComments='true'
 									:operatorText='"查看语句"'
 									:labelName='"查看语句"'
+									:showTips='showTips'
 									class='two-table'
 								></v-table>
 								<div class="block pagination-wraper">
@@ -262,101 +280,7 @@
 								</div>
 							</div>
 						</div>
-
 					</el-tab-pane>
-
-					<!-- <el-tab-pane label="慢SQL TOP统计" name="two" v-if='false'>
-						<div class="compenent-form">	
-							<el-form rel='form' :model='twoForm' :label-width='labelWidth'>
-								<el-row>
-									<el-col :md='9'>
-										<el-form-item label=" 环境类型">
-										    <el-select v-model="twoForm.envType" placeholder="请选择" clearable filterable>
-							                 						<el-option v-for='(item,index) in twoEnvTypeList' :key='index' :value='item.value' :label='item.label'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-								</el-row>
-					
-								<el-row>
-									<el-col>
-										<p class="title m-b20">时间查询</p>
-									</el-col>
-									<el-col :md='9'>
-										<el-form-item label="查询方式">
-										    <el-select v-model="twoForm.queryMode" placeholder="按时间范围查询" @change='setTimeDisabled'>
-					              				<el-option value="0" label='按时间范围查询'></el-option>
-					              				<el-option value="1" label='所有时间'></el-option>
-					              				<el-option value="2" label='今天'></el-option>
-					              				<el-option value="3" label='昨天'></el-option>
-					              				<el-option value="4" label='前天'></el-option>
-					              				<el-option value="5" label='最近3天'></el-option>
-					              				<el-option value="6" label='最近7天'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="时间查询范围">
-											<el-col :md='11'>
-					              				<el-date-picker
-									              				      v-model="twoForm.startDate"
-									              				      :disabled='oneFormTimeDisabled'
-									              				      type="datetime"
-									              				      placeholder="选择日期时间">
-					              				</el-date-picker>
-											</el-col>
-											<el-col :md='{span:1,offset:1}'>
-												-
-											</el-col>
-											<el-col :md='11'>
-					              				<el-date-picker
-									              				      v-model="twoForm.endDate"
-									              				      :disabled='oneFormTimeDisabled'
-									              				      type="datetime"
-									              				      placeholder="选择结束日期">
-					              				</el-date-picker>
-											</el-col>
-										</el-form-item>
-									</el-col>
-								</el-row>
-					
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
-					
-							</el-form>
-						</div>
-					
-						<div class="empty"></div>
-					
-						<div class="compenent-form">
-							<v-table 
-								@openRemarkDialog='editRow'
-								:data='twoTableData' 
-								:tableHeadName='twoTableHeadName'
-								:isShowComments='true'
-								:operatorText='"查看语句"'
-								:labelName='"查看语句"'
-								class='m-t20'
-							></v-table>
-					
-							<div class="block pagination-wraper">
-							   <el-pagination
-							   	 v-if='twoTableData.length > 0'
-							   	 @size-change='sizeChange'
-							   	 @current-change='currentChange'
-							     :page-sizes="[10, 15, 20, 25, 30, 35, 40, 45, 50]"
-							     layout="total, sizes, prev, pager, next, jumper"
-							     :page-size='twoPageSize'
-							     :total="twoTotal">
-							   </el-pagination>
-							</div>
-						</div>
-					
-					</el-tab-pane> -->
-
 	    		</el-tabs>
 	    	</div>
 		    <el-dialog
@@ -374,12 +298,16 @@
     </div>
 </template>
 <style lang='scss'>
+@import '../../css/variable';
 .slow-sql {
 	.main-middle {
 		padding: 0;
 	}
-	.el-tabs__header,.compenent-form,{
-		padding: 0 20px;
+	.el-tabs__header,.compenent-table{
+		padding: 0 $baseSize*2;
+	}
+	.title {
+		padding-left: $baseSize*2;
 	}
 	.condition {
 		.condition-icon {
@@ -426,8 +354,7 @@
 		data () {
 			return {
 				loading: false,
-				open: 'true',
-				labelWidth: '140px',
+				open: true,
 				oneDeptList: [],
 				btnDisabled: false,
 				oneFormIsFocus: false,					//是否聚焦
@@ -455,6 +382,8 @@
 					slowQueryMode: '1',
 					sortType: '2',
 					Ip: '',
+					sql_type: '1',
+					include_table: '',
 				},
 				oneFormInitData: {
 					serverQueryMethod: '2',				//服务器查询方式
@@ -463,6 +392,7 @@
 					filterType: '0',						//过滤类型
 					slowQueryMode: 'disabled',
 					sortType: 'disabled',
+					sql_type: '1'
 				},
 				showOption: false,
 				exe_sql: '',
@@ -517,6 +447,9 @@
 					envType: '',
 					startDate: '',						//起始时间
 					endDate: '',						//终止时间
+				},
+				showTips: {
+					sql: true
 				},
 				twoEnvTypeList: [],
 				twoFormTimeDisabled: false,				//慢sql日志查询时间框是否禁用
@@ -688,7 +621,9 @@
 	                    query_user_type: formObj.filterType,			//过滤类型
 	                    sql_exe_time: formObj.timeThreshold,			//sql执行时间
 	                    exclude_table: formObj.tableName,    			//表名
-	                    IP: formObj.Ip || ''
+	                    IP: formObj.Ip || '',
+	                    sql_type: formObj.sql_type,
+	                    include_table: formObj.include_table,
 					}
 				} else {
 					url = '/Gaea_database/slowQueryTop'
@@ -719,7 +654,7 @@
 					for (let i of response.data.data.slow_query_log) {
 						this[name + 'AllTableData'].push(i)
 					}
-				} else if (code === 'Gaea30020') {
+				} else {
 					this.$alert(response.data.msg, {title: '提示',type: 'info'})
 				}
 				this[name + 'Total'] = this[name + 'AllTableData'].length;

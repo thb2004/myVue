@@ -6,9 +6,11 @@
 	      		text-color="#fff"
 	      		active-text-color="#ffd04b"
 	      		:default-active='$store.state.pages.to'
-	      		@select='changePage'
+	      		:default-openeds='[$route.meta.navTitle ? $route.meta.navTitle : ""]'
+	      		unique-opened
+	      		router
       		>
-				<el-submenu :index="mainIndex+''" v-for='(item,mainIndex) in menuList' v-if='item.isAccordion' :key='mainIndex'>
+				<el-submenu :index="item.text" v-for='(item,mainIndex) in menuList' v-if='item.isAccordion' :key='mainIndex'>
 					<template slot="title">
 					 <i
 						class='el-icon- my-icon'
@@ -16,16 +18,27 @@
 					 ></i>
 			         <span>{{item.text}}</span>
 			       </template>
-					<el-menu-item v-for='(childItem, index) in item.value' 
+					<el-menu-item v-for='(childItem, index) in item.children' 
 						:key='index' 
-						:index='childItem.name'
+						:index='childItem.path'
 						:class="{'active':childItem.name===$store.state.pages.to}"
 					>
 						{{childItem.text}}
 					</el-menu-item>
 	                
 				</el-submenu>
-				<el-menu-item v-else-if='item.isShow != false' :index="item.name" :class="{'active':item.name===$store.state.pages.to}">
+
+				<el-menu-item v-else-if='item.name==="platformGuide"' @click='open' index="">
+					<template slot="title">
+						<i
+							class='el-icon- my-icon'
+						 	:style='{"backgroundImage":"url("+(item.name!=$store.state.pages.to ? item.icon : item.blueIcon ? item.blueIcon : item.icon)+")"}'
+						 ></i>
+						<span>{{item.text}}</span>
+					</template>
+				</el-menu-item>
+
+				<el-menu-item v-else :index="item.path" :class="{'active':item.name===$store.state.pages.to}">
 					<template slot="title">
 						<i
 							class='el-icon- my-icon'
@@ -54,7 +67,7 @@
 		    text-overflow: ellipsis;
 		    white-space: nowrap;
 		} 
-		li.is-active {
+		li.is-active, li {
 			color: #fff !important;
 			background-color: #2A3C59 !important;
 		}
@@ -81,24 +94,19 @@
 	
 </style>
 <script type="text/javascript">
-	import { mapState, mapGetters, mapMutations } from "vuex";
+	import { mapGetters } from "vuex";
 	export default {
 		name: 'vLeftMenu',
 		computed: {
 			...mapGetters(['getPages']),
 			menuList () {
-				return this.getPages.leftMenuList[this.getPages.navbarIndex]
+				return this.getPages.leftMenuObj[this.getPages.navbarIndex]
 			},
 		},
 		methods: {
-			...mapMutations(['setTitle','setMainMenuIndex','setChildMenuIndex', 'setPagesToName']),
-			changePage (pageName) {
-				if (pageName === 'platformGuide') {			//平台自助服务流程指引，打开外部链接
-					window.open('http://wiki.midea.com/pages/viewpage.action?pageId=5432499')
-				} else {
-					app.go(pageName);
-				}
-			},
+			open (link) {
+				window.open('http://wiki.midea.com/pages/viewpage.action?pageId=5432499')
+			}
 		},
 	}
 </script>

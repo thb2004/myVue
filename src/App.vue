@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <v-router-view />
-      <v-loading ref="loading" v-if="$store.state.plugins.loading.show" :text='$store.state.plugins.loading.text' ></v-loading>
+      <!-- <v-loading ref="loading" v-if="$store.state.plugins.loading.show" :text='$store.state.plugins.loading.text' ></v-loading> -->
   </div>
 </template>
 
@@ -21,24 +21,9 @@ export default {
   watch: {
     $route (to, from) {
       let index = '';
-      switch (to.name) {
-        case 'firstHomeContent':
-            index = '0';
-            break;
-        case 'secondHomeContent':
-            index = '1';
-            break;
-        case 'threeHomeContent':
-            index = '2';
-            break;
-        case 'authorityCenter':
-            index = '3';
-            break;
-        case 'developing':
-            index = '4';
-            break;
-      }
-      index && this.setNavbarIndex(index)
+      /*监听路由变化董改更改navbarIndex*/
+      this.setNavbarIndex(to.meta.navPath)
+      
       //更新页面栈
       this.setPageStack({
         to: to,

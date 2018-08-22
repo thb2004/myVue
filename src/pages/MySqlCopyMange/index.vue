@@ -4,13 +4,13 @@
     		<div class="main-middle">
 	    		<el-tabs v-model="activeName">
 					<el-tab-pane label="数据恢复" name="one">
-						<div class="compenent-form">
-							<el-form rel='form' :model='oneForm' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='oneForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
 									<el-col>
 										<p class='title m-b20'>数据恢复由生产环境恢复到非生产环境，请选择数据恢复的源主机和目标主机，恢复截止时间</p>
 									</el-col>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select v-model="oneForm.dept" placeholder="请选择" @change='clearData'  clearable filterable>
 										    	<el-option v-for='(item,index) in oneDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -18,7 +18,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="环境">
 										    <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 										    	<el-option v-for='(item,index) in oneEnvTypeList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -30,7 +30,7 @@
 										<p class='title m-b20'>选择数据来源</p>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="源应用">
 										    <el-select v-model="oneForm.sourceApplication" placeholder="请选择" @change='getServerList("source")' clearable filterable>
 										    	<el-option v-for='(item,index) in onesourceApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -38,7 +38,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="源主机IP">
 										    <el-select v-model="oneForm.sourceHostIp" placeholder="请选择" @change='getHostName("source")'>
 										    	<el-option v-for='(item,index) in onesourceHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -46,7 +46,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label='源主机名'>
 										   <el-input v-model="oneForm.sourceHostName" disabled></el-input>
 										</el-form-item>
@@ -56,7 +56,7 @@
 										<p class='title m-b20'>选择恢复目标</p>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="目标应用">
 										    <el-select v-model="oneForm.targetApplication" placeholder="请选择" @change='getServerList("target")' clearable filterable>
 										    	<el-option v-for='(item,index) in onetargetApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -64,7 +64,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="目标主机IP">
 										    <el-select v-model="oneForm.targetHostIp" placeholder="请选择"  @change='getHostName("target")'>
 										    	<el-option v-for='(item,index) in onetargetHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -72,7 +72,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label='目标主机名'>
 										   <el-input v-model="oneForm.targetHostName" disabled></el-input>
 										</el-form-item>
@@ -82,7 +82,7 @@
 										<p class='title m-b20'></p>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label='恢复时间'>
 										   <el-date-picker
 									         v-model="oneForm.recoveryTime"
@@ -94,156 +94,154 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="审批DBA">
 										    <el-select v-model="oneForm.DBA" placeholder="请选择" clearable filterable>
 										    	<el-option v-for='(item,index) in oneDBAList' :key='index' :label='item.label' :value='item.value'></el-option>
 										    </el-select>
 										</el-form-item>
 									</el-col>
-
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>提 交</el-button>
-								    <el-button @click="resetForm('one')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>提 交</el-button>
+							    <el-button @click="resetForm('one')">重 置</el-button>
+							</div>
 						</div>
 					</el-tab-pane>
 
 					<el-tab-pane label="数据覆盖" name="two">
 						<el-tabs v-model="childActiveName">
-							<el-form rel='form' :model='twoForm' :label-width='labelWidth'>
-								<div class="compenent-form">
-									<el-row>
-										<el-col>
-											<p class='title m-b20'>数据覆盖由生产环境覆盖到非生产环境，请选择数据覆盖的源主机和目标主机</p>
-										</el-col>
+							<div>
+								<el-form rel='form' :model='twoForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
+										<el-row>
+											<el-col>
+												<p class='title m-b20'>数据覆盖由生产环境覆盖到非生产环境，请选择数据覆盖的源主机和目标主机</p>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label="部门">
-											    <el-select v-model="twoForm.dept" placeholder="请选择" @change='clearData' clearable filterable>
-											    	<el-option v-for='(item,index) in twoDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="部门">
+												    <el-select v-model="twoForm.dept" placeholder="请选择" @change='clearData' clearable filterable>
+												    	<el-option v-for='(item,index) in twoDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}'>
-											<el-form-item label="环境">
-											    <el-select v-model="twoForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
-											    	<el-option v-for='(item,index) in twoEnvTypeList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="环境">
+												    <el-select v-model="twoForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
+												    	<el-option v-for='(item,index) in twoEnvTypeList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col>
-											<p class='title m-b20'>选择数据来源</p>
-										</el-col>
+											<el-col>
+												<p class='title m-b20'>选择数据来源</p>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label="源应用">
-											    <el-select v-model="twoForm.sourceApplication" placeholder="请选择" @change='getServerList("source")' clearable filterable>
-											    	<el-option v-for='(item,index) in twosourceApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="源应用">
+												    <el-select v-model="twoForm.sourceApplication" placeholder="请选择" @change='getServerList("source")' clearable filterable>
+												    	<el-option v-for='(item,index) in twosourceApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}'>
-											<el-form-item label="源主机IP">
-											    <el-select v-model="twoForm.sourceHostIp" placeholder="请选择" @change='getHostName("source")'>
-											    	<el-option v-for='(item,index) in twosourceHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="源主机IP">
+												    <el-select v-model="twoForm.sourceHostIp" placeholder="请选择" @change='getHostName("source")'>
+												    	<el-option v-for='(item,index) in twosourceHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label='源主机名'>
-											   <el-input v-model="twoForm.sourceHostName" disabled></el-input>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label='源主机名'>
+												   <el-input v-model="twoForm.sourceHostName" disabled></el-input>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="three"'>
-											<el-form-item label="源库">
-											    <el-select v-model="twoForm.sourceDB" placeholder="请选择">
-											    	<el-option v-for='(item,index) in twosourceDBList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12' v-if='childActiveName==="three"'>
+												<el-form-item label="源库">
+												    <el-select v-model="twoForm.sourceDB" placeholder="请选择">
+												    	<el-option v-for='(item,index) in twosourceDBList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='9' v-if='childActiveName==="three"'>
-											<el-form-item label='源表'>
-											   <el-input v-model="twoForm.sourceTable" placeholder='多个表用英文逗号隔开,如table1,table2,table3...'></el-input>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12' v-if='childActiveName==="three"'>
+												<el-form-item label='源表'>
+												   <el-input v-model="twoForm.sourceTable" placeholder='多个表用英文逗号隔开,如table1,table2,table3...'></el-input>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="two"'>
-											<el-form-item label='源库'>
-											   <el-input v-model="twoForm.sourceLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12' v-if='childActiveName==="two"'>
+												<el-form-item label='源库'>
+												   <el-input v-model="twoForm.sourceLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
+												</el-form-item>
+											</el-col>
 
-										<el-col>
-											<p class='title m-b20'>选择覆盖目标</p>
-										</el-col>
+											<el-col>
+												<p class='title m-b20'>选择覆盖目标</p>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label="目标应用">
-											    <el-select v-model="twoForm.targetApplication" placeholder="请选择" @change='getServerList("target")' clearable filterable>
-											    	<el-option v-for='(item,index) in twotargetApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="目标应用">
+												    <el-select v-model="twoForm.targetApplication" placeholder="请选择" @change='getServerList("target")' clearable filterable>
+												    	<el-option v-for='(item,index) in twotargetApplicationList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}'>
-											<el-form-item label="目标主机IP">
-											    <el-select v-model="twoForm.targetHostIp" placeholder="请选择"  @change='getHostName("target")'>
-											    	<el-option v-for='(item,index) in twotargetHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="目标主机IP">
+												    <el-select v-model="twoForm.targetHostIp" placeholder="请选择"  @change='getHostName("target")'>
+												    	<el-option v-for='(item,index) in twotargetHostIpList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label='目标主机名'>
-											   <el-input v-model="twoForm.targetHostName" disabled></el-input>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label='目标主机名'>
+												   <el-input v-model="twoForm.targetHostName" disabled></el-input>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="two"'>
-											<el-form-item label='目标库'>
-											   <el-input v-model="twoForm.targetLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12' v-if='childActiveName==="two"'>
+												<el-form-item label='目标库'>
+												   <el-input v-model="twoForm.targetLib" placeholder='多个库用英文逗号隔开,如db1,db2,db3...'></el-input>
+												</el-form-item>
+											</el-col>
 
-										<el-col :md='{span:9,offset:2}' v-if='childActiveName==="three"'>
-											<el-form-item label="目标库">
-											    <el-select v-model="twoForm.targetDB" placeholder="请选择">
-											    	<el-option v-for='(item,index) in twotargetDBList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12' v-if='childActiveName==="three"'>
+												<el-form-item label="目标库">
+												    <el-select v-model="twoForm.targetDB" placeholder="请选择">
+												    	<el-option v-for='(item,index) in twotargetDBList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
 
-										<el-col>
-											<p class='title m-b20'></p>
-										</el-col>
+											<el-col>
+												<p class='title m-b20'></p>
+											</el-col>
 
-										<el-col :md='9'>
-											<el-form-item label="审批DBA">
-											    <el-select v-model="twoForm.DBA" placeholder="请选择">
-											    	<el-option v-for='(item,index) in twoDBAList' :key='index' :label='item.label' :value='item.value'></el-option>
-											    </el-select>
-											</el-form-item>
-										</el-col>
+											<el-col :md='12'>
+												<el-form-item label="审批DBA">
+												    <el-select v-model="twoForm.DBA" placeholder="请选择">
+												    	<el-option v-for='(item,index) in twoDBAList' :key='index' :label='item.label' :value='item.value'></el-option>
+												    </el-select>
+												</el-form-item>
+											</el-col>
 
-										<el-col v-if='childActiveName==="one"'>
-											<el-form-item>
-											    <el-checkbox v-model="twoForm.isMaster">是否建立主从关系</el-checkbox>
-											</el-form-item>
-										</el-col>	
-									</el-row>
-								</div>
-							</el-form>
+											<el-col v-if='childActiveName==="one"'>
+												<el-form-item>
+												    <el-checkbox v-model="twoForm.isMaster">是否建立主从关系</el-checkbox>
+												</el-form-item>
+											</el-col>	
+										</el-row>
+								</el-form>
+							</div>
 							<el-tab-pane label="所有库覆盖" name="one">
 								<div class="text-center m-b20">
 									<el-button class='btn-lg' @click="onSubmit('1')" :disabled='btnDisabled'>所有库覆盖</el-button>
@@ -264,75 +262,12 @@
 						</el-tabs>
 						
 					</el-tab-pane>
-
-					<!-- <el-tab-pane label="DB备份设置" name="three">
-						<div class="compenent-form">
-							<el-form rel='form' :model='threeForm' :label-width='labelWidth'>
-								<el-row>
-									<el-col>
-										<p class='title m-b20'>选择数据来源</p>
-									</el-col>
-					
-									<el-col :md='9'>
-										<el-form-item label="DB域">
-										    <el-select v-model="threeForm.DB" placeholder="请选择">
-										    	<el-option v-for='(item,index) in threeDBist' :key='index' :label='item.label' :value='item.value'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="DB实例">
-										    <el-select v-model="threeForm.DBCase" placeholder="请选择">
-										    	<el-option v-for='(item,index) in threeDBCaseList' :key='index' :label='item.label' :value='item.value'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='9'>
-										<el-form-item label="备份周期">
-										    <el-select v-model="threeForm.backupCycle" placeholder="请选择">
-										    	<el-option v-for='(item,index) in threeBackupCycleList' :key='index' :label='item.label' :value='item.value'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label='备份时间点'>
-										   <el-date-picker
-									         v-model="threeForm.backupTime"
-									         type="datetime"
-									         value-format='yyyy-MM-dd HH:mm:ss'
-									         placeholder="选择时间">
-									       </el-date-picker>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='20'>
-										<el-form-item label='备注'>
-											<el-input
-												placeholder='请输入'
-												type='textarea'
-												:rows='2'
-												v-model='threeForm.comments'
-											></el-input>
-										</el-form-item>
-									</el-col>
-								</el-row>
-					
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>提 交</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
-							</el-form>
-						</div>
-					</el-tab-pane> -->
 					
 					<el-tab-pane label="DB备份日志查看" name="four">
-						<div class="compenent-form">
-							<el-form rel='form' :model='fourForm' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='fourForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="部门">
 										    <el-select v-model="fourForm.dept" placeholder="请选择" @change='clearRelatedData' clearable filterable>
 		                 						<el-option v-for='(item,index) in fourDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -340,7 +275,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="环境">
 										    <el-select v-model="fourForm.envType" placeholder="请选择" @change='getApp' clearable filterable>
 							                    <el-option v-for='(item,index) in fourEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -348,7 +283,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="应用">
 										    <el-select v-model="fourForm.application" @change='getHost' placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in fourApplicationList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -356,7 +291,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="主机">
 										    <el-select v-model="fourForm.host" placeholder="请选择"  clearable filterable>
 							                   <el-option v-for='(item,index) in fourHostList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -364,13 +299,13 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label='IP'>
 										   <el-input v-model="fourForm.IP" placeholder='请输入IP' clearable></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="备份结果">
 										    <el-select v-model="fourForm.backupRes" placeholder="请选择" clearable>
 										    	<el-option label='失败' :value='3'></el-option>
@@ -379,19 +314,19 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="备份时间大于(秒)">
 										    <el-input v-model="fourForm.backupTime" placeholder='请输入' clearable></el-input>
 										</el-form-item>
 									</el-col>
 					
-									<el-col :md='{span:9,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="备份文件大于(M)">
 										    <el-input v-model="fourForm.backupSize" placeholder='请输入' clearable></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9'>
+									<el-col :md='12'>
 										<el-form-item label="备份时间">
 										    <el-date-picker
 									          v-model="fourForm.date"
@@ -410,17 +345,16 @@
 										</el-form-item>
 									</el-col>
 								</el-row>
-					
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
-								    <el-button @click="resetForm('four')">重 置</el-button>
-								</div>
 							</el-form>
+							<div class='btn-group-lg'>
+							    <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
+							    <el-button @click="resetForm('four')">重 置</el-button>
+							</div>
 						</div>
 
 						<div class="empty"></div>
 
-						<div class="compenent-form">
+						<div class="my-table">
 							<v-table 
 								:data='fourTableData' 
 								:tableHeadName='fourTableHeadName'
@@ -428,7 +362,7 @@
 								:isSetTableHeadWidth='true'
 								:tableHeadObj='tableHeadObj'
 								:showTips='showTips'
-								class='m-t20 four-table'
+								class='four-table'
 							></v-table>
 
 							<div class="block pagination-wraper">
@@ -450,12 +384,13 @@
     </div>
 </template>
 <style lang='scss'>
+@import '../../css/variable';
 .copy-mange {
   .main-middle {
     padding: 0;
   }
-  .el-tabs__header,.compenent-form,{
-    padding: 0 20px;
+  .el-tabs__header,.my-table, .title {
+    padding: 0 $baseSize*2; 
   }
   .four-table, {
 	    .cell {
@@ -639,9 +574,8 @@
 					create_time: '创建时间'
 				},
 				tableHeadObj: {
-					id: '50',
-
-					backup_result_type: '110',
+					id: '70',
+					backup_result_type: '130',
 					backup_start_time: '110',
 					backup_end_time: '110',
 					backup_cost_time: '110',
@@ -722,7 +656,6 @@
 				this.btnDisabled = true
 				if (this.activeName === 'four') {
 					url = '/Gaea_database/dbBackupLogQuery'
-					console.log(formObj)
 					params = {
 						appId: formObj.application || 0,
 						serverId: formObj.host || 0,
@@ -739,8 +672,8 @@
 						this[this.activeName + 'AllTableData'] = []
 						if (code === 'Gaea10071') {						//成功
 							for (let i of res.data.data.dbBackupLogList) {
-								i.backup_end_time = app.tools.formatDate(i.backup_end_time)
-								i.backup_start_time = app.tools.formatDate(i.backup_start_time)
+								//i.backup_end_time = app.tools.formatDate(i.backup_end_time)
+								//i.backup_start_time = app.tools.formatDate(i.backup_start_time)
 								this[this.activeName + 'AllTableData'].push(i)
 							}
 							this[this.activeName + 'Total'] = this[this.activeName + 'AllTableData'].length;

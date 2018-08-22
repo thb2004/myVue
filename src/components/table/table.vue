@@ -53,7 +53,7 @@
           :min-width="key==='no_success_result' || key==='db_all' || key==='MEMORY_USED' || key==='doc_subject' || key==='opComment' ? '160' : key==='hostname' || key==='app_administrator' || key==='COMMAND' || key==='DBA' || key==='db_port' || key==='db_name' || key==='exe_cost_time' ? '100' : key==='ticketNumber' || key==='createTime' || key==='modifyTime' ? '180' : ''"
         >
           <template slot-scope="scope">
-            <div v-if='key==="role" || key==="group_dns" || key==="exe_sql" || key==="no_success_result" || key==="result_output" || key==="INFO" || key==="sql" || key==="remark" || key==="cmd" || showTips[key]' :class='key'>
+            <div v-if='showTips[key]' :class='key'>
               <el-tooltip placement="bottom" popper-class="toolTipClass">
                 <div slot="content">{{scope.row[key]}}</div>
                 <span>{{scope.row[key]}}</span>
@@ -85,10 +85,48 @@
                   :class='[scope.row[key] >= 80 ? "use-warning" : "use-success"]'
                 ></el-progress>
             </div>
+
+            <div v-else-if='key==="UserNav"' :class='key'>
+                <el-tree
+                  :data='scope.row[key]'
+                  :props='props'
+                  :default-checked-keys='scope.row["defaultChecked"]'
+                  show-checkbox
+                  node-key='NavName'
+                  @check='checkChange'
+                >
+                </el-tree>
+            </div>
+
+            <div v-else-if='key==="userPriOp"' :class='key'>
+              <el-button 
+                  @click='setuserinfo(scope.row,scope.$index)' 
+                  type="primay" 
+                  size="small"  
+                  style='background: #148EF5;color:#fff'
+              >
+              修 改     
+              </el-button>
+            </div>
+
+            <div v-else-if='key==="UserPri"' :class='key'>
+               <el-select v-model="scope.row['userPriSel']" multiple filterable placeholder="请选择">
+                   <el-option
+                     v-for="item in scope.row[key]"
+                     :key="item.Id"
+                     :label="item.APIName + (item.Enable === '1' ? '(opened)' : '(closed)')"
+                     :value="item.Id + '_' + item.Enable">
+
+                     <span :style="{'float':'left','color': (item.Enable==='1' ? 'red' : 'blue')}">{{ item.APIName}}</span>
+                     <span :style="{'float':'right','color': (item.Enable==='1' ? 'red' : 'blue'),'margin-right': '30px'}">{{ item.Enable === '1' ? '已开启' : '已关闭'}}</span>
+                   </el-option>
+                 </el-select>
+            </div>
+
             <div v-else-if='key==="opComment"' :class='key'>
                 <div v-if='["3","6"].indexOf(scope.row[key])!=-1'>       <!-- 下线和升级 -->
                   <el-button @click='stopApp(scope.row,scope.$index)' type="primay" size="small" class='fa fa-pause-circle' style='background: #148EF5;color:#fff'></el-button>
-                  <el-button @click='editApp(scope.row,scope.$index)' type="primay" size="small" class='fa fa-pencil' style='background: #148EF5;color:#fff'></el-button>
+                  <el-button @click='editApp(scope.row,scope.$index)' type="primay" size="small" class='fa fa-arrow-circle-up' style='background: #148EF5;color:#fff'></el-button>
                 </div>
                 <div v-else-if='scope.row[key]==="9"' :class='key'> <!-- 停止 -->
                   <el-button @click="startApp(scope.row,scope.$index)" type="primay" size="small" class='fa fa-play-circle-o' style='background: #148EF5;color:#fff'></el-button>
@@ -100,9 +138,6 @@
             </div>
 
             <div v-else-if='key==="Status" && isShowIcon' :class='key'>
-                <!-- <span v-for='(item,index) in scope.row[key].split(";")' :key='index'>
-                   <i :class="['fa','fa-lg',item==='-1' ? 'fa-exclamation-triangle' : 'fa-check-circle-o']" :style="{'color': item==='-1' ? '#dd514c' :'#148EF5'}"></i>
-                </span> -->
                 <span v-show='scope.row["disabledStatus"]'>
                      <el-badge :value='scope.row["disabledStatus"]' v-show='scope.row["disabledStatus"] > 1'>
                        <i class="fa fa-lg fa-exclamation-triangle" style="color: #dd514c"></i>
@@ -252,6 +287,12 @@
                 return ['编辑','删除']
               }
             },
+            props: {
+              type: Object,
+              default: function () {
+                return {}
+              }
+            }, 
             hiddenField: {
               type: Object,
               default: function () {
@@ -283,7 +324,7 @@
         },
         methods: {
             editRow (row, title, $index, tableIndex) {
-              if (this.pages.to === 'workMange' || (this.pages.to === 'myMattersFirstPage')) {
+              if (this.pages.to === 'workMange' || (this.pages.to === 'myMatters')) {
                 this.$emit('viewDetail',{row,type: 'viewDetail'})
               } else {
                 this.$emit('editRow', {
@@ -310,9 +351,9 @@
               this.$emit('editApp', {row, $index})
             },
             deleteRow (row, index, title) {
-              if (this.pages.to === 'workMange' ||  (this.pages.to === 'myMattersFirstPage')) {
+              if (this.pages.to === 'workMange' ||  (this.pages.to === 'myMatters')) {
                 this.$emit('viewDetail', {row,type: 'flowHistory'})
-              } else if (this.pages.to.indexOf("ProcessingList") != -1) {
+              } else if (this.pages.to.indexOf("processingList") != -1) {
                 this.$emit('deleteRow', {row, title, index})
               } else {
                 this.data.splice(index, 1)
@@ -329,6 +370,14 @@
             },
             sort({column, prop, order}) {
               this.$emit('sort', {column, prop, order})
+            },
+
+            checkChange (curCheckdNode, hasChecked) {
+              this.$emit('checkChange', {curCheckdNode, hasChecked})
+            },
+
+            setuserinfo (row, index) {
+              this.$emit('setuserinfo', {row, index})
             }
         },
         

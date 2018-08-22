@@ -79,7 +79,7 @@
 	    background-size: contain;
 	}
 }
-@mixin bg-padding {
+@mixin bg-padding($baseSize) {
 	background: #fff;
 	padding: 0 $baseSize*2;
 	border-radius: 2px;
@@ -109,6 +109,34 @@
     animation-duration: .3s;
     animation-fill-mode: none;
     animation-name: laydate-upbit;
+}
+@keyframes down {
+	0% {
+		tranform: translateY(20%)
+	}
+	50% {
+	  transform: translateY(50%);
+	  opacity: 0.5;
+	}
+	100% {
+	  transform: translateY(100%);
+	  opacity: 0;
+	}
+}
+@keyframes up  {
+	0% {
+		tranform: translateY(-20%);
+		opacity: 0;
+	}
+	50% {
+	  transform: translateY(-50%);
+	  opacity: 0.5;
+	}
+	100% {
+	  transform: translateY(-100%);
+	  opacity: 1;
+	  
+	}
 }
 @keyframes laydate-upbit {
 	from {
@@ -189,7 +217,7 @@
 		}
 	}
 	.btn-group-lg {
-		padding: $baseSize*4 0;
+		padding: $baseSize*2 0;
 		text-align: center;
 		button {
 			font-family: PingFangSC-Regular,'宋体',Verdana,Arial,Helvetica,sans-serif;
@@ -235,11 +263,14 @@
 	}
 }
 .main-top {
-	@include bg-padding;
+	@include bg-padding(0);
+	.title {
+		padding-left: 20px;
+	}
 	margin-bottom: $baseSize;
 }
 .main-middle {
-	@include bg-padding;
+	@include bg-padding(10px);
 }
 .banner-img {
 	width: 100%;
@@ -277,6 +308,12 @@
 }
 .m-b15 {
 	margin-bottom: 15px
+}
+.pad-l {
+	padding-left: $baseSize*2
+}
+.pad-both {
+	padding: 0 $baseSize*2;
 }
 .float-r {
 	float: right;

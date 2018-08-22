@@ -4,10 +4,10 @@
     		<div class='main-middle'>
     			<el-tabs v-model="activeName">
     				<el-tab-pane label="部门应用查询" name="one">
-		    			<div class="compenent-form">
-				    		<el-form :modal='oneForm' :label-width='labelWidth'>
+		    			<div>
+				    		<el-form :modal='oneForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select 
 											    v-model="oneForm.dept" 
@@ -21,7 +21,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="环境" clearable filterable>
 										    <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 							                    <el-option v-for='(item,index) in envTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -29,7 +29,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="应用">
 										    <el-select v-model="oneForm.application" placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -37,18 +37,18 @@
 										</el-form-item>
 									</el-col>
 								</el-row>
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
 				    		</el-form>
+				    		<div class='btn-group-lg'>
+				    		    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
+				    		    <el-button @click="resetForm">重 置</el-button>
+				    		</div>
 			    		</div>
 			    	</el-tab-pane>
     				<el-tab-pane label="IP查询" name="two">
-		    			<div class="compenent-form">
-				    		<el-form :modal='twoForm' :label-width='labelWidth'>
+		    			<div>
+				    		<el-form :modal='twoForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="集群类型">
 										    <el-select placeholder="请选择" v-model="twoForm.setsType">
 				         						<el-option label='Mysql' value='mysql'></el-option>
@@ -57,17 +57,17 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="IP:">
 										    <el-input v-model="twoForm.ip" placeholder='请输入IP'></el-input>
 										</el-form-item>
 									</el-col>
 								</el-row>
-								<div class='btn-group-lg'>
-								    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
-								    <el-button @click="resetForm">重 置</el-button>
-								</div>
 				    		</el-form>
+				    		<div class='btn-group-lg'>
+				    		    <el-button type="primary" @click="onSubmit" :loading='loading' :disabled='queryBtnDisabled'>查 询</el-button>
+				    		    <el-button @click="resetForm">重 置</el-button>
+				    		</div>
 			    		</div>
 			    	</el-tab-pane>
 		    	</el-tabs>
@@ -76,7 +76,7 @@
 					<el-tab-pane label="Mysql集群管理" name="one">
 						
 						<div v-for='(item,index) in mysqlClusterList'>
-							<div class="compenent-form">
+							<div class="my-table">
 								<p class='title m-b10'>集群名称：{{item.mysql_cluster_name}}</p>
 								<v-table 
 									@editRow='editRow'
@@ -107,7 +107,7 @@
 
 					<el-tab-pane label="Redis集群管理" name="two">
 						<div v-for='(item,index) in redisClusterList'>
-							<div class="compenent-form">
+							<div class="my-table">
 								<p class='title'>集群名称：{{item.redis_cluster_name}}</p>
 								<v-table 
 									@editRow='editRow'
@@ -137,7 +137,7 @@
 
 					<el-tab-pane label="Mongodb集群管理" name="three">
 						<div v-for='(item,index) in mongodbClusterList'>
-							<div class="compenent-form">
+							<div class="my-table">
 								<p class='title'>集群名称：{{item.mongodb_cluster_name}}</p>
 								<v-table 
 									@editRow='editRow'
@@ -338,12 +338,13 @@
     </div>
 </template>
 <style lang='scss'>
+@import '../../css/variable';
 .set-mange {
 	.main-middle {
 		padding: 0;
 	}
-	.el-tabs__header,.compenent-form,{
-		padding: 0 20px;
+	.el-tabs__header, .my-table {
+		padding: 0 $baseSize*2;
 	}
 }
 .box {
@@ -393,7 +394,6 @@
 				tableIndex: 0,
 				index: 0,
 				loading: false,
-				labelWidth: '140px',
 				width: '300px',
 				allCheck: false,
 				percentage: 0,

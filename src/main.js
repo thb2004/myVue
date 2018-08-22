@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
@@ -17,152 +16,22 @@ import './css/index.scss'
 import './css/common.scss'
 import 'element-ui/lib/theme-chalk/display.css';
 import "vue2-scrollbar/dist/style/vue2-scrollbar.css"
-import $ from 'jquery'
-import qs from 'qs'
 import offline from 'offline'
 import ScrollBar from 'vue2-scrollbar'
 Vue.component('vue-scrollbar', ScrollBar)
 Vue.use(Vuex)
 Vue.use(ElementUI)
 //Vue.config.productionTip = false
-//Vue.config.devtools = true;
+Vue.config.devtools = true;
 Vue.prototype.$http = axios;
-Vue.prototype.$qs = qs;
 const store = new Vuex.Store(stores)
-let path = '';				//记录页面刷新时候url redirec所带的路径；例如？redirect=/home/firstHomeContent
 /* eslint-disable no-new */
 router.beforeEach((to, from, next) => {
-	!path && (path = to.fullPath)
-	Message.closeAll()
-	if (offline()) {
-		Message.warning({
-			title: '警告',
-          	message: '网络异常,请先检查网络',
-          	customClass: 'my-message',
-          	duration: 1500,
-		})
-	}
-	if (to.meta.requireAuth) { 
-		let userLevel = store.getters.getUserLevel										// 判断该路由是否需要登录权限
-		if (from.name === 'login' && userLevel) {	//从登陆页面过来。不需校验token
-			if (userLevel === '1') {								//1代表dba权限,需不展示云管理平台
-				if (to.name === 'authorityCenter' || to.name === 'scada') {
-					next({ 
-						path: '/home/firstHomeContent',
-					})
-					return;
-				}
-			} else if (userLevel === '2' || (userLevel === '3')) {	//2/3代表一般用户权限
-				let noAuthorArr = [
-					'workMange', 
-					'MYSQLMange','NosqlMange','dataSetsMange',
-					'MySqlCopyMange','backMange','DMLDDL',
-					'authorityCenter', 
-					'VirtualMachineApply', 'linuxMangeFirstPage','automationFirstPage',
-					'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
-					'netVlanList','LinuxBatchStandardizationFirstPage',
-					'otherFirstPage','history','secondHomeContent',
-					'scada'
-				]
-				if (noAuthorArr.indexOf(to.name) != -1) {
-					next({
-						path: '/home/firstHomeContent',
-					})
-					return;
-				}
-			} else if (userLevel === '4' || userLevel === '5') {
-				let noAuthorArr = [
-					'workMange', 
-					'MYSQLMange','NosqlMange','dataSetsMange',
-					'MySqlCopyMange','backMange','DMLDDL',
-					'authorityCenter', 
-					'linuxMangeFirstPage','automationFirstPage',
-					'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
-					'netVlanList','LinuxBatchStandardizationFirstPage',
-					'otherFirstPage','history',
-				]
-				userLevel === '4' && noAuthorArr.push('scada')
-				if (noAuthorArr.indexOf(to.name) != -1) {
-					next({
-						path: '/home/firstHomeContent',
-					})
-					return;
-				}
-			}
-			next();
-		} else {
-			axios.post('/adm/v1/getuserinfo?' + new Date().getTime()).then(res => {
-				if (res.data.Code === '505') {	//会话过期
-					next({						//query用来记录当前页面，，以便重新登录时候跳转到该页面
-						path: '/',
-						query: {
-							redirect: path
-						}
-					})
-				} else {
-					let data = res.data.Data || {}
-					let userLevel = data.userlevel;		//用户等级
-					let cnname = data.cnname;			//登录中文名
-					let mipAccount = data.username;		//登录mip账号
-					//if (!store.getters.getUserLevel) {	//如果userlevel存在代表已经登录
-					if (userLevel === '1') {
-						if (to.name === 'authorityCenter' || to.name === 'scada') {
-							next({ //1代表dba权限,需不展示云管理平台
-								path: '/page404',
-							})
-							return;
-						}
-					} else if (userLevel === '2' || (userLevel === '3')) {			//2/3代表一般用户权限
-						let noAuthorArr = [
-							'workMange', 
-							'MYSQLMange','NosqlMange','dataSetsMange',
-							'MySqlCopyMange','backMange','DMLDDL',
-							'authorityCenter', 
-							'VirtualMachineApply', 'linuxMangeFirstPage','automationFirstPage',
-							'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
-							'netVlanList','LinuxBatchStandardizationFirstPage',
-							'otherFirstPage','history','secondHomeContent',
-							'scada'
-						]
-						if (noAuthorArr.indexOf(to.name) != -1) {
-							next({
-								path: '/page404',
-							})
-							return;
-						}
-					} else if (userLevel === '4' || userLevel === '5') {
-						let noAuthorArr = [
-							'workMange', 
-							'MYSQLMange','NosqlMange','dataSetsMange',
-							'MySqlCopyMange','backMange','DMLDDL',
-							'authorityCenter', 
-							'linuxMangeFirstPage','automationFirstPage',
-							'LinuxBatchInitFirstPage','netMangeAutoView','IPList',
-							'netVlanList','LinuxBatchStandardizationFirstPage',
-							'otherFirstPage','history',
-						]
-						userLevel === '4' && noAuthorArr.push('scada')
-						if (noAuthorArr.indexOf(to.name) != -1) {
-							next({
-								path: '/page404',
-							})
-							return;
-						}
-					}
-					userLevel && store.commit('setUserLevel', userLevel)
-					mipAccount && store.commit('setUsername', mipAccount)
-					cnname && store.commit('setCnname', cnname)
-					userLevel && store.commit('setMenuList', userLevel)
-					userLevel && store.commit('setLeftMenuList', userLevel)
-					//}
-					next();
-				}
-			}).catch(err => {
-				next();
-			})
-		}
+	let href = location.href
+	if (!store.getters.getLogin) {
+		app.tools.getRoutes(store, router, next, to)
 	} else {
-		next();
+		next()
 	}
 })
 new Vue({
@@ -173,21 +42,17 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-// http响应拦截器
-axios.interceptors.response.use(response => {
-	let code = response.data.code || response.data.Code
-	if (code === '505') {													//会话过期
-		store.getters.getCount === 0 && router.replace({
-			path: '/',
-			query: {
-				redirect: path
-			}
-		})
+
+axios.interceptors.response.use( (res) => {
+	let code = res.data.code || res.data.Code
+	let href = location.href
+	if (code === '505') {			//重定向
+		if (store.getters.getCount === 0) {
+			window.location.replace(res.data.Message + '?service=' + href)
+		}
 		store.commit('setCount', 1)
 	}
-	return response
-}, error => {
-	return Promise.reject(error)
+	return res
 })
 //初始化
 let init = () => {

@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const filters = {
 	/**
 	 * 状态类型选择
@@ -317,7 +319,7 @@ export default {
 				}
 				break;
 			case 'component':
-				let formData = vm.currentName === 'midwareAdd' ? vm.dialogFormData :
+				let formData = vm.currentName === 'midwareAdd' ? vm.midwareAddDialogFormData :
 					vm.currentName === 'processingList' ? vm.oneDialogFormData : {}
 				if (vm.currentName === 'midwareAdd' || vm.currentName === 'processingList') {
 					if (formData[key][key].indexOf('tomcat') != -1) {
@@ -650,7 +652,194 @@ export default {
 	},
 
 	setInputPlaceholder (obj, placeholder) {
-		obj.placeholder = placeholder
-	}
+		obj.remark = remark
+	},
 
+	getRoutes (store, router, next, to) {
+		let href = location.href
+		axios.post('/adm/v1/getusernav').then( res => {
+			let code = res.data.Code
+			if (code === '2000000') {
+				next && store.commit('setLogin', true)
+				//组织路由
+				let routes = router.options.routes
+				let navList = []																			//头部导航条
+				let obj = {}
+				let count = 0																		//侧边栏
+				for (let i of res.data.Data.Nav) {												//遍历一级导航栏
+					let temp = {}
+					let flag = true
+					i.IconName && (i.IconName = require('../../assets/images/' + i.IconName + '.png'))
+					i.ActiveIconName && (i.ActiveIconName = require('../../assets/images/' + i.ActiveIconName + '.png'))
+					if (i.Enable === '1') {																	//1代表此一级导航栏开启
+						navList.push({
+							text: i.NavName,
+							name: i.RouterName,
+							path: i.Path,
+							icon: i.IconName,
+							blueIcon: i.ActiveIconName
+						})
+
+						if (i.Children && i.Children.length) {														//SecondNavArray代表有二级导航
+							obj[i.NavName] = []
+							for (let j of i.Children) {
+								if (j.Enable === '1') {														//1代表此二级导航栏开启
+									j.IconName && (j.IconName = require('../../assets/images/' + j.IconName + '.png'))
+									j.ActiveIconName && (j.ActiveIconName = require('../../assets/images/' + j.ActiveIconName + '.png'))
+									j.Path && flag && (navList[count].path = j.Path, navList[count].name = j.RouterName,flag = false)
+									obj[i.NavName].push({															
+										text: j.NavName,
+										name: j.RouterName,
+										path: j.Path,
+										icon: j.IconName,
+										blueIcon: j.ActiveIconName,
+										
+									})
+
+									if (j.RouterName === 'myMatters') {
+										routes[0].children.push({
+											path: '/home/processingList',
+											name: 'processingList',
+											meta: {
+												navPath: i.NavName
+											},
+											component: resolve => require(['../../pages/processingList'], resolve),
+										})
+									} else if (j.RouterName === 'netMange') {
+										routes[0].children.push(...[
+											{
+												path: '/home/IPList',
+												name: 'IPList',
+												meta: {
+													navPath: i.NavName
+												},
+												component: resolve => require(['../../pages/IPList/index'], resolve),
+											},
+											{
+												path: '/home/netVlanList',
+												name: 'netVlanList',
+												meta: {
+													navPath: i.NavName
+												},
+												component: resolve => require(['../../pages/netVlanList/index'], resolve),
+											}
+										])
+									}
+									if (!j.Children || !j.Children.length) {
+										temp = {
+											path: j.Path,
+											name: j.RouterName,
+											meta: {
+												curTitle: j.NavName,
+												navPath: i.NavName
+
+											},
+											component: resolve => require(['../../pages/' + j.RouterName + '/index.vue'], resolve)
+										}
+										routes[0].children.push(temp)
+									} else {
+										obj[i.NavName][obj[i.NavName].length - 1].isAccordion = true
+										obj[i.NavName][obj[i.NavName].length - 1].children = []
+										for (let k of j.Children) {										//ThirdNavArray代表有三级导航
+											if (k.Enable === '1') {
+												k.Path && flag && (navList[count].path = k.Path, navList[count].name = k.RouterName, flag = false)												//1代表此三级导航栏开启
+												k.IconName && (j.IconName = require('../../assets/images/' + k.IconName + '.png'))
+												k.ActiveIconName && (j.ActiveIconName = require('../../assets/images/' + k.ActiveIconName + '.png'))
+												temp = {
+													path: k.Path,
+													name: k.RouterName,
+													meta: {
+														navTitle: j.NavName,
+														curTitle: k.NavName,
+														navPath: i.NavName
+													},
+													component: resolve => require(['../../pages/' + k.RouterName + '/index.vue'], resolve)
+												}
+												obj[i.NavName][obj[i.NavName].length - 1].children.push({
+													text: k.NavName,
+													name: k.RouterName,
+													path: k.Path,
+													icon: k.IconName,
+													blueIcon: k.ActiveIconName,
+												})
+												routes[0].children.push(temp)
+											}
+										}
+									}
+								}
+							}
+																						
+						}
+						count++
+					}
+				}
+				//重定向到第一个系统首页
+				routes[0].redirect.path='/home/first'
+				//保存导航数据到stores
+				store.commit('setMenuList', navList)
+				store.commit('setLeftMenuObj', obj)
+				store.commit('setUsername', res.data.Data.MipName || '')
+				//将动态路由添加进去
+		        routes.push(...[
+			        {
+			        	path: '/page404',
+			        	name: 'Page404',
+			        	component: resolve => require(['../../pages/notFound'], resolve),
+			        },
+			        {
+			        	path: '*',
+			        	redirect: '/page404'	
+			        }
+		        ])
+			    router.addRoutes(routes)
+				next && next({
+					path: to.path,
+					query: to.query || ''
+				})
+			} else if (code === '505') {
+				window.location.replace(res.data.Message + '?service=' + href)
+			}
+		})
+	},
+
+	getFormData (vm, params, type) {
+		let url = '/Gaea_api/getDeployfrom' 
+		app.post(url, params, response => {
+			let data = {}
+			let labelObj = {}
+			for (let i of response.data.data) {
+				if (type === 'x86Update') {
+					if (['updateType','masterName','ipAddress', 'remark'].indexOf(i.cloumn) != -1) {
+						vm[type + 'HiddenFormField'][i.cloumn] = true;
+						vm[type + 'SourceHiddenFormField'][i.cloumn] = true;
+					} else {
+						vm[type + 'HiddenFormField'][i.cloumn] = false;
+						vm[type + 'SourceHiddenFormField'][i.cloumn] = false;
+					}
+				}
+				i.labelName = i.lableName
+				i.placeholder = i.remark
+				i[i.cloumn] = i.defaultValue || ''
+				i.disabled = i.disabled != 'true' ? false : true
+				i.type = i.inputType
+				data[i.cloumn] = i
+				labelObj[i.cloumn] = i.lableName
+				if (i.cloumn === 'disk' && type === 'x86Add') {
+					vm.diskData = JSON.parse(i.value)
+				}		
+				if (i.inputType === 'select') {
+					data[i.cloumn].selectData = []
+					let obj = JSON.parse(i.value)
+					for (let key in obj) {
+						data[i.cloumn].selectData.push({
+							label: obj[key],
+							value: key
+						})
+					}
+				}
+			}
+			vm[type + 'TableHeadName'] = Object.assign({}, labelObj)
+			vm[type + 'DialogFormData'] = Object.assign({}, data)
+		})
+	},
 }

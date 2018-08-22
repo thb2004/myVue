@@ -14,7 +14,7 @@
 	      <el-main :style='{"height": $store.state.innerHeight+"px"}'>
 	      	<el-scrollbar style='height:100%;'>
 		      	<!-- 右侧中心头部内容-->
-		      	<div  v-if='!/HomeContent|AllResult|ProcessingList|notFound|developing/.test($route.name)'>
+		      	<div  v-if='!/HomeContent|AllResult|processingList|notFound|myMatters|workMange/.test($route.name)'>
 		      		<v-main-header></v-main-header>
 		      	</div>
 		      	<!-- 右侧中心主体内容-->
@@ -22,6 +22,7 @@
 		      	<div v-if='!/developing/.test($route.name)'>
 		      		<p class='footer'>美的平台服务协议和法律声明 Copyright © 1968-2018 Midea Group.All right reserved <span>中文</span></p>
 		      	</div>
+		      	<v-loading ref="loading" v-if="$store.state.plugins.loading.show" :text='$store.state.plugins.loading.text' ></v-loading> 
 	      	</el-scrollbar>
 	      </el-main>
 	    </el-container>

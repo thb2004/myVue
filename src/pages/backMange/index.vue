@@ -4,10 +4,10 @@
 			<div class="main-middle">
 				<el-tabs v-model="activeName">
 					<el-tab-pane label="平台权限管理" name="one">
-						<div class="compenent-form">
-							<el-form rel='form' :model='oneForm' :label-width='labelWidth'>
-								<el-row>
-									<el-col :md='9' class='required'>
+						<div>
+							<el-form rel='form' :model='oneForm' :label-width='$store.state.labelWidth'>
+								<el-row :style='{"padding-right": $store.state.labelWidth}'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select 
 											    v-model="oneForm.dept"
@@ -21,7 +21,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 									  <el-form-item label="环境">
 									      <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
 									          <el-option v-for='(item,index) in oneEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -29,7 +29,7 @@
 									  </el-form-item>
 									</el-col>
 
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="应用">
 										    <el-select v-model="oneForm.application" placeholder="请选择" clearable filterable>
 		                 						<el-option v-for='(item,index) in oneApplicationList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -66,10 +66,10 @@
 					</el-tab-pane>
 					
 					<el-tab-pane label="DDL/DML自动手动入库开关" name="two">
-						<div class="compenent-form">
-							<el-form rel='form' :model='twoForm' :label-width='labelWidth'>
+						<div>
+							<el-form rel='form' :model='twoForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='9' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="部门">
 										    <el-select 
 											    v-model="twoForm.dept"
@@ -83,7 +83,7 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:9,offset:2}' class='required'>
+									<el-col :md='12' class='required'>
 										<el-form-item label="环境">
 										    <el-select v-model="twoForm.envType" placeholder="请选择" clearable filterable>
 		                 						<el-option :value="2" label='UAT环境'></el-option>
@@ -93,15 +93,14 @@
 										</el-form-item>
 									</el-col>
 								</el-row>
-
-								<div class="btn-group-lg">
-									<el-button type="primary" @click="onSubmit('twoQuery')" :dsiabled='btnDisabled'>查 询</el-button>
-									<el-button @click="resetForm">重 置</el-button>
-								</div>
 							</el-form>
+							<div class="btn-group-lg">
+								<el-button type="primary" @click="onSubmit('twoQuery')" :dsiabled='btnDisabled'>查 询</el-button>
+								<el-button @click="resetForm">重 置</el-button>
+							</div>
 						</div>
 						<div class="empty"></div>
-						<div class="compenent-form">
+						<div class="my-table">
 							<v-table 
 							   :data='twoTableData' 
 							   :tableHeadName='twoTableHeadName'
@@ -125,33 +124,6 @@
 						</div>
 					</el-tab-pane>
 
-					<!-- <el-tab-pane label="添加用户或修改权限" name="three">
-						<div class="compenent-form">
-							<el-form rel='form' :model='threeForm' :label-width='100px'>
-								<el-row>
-									<el-col :md='12'>
-										<el-form-item label="MIP账号">
-											<el-input v-model="threeForm.mip" placeholder='请输入'></el-input>
-										</el-form-item>
-									</el-col>
-					
-									<el-col :md='12'>
-										<el-form-item label="选择角色">
-						    			    <el-select v-model="threeForm.role" placeholder="请选择">
-						                        <el-option v-for='(item,index) in threeRoleList' :label='item.label' :value='item.value' :key='index'></el-option>
-						    			    </el-select>
-										</el-form-item>
-									</el-col>
-								</el-row>
-								<div class="btn-group-lg">
-									<el-button type="primary" @click="onSubmit" :dsiabled='btnDisabled' style='width: 200px'>添加用户并修改权限</el-button>
-									<el-button @click="resetForm">重 置</el-button>
-								</div>
-							</el-form>
-						</div>
-						<div class="empty"></div>
-					</el-tab-pane> -->
-
 				</el-tabs>
 			</div>
 		</div>
@@ -160,12 +132,13 @@
 
 
 <style lang='scss'>
+@import '../../css/variable';
 	.back-mange {
 	  .main-middle {
 	    padding: 0;
 	  }
-	  .el-tabs__header,.compenent-form,{
-	    padding: 0 20px;
+	  .el-tabs__header,.my-table,{
+	    padding: 0 $baseSize*2;
 	  }
 	  .user-application {
   	    height: 246px;

@@ -2,7 +2,7 @@
 	<div class="header">
 		<div class='my-flex'>	
 			<div class='brand'>
-				<img src="../../assets/images/brand.png">
+				<img src="../../assets/images/brand.png" @click='goHome'>
 				<span>雅典娜自动化平台</span>
 			</div>
 			<el-menu :default-active='""+$store.state.pages.navbarIndex' mode='horizontal' @select='changePage' 
@@ -11,7 +11,7 @@
 				active-text-color="#ffd04b"
 				class='my-menu hidden-small'
 				>
-				<el-menu-item v-for='(item,index) in $store.state.pages.menuList' :index="'' + index" :key="index" v-if='item.isShow'>
+				<el-menu-item v-for='(item,index) in $store.state.pages.menuList' :index="item.path" :key="index" :class="{'active':$store.state.pages.navbarIndex===item.text}">
 					{{item.text}}
 				</el-menu-item>
 			</el-menu>
@@ -41,7 +41,7 @@
 				<div class='user'>
 					<el-dropdown @command='logout' trigger="click">
 					  <span class="el-dropdown-link">
-					    <img src="../../assets/images/user.png">{{$store.state.cnname}}<i class="el-icon-arrow-down el-icon--right"></i>
+					    <img src="../../assets/images/user.png">{{$store.state.username}}<i class="el-icon-arrow-down el-icon--right"></i>
 					  </span>
 					  <el-dropdown-menu slot="dropdown" class='logout'>
 					    <el-dropdown-item command='logout' class='logout-sys'>退出系统</el-dropdown-item>
@@ -55,7 +55,7 @@
 						<i class="fa fa-navicon"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item v-for='(item,index) in $store.state.pages.menuList' :key="index" :command='"" + index' v-if='item.isShow'>
+					    <el-dropdown-item v-for='(item,index) in $store.state.pages.menuList' :key="index" :command='item.path'>
 					    	{{item.text}}
 					    </el-dropdown-item>
 					</el-dropdown-menu>
@@ -67,6 +67,19 @@
 <style lang='scss'>
 	@import '../../css/variable';
 	.header {
+		li {
+			overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;
+		} 
+		li.is-active, li {
+			color: #fff !important;
+			background-color: #2A3C59 !important;
+		}
+		li.active {
+			background-color: #223047 !important;
+			color: #FFD04B !important;
+		}
 		.el-dropdown-link {
 			cursor: pointer;
 		}
@@ -85,12 +98,6 @@
 		.brand,.right-content {
 			font-size: 14px;
 		}
-		/*.brand {
-			width: 25%
-		}
-		 .my-menu {
-			width: 50%
-		} */
 		img {
 			width: 1rem;
 			vertical-align: middle;
@@ -178,53 +185,26 @@
 			}
 		},
 		methods: {
-			...mapMutations(["setNavbarIndex",'resetLeftMenuIndex','setTitle', 'setUsername','setUserLevel', 'setLeftMenuList', 'setCnname','setMenuList', 'setCount']),
-			changePage(index) {
-				let pageName = ''
-				switch (index) {
-					case '0':
-						pageName = 'firstHomeContent';
-						break;
-					case '1':
-						pageName = 'secondHomeContent';
-						break;
-					case '2':
-						pageName = 'threeHomeContent';
-						break;
-					case '3':
-						pageName = 'authorityCenter';
-						break;
-					case '4':
-						pageName = 'scada';
-						break;
-				}
-				app.go(pageName)
-				/*设置navbar Index*/
-				this.setNavbarIndex(index)
+			changePage(path) {
+				app.go(path)
+			},
+			goHome () {
+				app.go('review')
 			},
 			/*注销登录*/
 			logout (command) {
-				let url = '/adm/v1/logout'
+				/*let url = '/adm/v1/logout'
 				app.post(url, {}, res => {
-					this.$router.push({
-						path: '/',
-						query: {
-							redirect: this.$router.currentRoute.fullPath
-						}
-					})
-					this.setCount(0)
-					this.setUsername('')
-					this.setUserLevel('')
-					this.setLeftMenuList('')
-					this.setMenuList('')
-					this.setCnname('')
+					window.location.reload()					
 				}, err => {
 					this.$alert('注销失败', {title: '提示'})
-				})
+				})*/
+				//http://loginnh.midea.com/oam/server/logout?end_url=http://im//://imip.midea.com/home.html
+				//location.replace('http://oamuat.midea.com/sso-service/CleanupCookie?app=' + location.href)
 				
+				//http://idmwsnh.midea.com/sso-service/CleanupCookie?app=http://imip.midea.com/home.html#/a/home
+				location.replace('http://idmwsnh.midea.com/sso-service/CleanupCookie?app=' + location.href)
 			}
-			
-			
 		}
 	}
 </script>

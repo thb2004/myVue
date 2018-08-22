@@ -25,7 +25,8 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 $height:1.5rem;
 .ui-loading {
-  position: fixed;
+  /* position: fixed; */
+  position: absolute;
   left: 0;
   top: 0;
   z-index: 10000;

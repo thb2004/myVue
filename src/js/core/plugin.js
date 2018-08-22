@@ -10,7 +10,6 @@ export default {
      * @param {string} text 加载文字
      */
     show(text = '加载中......') {
-      // console.log('loaing')
       $root.$store.commit('setPluginStatu', {
         name: 'loading',
         config: {

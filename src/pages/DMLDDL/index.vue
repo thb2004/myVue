@@ -4,14 +4,14 @@
       <div class="main-middle">
         <el-tabs v-model="activeName">
           <el-tab-pane label="DDL/DML操作查询" name="one">
-            <div class="compenent-form">
-              <el-form v-model='oneForm' :label-width='labelWidth'>
+            <div>
+              <el-form v-model='oneForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
                 <el-row>
                   <el-col>
-                    <p class="title m-b20">主机过滤</p>
+                    <p class="title m-b20 pad-l">主机过滤</p>
                   </el-col>
 
-                  <el-col :md='9' class='required'>
+                  <el-col :md='12' class='required'>
                     <el-form-item label="部门">
                         <el-select v-model="oneForm.dept" placeholder="请选择" @change='clearData' clearable filterable>
                                 <el-option v-for='(item,index) in oneDeptList' :key='index' :label='item.label' :value='item.value'></el-option>
@@ -19,7 +19,7 @@
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='{span:9,offset:2}' class='required'>
+                  <el-col :md='12' class='required'>
                     <el-form-item label="环境">
                         <el-select v-model="oneForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
                             <el-option v-for='(item,index) in oneEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -27,7 +27,7 @@
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='9' class='required'>
+                  <el-col :md='12' class='required'>
                     <el-form-item label="应用">
                         <el-select v-model="oneForm.region" placeholder="请选择" @change='getServerList' clearable filterable>
                                 <el-option v-for='(item,index) in oneRegionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -35,7 +35,7 @@
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='{span:9,offset:2}' class='required'>
+                  <el-col :md='12' class='required'>
                     <el-form-item label="主机">
                         <el-select v-model="oneForm.host" placeholder="请选择主机">
                                 <el-option v-for='(item,index) in oneHostList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -44,28 +44,28 @@
                   </el-col>
                   
                   <el-col>
-                    <p class="title m-b20">操作人、数据库和模糊命令</p>
+                    <p class="title m-b20 pad-l">操作人、数据库和模糊命令</p>
                   </el-col>
 
-                  <el-col :md='9'>
+                  <el-col :md='12'>
                     <el-form-item label="操作人">
                         <el-input v-model="oneForm.operator" placeholder='请输入最少执行时间'></el-input>
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='{span:9,offset:2}'>
+                  <el-col :md='12'>
                     <el-form-item label="数据库名称">
                         <el-input v-model="oneForm.database" placeholder='请输入数据库名称'></el-input>
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='20'>
+                  <el-col :md='24'>
                     <el-form-item label="模糊命令">
                         <el-input v-model="oneForm.command" placeholder='请输入模糊命令' type='textarea' :rows='2'></el-input>
                     </el-form-item>
                   </el-col>
 
-                  <el-col :md='9'>
+                  <el-col :md='12'>
                     <el-form-item label="时间查询方式">
                         <el-select v-model="oneForm.queryMode" placeholder="请选择" @change='setDateDisabled'>
                             <el-option :value="5" label="最近3天"></el-option>
@@ -78,7 +78,7 @@
                         </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :md='{span:9,offset:2}'>
+                  <el-col :md='12'>
                     <el-form-item label="查询时间范围">
                         <el-col :md='11'>
                           <el-date-picker
@@ -109,19 +109,20 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <div class='btn-group-lg'>
-                    <el-button type="primary" @click="onSubmit" size='small' :disabled='btnDisabled'>查询</el-button>
-                    <el-button @click="resetForm" size='small'>重置</el-button>
-                </div>
               </el-form>
+              <div class='btn-group-lg'>
+                  <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
+                  <el-button @click="resetForm">重 置</el-button>
+              </div>
             </div>
             <div class="empty"></div>
-            <div class="compenent-form">
+            <div class="my-table">
                  <p class='title m-b10'>DDL/DML查询</p>
                  <v-table 
                     :data='oneTableData' 
                     :tableHeadName='oneTableHeadName'
                     :showOperator='false'
+                    :showTips='showTips'
                     @cellClick='cellClick'
                     class='color-blue one-table'
                  ></v-table>
@@ -138,12 +139,11 @@
                  </div>
             </div>
           </el-tab-pane>
-
               <el-tab-pane label="DBA审核入库" name="two">
-                <div class="compenent-form">
-                   <el-form v-model='twoForm' :label-width='labelWidth'>
+                <div>
+                   <el-form v-model='twoForm' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
                       <el-row>
-                         <el-col :md='9' class='required'>
+                         <el-col :md='12' class='required'>
                             <el-form-item label="部门">
                                 <el-select v-model="twoForm.dept" placeholder="请选择" @change='clearData' clearable filterable>
                                     <el-option v-for='(item,index) in twoDeptList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -151,7 +151,7 @@
                             </el-form-item>
                           </el-col>
 
-                          <el-col :md='{span:9,offset:2}' class='required'>
+                          <el-col :md='12' class='required'>
                             <el-form-item label="环境">
                                 <el-select v-model="twoForm.envType" placeholder="请选择" @change='getAppList' clearable filterable>
                                     <el-option v-for='(item,index) in twoEnvTypeList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -159,7 +159,7 @@
                             </el-form-item>
                           </el-col>
 
-                          <el-col :md='9' class='required'>
+                          <el-col :md='12' class='required'>
                             <el-form-item label="应用">
                                 <el-select v-model="twoForm.region" placeholder="请选择应用" @change='getHostList' clearable filterable>
                                      <el-option v-for='(item,index) in twoRegionList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -167,7 +167,7 @@
                             </el-form-item>
                          </el-col>
 
-                         <el-col :md='{span:9,offset:2}' class='required'>
+                         <el-col :md='12' class='required'>
                             <el-form-item label="主机">
                                 <el-select v-model="twoForm.host" placeholder="请选择主机" @change='getDBList' clearable filterable>
                                      <el-option v-for='(item,index) in twoHostList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -175,7 +175,7 @@
                             </el-form-item>
                          </el-col>
 
-                          <el-col :md='9'>
+                          <el-col :md='12'>
                               <el-form-item label="DB">
                                   <el-select v-model="twoForm.DB" placeholder="请选择DB" clearable filterable>
                                        <el-option v-for='(item,index) in twoDBList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -183,7 +183,7 @@
                               </el-form-item>
                           </el-col>
 
-                          <el-col :md='{span:9,offset:2}'>
+                          <el-col :md='12'>
                               <el-form-item label="提交人">
                                   <el-select v-model="twoForm.submiter" placeholder="请选择提交人" clearable filterable>
                                       <el-option v-for='(item,index) in twoSubmiterList' :label='item.label' :value='item.value' :key='index'></el-option>
@@ -191,7 +191,7 @@
                               </el-form-item>
                           </el-col>
 
-                         <el-col :md='9'>
+                         <el-col :md='12'>
                             <el-form-item label="过滤类型">
                                 <el-select v-model="twoForm.filterType" placeholder="请选择过滤类型">
                                      <el-option :value="0" label="待入库"></el-option>
@@ -203,23 +203,23 @@
                             </el-form-item>
                          </el-col>
                       </el-row>
-
-                      <div class='btn-group-lg'>
-                         <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
-                         <el-button @click="resetForm">重 置</el-button>
-                      </div>
                    </el-form>
+                   <div class='btn-group-lg'>
+                      <el-button type="primary" @click="onSubmit" :disabled='btnDisabled'>查 询</el-button>
+                      <el-button @click="resetForm">重 置</el-button>
+                   </div>
                  </div>
 
                  <div class="empty"></div>
                 
-                <div class="compenent-form">
+                <div class="my-table">
                    <p class='title m-b10'>DDL/DML查询列表</p>
                    <v-table 
                       :data='twoTableData' 
                       :tableHeadName='twoTableHeadName'
                       :showOperator='showOperator'
                       :operatorTexts='["SQL详情及修正","删除",""]'
+                      :showTips='showTips'
                       @editRow='viewDetail'
                       @cellClick='cellClick'
                       class='color-blue two-table'
@@ -290,12 +290,13 @@
 
 </template>
 <style lang='scss'>
+@import '../../css/variable';
 .dml-ddl {
   .main-middle {
     padding: 0;
   }
-  .el-tabs__header,.compenent-form,{
-    padding: 0 20px;
+  .el-tabs__header, .my-table {
+    padding: 0 $baseSize*2;
   }
   .flex {
     p {
@@ -347,7 +348,6 @@
     data() {
       return {
         showOperator: true,
-        labelWidth: '140px',
         activeName: 'one',
         row_id: '',
         index: 0,
@@ -435,7 +435,10 @@
           filterType: 0,         //过滤类型
         },
         timer: null,
-
+        showTips: {
+          result_output: true,
+          result_output: true
+        },
       }
     },
     methods: {
@@ -816,7 +819,7 @@
               this.twoSubmiterList.push(i)
             }
             for (let i of response.data.data.wait_inyard_list) {
-              i.last_update_date = app.tools.formatDate(i.last_update_date)
+              //i.last_update_date = app.tools.formatDate(i.last_update_date)
               if (i.db_all) {
                 let arr = i.db_all.split(':')
                 i.db_ip = arr[0]

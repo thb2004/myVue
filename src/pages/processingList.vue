@@ -229,14 +229,14 @@
 		methods: {
 			processSubmit (typeApprove) {
 				app.post('/Gaea_api/setApprove', {
-					ticketNum: this.pages.params.ticketNumber,
-					taskId: this.pages.params.taskId,
+					ticketNum: this.$route.query.ticketNumber,
+					taskId: this.$route.query.taskId,
 					typeApprove,
 					content: this[typeApprove + 'Advice'] || '',
 					user: this.$store.state.username,
 				}, res => {
 					if (res.data.code === '100001') {		//成功跳转我的代办列表
-						app.go({path:'myMattersFirstPage',params: {ticketNumber: this.pages.params.ticketNumber, taskId: this.pages.params.taskId}})
+						app.go('myMatters')
 					} else if (res.data.code != '505') {
 						this.$alert(res.data.msg, {
 							title: '提示',
@@ -465,12 +465,6 @@
 								})
 							}
 						}
-						if (i.cloumn === 'remark') {
-							if (type) {
-								placeholder = type.toLowerCase().indexOf('add') != -1 ? '请输入资源申请的目的' : type.toLowerCase().indexOf('recycle') != -1 ? '请输入资源回收的目的' : '请输入资源变更的目的'
-							}
-							app.tools.setInputPlaceholder(i, placeholder)
-						}
 					}
 					this[name + 'TableHeadName'] = Object.assign({}, labelObj)
 					this[name + 'DialogFormData'] = Object.assign({}, data)
@@ -536,18 +530,14 @@
 			},
 		},
 		created () {
-			let pages = this.pages
-			if (!pages.params.ticketNumber && !pages.params.taskId) {			//这2个从前一页面带过来的数据如果都为空，。则代表此页面刷新过
-				app.go({
-					path: this.$route.path.replace('processingList', 'firstPage')
-				})
+			if (!this.$route.query.ticketNumber && !this.$route.query.taskId) {			//这2个从前一页面带过来的数据如果都为空，。则代表此页面刷新过
+				app.go('myMatters')
 			} else {
 				//获取工单详情
-				this.getDetailData(pages.params.ticketNumber)
+				this.getDetailData(this.$route.query.ticketNumber)
 				//获取审批流程
-				this.viewProcess(pages.params.taskId)
+				this.viewProcess(this.$route.query.taskId)
 			}
-			
 		},
 	}
 </script>

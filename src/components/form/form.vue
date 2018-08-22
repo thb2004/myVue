@@ -12,7 +12,6 @@
 						v-show='hiddenField[key]!=false'
 						:label='value.labelName' 
 						:hiddenField='hiddenField'
-						:title="value.labelName === '磁盘(GB)' && isShowDiskComment ? '变更后的空间大小' : ''"
 					>
 						<el-tooltip placement="right" v-if='key==="osauto"&&isShowTooltips'>
 						  <div slot="content">
@@ -96,33 +95,13 @@
 					    <el-select 
 					    	v-else
 					    	v-model="value[key]"
-						    :placeholder="value.labelName === '磁盘(GB)' && isShowDiskComment ? '变更后的空间大小' : value.placeholder ? value.placeholder : '请选择'" 
+						    :placeholder="value.placeholder ? value.placeholder : '请选择'" 
 						    :class='[key === "moduleId" ? "more-ten" : ""]'
 						    @change='handle(key)'
 						    @focus='focus'
 					    	filterable
 					    	clearable
 					    >
-					    	<!-- <el-option 
-					    		v-if='isShowProductModule && key === "moduleId"'
-					    		value='none'
-					    		disabled 
-					    	>
-					    		<div class='choose-module'>选择产品模块</div>
-					    	</el-option>
-					    	
-					    	<el-option 
-					    		v-if='isShowSearchInput && key === "moduleId"'
-					    		value='none'
-					    							    	disabled 
-					    							    	class='search-sel'
-					    	>
-					    		<div>
-					    							    		<el-input placeholder="输入关键词模糊查询" suffix-icon="el-icon-search" v-model="inputSearch" @input='searchMatch'
-					    							    		></el-input>
-					    		</div>
-					    	</el-option> -->
-
 					    	<el-option 
 						    	v-for='(item,index) in value.selectData' 
 						    	:label='item.label' 
@@ -132,14 +111,6 @@
 					    	>
 					    		<span style="float: left">{{ item.label }}</span>
 					    	</el-option>
-
-					    	<!-- <el-option
-					    		v-if='isShowNoData && key === "moduleId"'
-					    		value='none'
-					    							    	disabled 
-					    	>
-					    		<div class='text-center'>暂无数据</div>
-					    	</el-option> -->
 					    </el-select>
 					</el-form-item>
 				</el-col>
@@ -148,15 +119,6 @@
 	</div>
 </template>
 <style lang='scss'>
-	/* 数量在0 - 10之间的样式 */
-	/* .low-ten {
-		.el-icon-arrow-up {
-			font-family: element-icons!important;
-			&:before {
-				content: "\E605"
-			}
-		}
-	} */
 	/* 数量在10以上的样式 */
 	.more-ten {
 		.el-icon-arrow-up {
@@ -209,11 +171,11 @@
 			},
 			span: {
 				type: Number,
-				default: 9
+				default: 12
 			},
 			isOffset: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			hiddenField: {
 				type: Object,
@@ -244,7 +206,7 @@
 			},
 			labelWidth: {
 				type: String,
-				default: '10rem',
+				default: '14rem',
 			}
 		},
 		computed: {

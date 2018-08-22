@@ -4,58 +4,25 @@
 			<div class='main-middle'>
 				<el-tabs v-model="activeName" @tab-click='changeTab'>
 					<el-tab-pane label="新建scada微服务" name="one">
-						<div class="compenent-form">
-				    		<el-form rel='form' :model='oneForm' :label-width='labelWidth' ref='oneForm' :rules='rules'>
+						<div>
+				    		<el-form rel='form' :model='oneForm' ref='oneForm' :rules='rules' :label-width="$store.state.labelWidth" :style='{"padding-right": $store.state.labelWidth}'>
 								<el-row>
-									<el-col :md='10'>
+									<el-col :md='12'>
 										<el-form-item label='实例名称' prop='caseName'>
 										   <el-input v-model="oneForm.caseName" placeholder='请输入实例名称'></el-input>
 										</el-form-item>
 									</el-col>
-									<!-- <el-col :md='{span:9,offset:2}'>
-										<el-form-item label="部门" prop='dept'>
-										    <el-select v-model="oneForm.dept" @change='getModule' placeholder="请选择" clearable filterable>
-											                 						<el-option v-for='(item,index) in deptList' :key='index' :label='item.label' :value='item.value'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-									
-									<el-col :md='9'>
-										<el-form-item label="产品模块" prop='module'>
-										    <el-select v-model="oneForm.module" placeholder="请选择" clearable filterable>
-																                    <el-option v-for='(item,index) in moduleList' :label='item.label' :value='item.value' :key='index'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-									
-									<el-col :md='{span:9,offset:2}'>
-										<el-form-item label="环境类型" prop='envType'>
-										    <el-select v-model="oneForm.envType" @change='getApp' placeholder="请选择" clearable filterable>
-																                    <el-option v-for='(item,index) in envList' :label='item.label' :value='item.value' :key='index'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col>
-									
-									<el-col :md='9'>
-										<el-form-item label="应用" prop='application'>
-										    <el-select v-model="oneForm.application" @change='getAppInfo' placeholder="请选择" clearable filterable>
-																                   <el-option v-for='(item,index) in applicationList' :label='item.label' :value='item.value' :key='index'></el-option>
-										    </el-select>
-										</el-form-item>
-									</el-col> -->
 
-									<el-col :md='{span:10,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label='镜像名' prop='imageName'>
 										    <el-select v-model="oneForm.imageName" @change='getVersion("oneForm")' @focus='getImageName' placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in imageNameList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
-										   <!-- <el-input v-model="oneForm.imageName" placeholder="请输入镜像名" type='textarea'></el-input> -->
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='10'>
+									<el-col :md='12'>
 										<el-form-item label='系统管理员' prop='sysAdmin'>
-										   <!-- <el-input v-model="oneForm.sysAdmin" :disabled='false'></el-input> -->
 										   <el-autocomplete v-model="oneForm.sysAdmin" :disabled='false' :fetch-suggestions="querySearch">
 											   	<template slot-scope="{ item }">
 											   	    <div>{{ item.label }}</div>
@@ -64,51 +31,48 @@
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:10,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label="版本" prop='version'>
 										    <el-select v-model="oneForm.version" placeholder="请选择" clearable filterable>
 							                   <el-option v-for='(item,index) in oneFormVersionList' :label='item.label' :value='item.value' :key='index'></el-option>
 										    </el-select>
-											<!-- <el-input v-model="oneForm.version" placeholder="请输入版本号"></el-input> -->
 										</el-form-item>
 									</el-col>
 
 
-									<el-col :md='10'>
+									<el-col :md='12'>
 										<el-form-item label='应用管理员' prop='appAdmin'>
 											<el-autocomplete v-model="oneForm.appAdmin" :disabled='false' :fetch-suggestions="querySearch">
 												<template slot-scope="{ item }">
 												    <div>{{ item.label }}</div>
 												</template>
 											</el-autocomplete>
-										   <!-- <el-input v-model="oneForm.appAdmin" :disabled='false'></el-input> -->
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='{span:10,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label='备注' prop='opComment'>
 										   <el-input v-model="oneForm.opComment" placeholder="请输入备注" type='textarea'></el-input>
 										</el-form-item>
 									</el-col>
 
-									<el-col :md='10'>
+									<el-col :md='12'>
 										<el-form-item label='Config' prop='param1'>
 										   <el-input v-model="oneForm.param1" placeholder="请输入Config" type='textarea' :rows='15'></el-input>
 										</el-form-item>
 									</el-col>
 									
-									<el-col :md='{span:10,offset:2}'>
+									<el-col :md='12'>
 										<el-form-item label='RegisterClient' prop='param2'>
 										   <el-input v-model="oneForm.param2" placeholder="请输入RegisterClient" type='textarea' :rows='15'></el-input>
 										</el-form-item>
 									</el-col>			    								
 								</el-row>
-
-								<div class='btn-group-lg'>
-								    <el-button @click="submitForm('oneForm')" :disabled='btnDisabled'>添 加</el-button>
-								    <el-button @click="resetForm('oneForm')">重 置</el-button>
-								</div>
 				    		</el-form>
+				    		<div class='btn-group-lg'>
+				    		    <el-button @click="submitForm('oneForm')" :disabled='btnDisabled'>添 加</el-button>
+				    		    <el-button @click="resetForm('oneForm')">重 置</el-button>
+				    		</div>
 						</div>
 
 						<div class="empty"></div>
@@ -116,11 +80,11 @@
 						<div class="compenent-form">
 							<el-form label-width='60px'>
 								<el-row class='m-t20' :gutter='30'>
-									<el-col :md='1'>
+									<el-col :md='1' :sm='3'>
 										<el-button @click='refresh' type='primay' class='fa fa-refresh search-btn'></el-button>
 									</el-col>
 									
-									<el-col :md='{span:5,offset:12}'>
+									<el-col :md='{span:8,offset:7}' :sm='{span:10,offset:1}'>
 										<el-form-item label='状态'>
 										    <el-select v-model="status" placeholder="请选择">
 							                   <el-option label='全部' value='0'></el-option>
@@ -129,9 +93,9 @@
 										    </el-select>
 									    </el-form-item>
 									</el-col>
-									<el-col :md='6'>
+									<el-col :md='8' :sm='10'>
 										<el-form-item>
-											<el-input v-model="searchText" placeholder='请输入搜索条件'>
+											<el-input v-model="searchText" placeholder='请输入搜索条件' @keyup.enter.native='search'>
 												<el-button @click='search' slot="append" icon="el-icon-search" class='search-btn'></el-button>
 											</el-input>
 										</el-form-item>
@@ -173,10 +137,10 @@
 						<div class="compenent-form">
 							<el-form label-width='60px'>
 								<el-row :gutter='30'>
-									<el-col :md='1'>
+									<el-col :md='1' :sm='3'>
 										<el-button @click='approvalRefresh' type='primay' class='fa fa-refresh search-btn'></el-button>
 									</el-col>
-									<el-col :md='{span:5,offset:12}'>
+									<el-col :md='{span:8,offset:7}' :sm='{span:10,offset:1}'>
 										<el-form-item label='状态'>
 										    <el-select v-model="approvalStatus" placeholder="请选择">
 							                   <el-option label='全部' value='0'></el-option>
@@ -186,9 +150,9 @@
 										    </el-select>
 										</el-form-item>
 									</el-col>
-									<el-col :md='6'>
+									<el-col :md='8' :sm='10'>
 										<el-form-item>
-											<el-input v-model="approvalSearchText" placeholder='请输入搜索条件'>
+											<el-input v-model="approvalSearchText" placeholder='请输入搜索条件' @keyup.enter.native='approvalSearch'>
 												<el-button @click='approvalSearch' slot="append" icon="el-icon-search" class='search-btn'></el-button>
 											</el-input>
 										</el-form-item>
@@ -262,15 +226,17 @@
 					</el-col>
 
 					<el-col :md='12'>
-						<el-form-item label='Config' prop='param1'>
-						   <el-input v-model="dialogForm.param1" placeholder="请输入Config" type='textarea' :rows='10'></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :md='12'>
 						<el-form-item label='RegisterClient' prop='param2'>
 						   <el-input v-model="dialogForm.param2" placeholder="请输入RegisterClient" type='textarea' :rows='10'></el-input>
 						</el-form-item>
 					</el-col>
+
+					<el-col :md='12'>
+						<el-form-item label='Config' prop='param1'>
+						   <el-input v-model="dialogForm.param1" placeholder="请输入Config" type='textarea' :rows='10'></el-input>
+						</el-form-item>
+					</el-col>
+					
 				</el-row>
 				<div class="text-right">
 					<el-button type="primary" @click="submitForm('dialogForm')" :dsiabled='btnDisabled'>变 更</el-button>
@@ -1014,7 +980,7 @@
 
 		created () {
 			//获取部门数据
-			this.getDept()
+			//this.getDept()
 			//获取mysql列表数据
 			this.getAppList('addApp')
 			//获取镜像名

@@ -59,7 +59,7 @@
 	</div>
 </template>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 .all-result {
 	.iplist {
 		span {
